@@ -37,6 +37,10 @@
             background-color: #f9f9f9;
             border: 1px solid #ddd;
             border-radius: 5px;
+            cursor: pointer;
+        }
+        .song:hover {
+            background-color: #f1f1f1;
         }
     </style>
 </head>
@@ -55,6 +59,15 @@
             const token = 'BQDv7eCUTBTSjR12drOUwKAF7W290zgfgKTNai7FtnODDO1IK0bUy01ImLWdyiGH3H5otDNZLdB81CJBfAg3JKyCHPuPReMiK42dLVEhuHfhAoMAC6ybS4UOFY2K1F-2P1_TwK_UNi9_2Kz_UTHaaG5VWrpsqgLjsqRZCpO8SybX5FjXKQGccoS07-F2ICjI2BrFKGfpoL-yyLmUwiThEqrN2g'; // Your Spotify token
             const playlistId = '4hA72ROeqv56jOEsM5PyV1'; // Your Spotify playlist ID
 
+            // Create the player
+            const player = new Spotify.Player({
+                name: 'VyrizPod Player',
+                getOAuthToken: cb => { cb(token); },
+                volume: 0.5
+            });
+
+            player.connect();
+
             // Fetch all songs from the playlist
             fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, {
                 headers: {
@@ -71,9 +84,21 @@
                     const songElement = document.createElement('div');
                     songElement.className = 'song';
                     songElement.innerHTML = `
-                        <strong>${track.name}</strong>
-                        <p>By ${track.artists.map(artist => artist.name).join(', ')}</p>
+                        <strong>${track.name}</strong> <!-- Song Name -->
+                        <p>By ${track.artists.map(artist => artist.name).join(', ')}</p> <!-- Artist Names -->
                     `;
+                    
+                    // Add an event listener for when a song is clicked
+                    songElement.addEventListener('click', () => {
+                        player.play({
+                            uris: [track.uri] // Play the song using its URI
+                        }).then(() => {
+                            console.log('Now playing: ' + track.name);
+                        }).catch(error => {
+                            console.error('Error playing track:', error);
+                        });
+                    });
+
                     playlistDiv.appendChild(songElement);
                 });
             })
