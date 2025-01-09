@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Callback</title>
+</head>
+<body>
+    <h1>Authorization Success!</h1>
+    <p>If you see this page, the authentication was successful.</p>
+    <p>The authorization code is: <span id="authCode"></span></p>
+
+    <script>
+        // Extract the 'code' parameter from the URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const code = urlParams.get('code');
+        document.getElementById('authCode').textContent = code;
+    </script>
+</body>
+</html>
