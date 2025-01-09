@@ -39,6 +39,37 @@
         <!-- This is where the playlist will be displayed -->
         <div id="playlist"></div>
     </div>
+
+    <script src="https://sdk.scdn.co/spotify-player.js"></script>
+    <script>
+        window.onSpotifyWebPlaybackSDKReady = () => {
+            const token = 'YOUR_ACCESS_TOKEN'; // Replace with actual access token from Spotify OAuth
+            const player = new Spotify.Player({
+                name: 'VyrizPod Player',
+                getOAuthToken: cb => { cb(token); },
+                volume: 0.5
+            });
+
+            // Connect to the player
+            player.connect();
+
+            // Fetch the top artists or playlists
+            fetch('https://api.spotify.com/v1/me/top/artists', {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                const playlistDiv = document.getElementById('playlist');
+                data.items.forEach(artist => {
+                    const artistElement = document.createElement('div');
+                    artistElement.innerHTML = `<h3>${artist.name}</h3>`;
+                    playlistDiv.appendChild(artistElement);
+                });
+            })
+            .catch(error => console.log(error));
+        };
+    </script>
 </body>
 </html>
-
