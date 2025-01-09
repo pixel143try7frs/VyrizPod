@@ -83,11 +83,11 @@
                     const track = item.track;
                     const songElement = document.createElement('div');
                     songElement.className = 'song';
-                    songElement.innerHTML = `
+                    songElement.innerHTML = ` 
                         <strong>${track.name}</strong> <!-- Song Name -->
                         <p>By ${track.artists.map(artist => artist.name).join(', ')}</p> <!-- Artist Names -->
                     `;
-                    
+
                     // Add an event listener for when a song is clicked
                     songElement.addEventListener('click', () => {
                         player.play({
