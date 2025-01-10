@@ -1,57 +1,37 @@
-document.querySelectorAll('.song').forEach(song => {
-    song.addEventListener('click', function() {
-        const audioPlayer = document.getElementById('audio-player');
-        const songSrc = song.getAttribute('data-src');
-        const songCover = song.getAttribute('data-cover');
-        
-        // Set the audio source
-        audioPlayer.src = songSrc;
-        audioPlayer.play();
+const audioPlayer = document.getElementById('audioPlayer');
+const playBtn = document.getElementById('playBtn');
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
+const progressBar = document.querySelector('.progress-bar');
+const progress = document.querySelector('.progress');
 
-        // Update Now Playing text and artist
-        document.getElementById('current-track').innerText = `Now Playing: ${song.querySelector('strong').innerText}`;
-        document.getElementById('current-artist').innerText = song.querySelector('p').innerText;
+// Audio playback functions
+function playAudio() {
+    audioPlayer.play();
+    playBtn.innerHTML = '<i class="fas fa-pause"></i>';
+}
 
-        // Display the image of the current song
-        const songImage = document.getElementById('song-image');
-        songImage.innerHTML = `<img src="${songCover}" alt="Song Image">`;
-        
-        // Update play/pause button
-        const playBtn = document.getElementById('play-btn');
-        playBtn.innerText = "⏸️";  // Pause button after play starts
-    });
-});
+function pauseAudio() {
+    audioPlayer.pause();
+    playBtn.innerHTML = '<i class="fas fa-play"></i>';
+}
 
-document.getElementById('play-btn').addEventListener('click', () => {
-    const audioPlayer = document.getElementById('audio-player');
-    const playBtn = document.getElementById('play-btn');
+function updateProgress() {
+    const currentTime = audioPlayer.currentTime;
+    const duration = audioPlayer.duration;
+    const progressWidth = (currentTime / duration) * 100 + '%';
+    progress.style.width = progressWidth;
+}
 
+// Event listeners
+playBtn.addEventListener('click', () => {
     if (audioPlayer.paused) {
-        audioPlayer.play();
-        playBtn.innerText = "⏸️";  // Change to pause icon
+        playAudio();
     } else {
-        audioPlayer.pause();
-        playBtn.innerText = "▶️";  // Change to play icon
+        pauseAudio();
     }
 });
 
-document.getElementById('next-btn').addEventListener('click', () => {
-    // Implement next song functionality here
-});
+audioPlayer.addEventListener('timeupdate', updateProgress);
 
-document.getElementById('prev-btn').addEventListener('click', () => {
-    // Implement previous song functionality here
-});
-
-// Handle progress bar
-document.getElementById('audio-player').addEventListener('timeupdate', () => {
-    const progressBar = document.getElementById('progress-bar');
-    const audioPlayer = document.getElementById('audio-player');
-    const progress = (audioPlayer.currentTime / audioPlayer.duration) * 100;
-    progressBar.value = progress;
-});
-
-document.getElementById('progress-bar').addEventListener('input', function() {
-    const audioPlayer = document.getElementById('audio-player');
-    audioPlayer.currentTime = (this.value / 100) * audioPlayer.duration;
-});
+// Add more functionality for prevBtn, nextBtn, and progress bar interaction here
