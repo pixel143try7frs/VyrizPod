@@ -11,8 +11,6 @@ window.onload = function() {
         document.getElementById('welcome-screen').style.opacity = '0';
         setTimeout(() => {
             document.getElementById('welcome-screen').style.display = 'none';
-            document.getElementById('slogan-screen').style.display = 'block';
-            document.getElementById('slogan-screen').style.opacity = '1';
         }, 2000);
     }, 3000);
 }
