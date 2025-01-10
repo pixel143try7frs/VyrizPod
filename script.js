@@ -2,13 +2,12 @@ const audioPlayer = document.getElementById('audioPlayer');
 const playBtn = document.getElementById('playBtn');
 const nextBtn = document.getElementById('nextBtn');
 const prevBtn = document.getElementById('prevBtn');
-const progress = document.querySelector('.progress');
-const progressBar = document.querySelector('.progress-bar');
+const progress = document.getElementById('progress');
+const progressBar = document.getElementById('progress-bar');
 const lyricsContainer = document.getElementById('lyrics-container');
 const lyricsBtn = document.getElementById('lyricsBtn');
 
 let isPlaying = false;
-let currentTime = 0;
 
 // Full Duvidha Lyrics with Timestamps
 const lyricsData = [
@@ -29,7 +28,7 @@ const lyricsData = [
     { time: 74.36, text: "भी हो गया दूर में विधि का क्या विधान था" },
     { time: 77.2, text: "क्या लेख लिखा था कर्मों का तुम ठीक से रो" },
     { time: 80.36, text: "तो लेते हो मैं रो भी ना पाया चैन से कहने" },
-    // Add the remaining lyrics in the same format
+    // Add the remaining lyrics here
 ];
 
 // Populate lyrics on the page
@@ -91,14 +90,12 @@ lyricsBtn.addEventListener('click', () => {
     }
 });
 
-// Next button functionality (if you have multiple songs, this can be used)
+// Next button functionality
 nextBtn.addEventListener('click', () => {
-    // Placeholder: You can change the song by updating the audio src
     alert('Next song functionality to be added.');
 });
 
-// Previous button functionality (if you have multiple songs, this can be used)
+// Previous button functionality
 prevBtn.addEventListener('click', () => {
-    // Placeholder: You can change the song by updating the audio src
     alert('Previous song functionality to be added.');
 });
