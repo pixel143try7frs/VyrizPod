@@ -4,6 +4,7 @@ body {
     font-family: 'Poppins', sans-serif;
     margin: 0;
     padding: 0;
+    transition: all 1s ease;
 }
 
 .welcome-screen {
@@ -13,35 +14,28 @@ body {
     flex-direction: column;
     height: 100vh;
     background-color: #181818;
-    opacity: 0;
-    animation: fadeIn 5s forwards;
+    opacity: 1;
+    transition: opacity 2s ease;
 }
 
 .welcome-screen h1 {
     font-size: 3rem;
     margin: 0;
+    animation: fadeIn 3s;
 }
 
-.welcome-screen p {
-    font-size: 1.2rem;
-}
-
-.branding {
+.slogan-screen {
+    display: none;
     text-align: center;
+    font-size: 1.5rem;
+    color: white;
+    opacity: 0;
+    animation: fadeInSlogan 3s forwards;
+}
+
+.slogan-screen p {
+    font-size: 2rem;
     margin-top: 20px;
-}
-
-.branding h2 {
-    font-size: 2.5rem;
-    color: #1db954;
-    font-weight: 600;
-}
-
-.player-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
 }
 
 .album-art-container {
@@ -51,21 +45,22 @@ body {
 .album-art {
     width: 300px;
     height: 300px;
-    border-radius: 5px;
-    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+    box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.6);
 }
 
 .song-info {
     text-align: center;
+    margin-top: 20px;
 }
 
 .song-title {
-    font-size: 1.5rem;
+    font-size: 1.8rem;
     margin: 10px 0;
 }
 
 .artist-name {
-    font-size: 1rem;
+    font-size: 1.2rem;
     opacity: 0.8;
 }
 
@@ -76,38 +71,49 @@ body {
 }
 
 .control-button {
-    width: 50px;
-    height: 50px;
+    width: 60px;
+    height: 60px;
     border-radius: 50%;
     background-color: #282828;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 0 10px;
+    margin: 0 15px;
     cursor: pointer;
     border: none;
+    font-size: 1.5rem;
+    transition: background-color 0.3s;
 }
 
 .control-button:hover {
-    background-color: #383838;
+    background-color: #1db954;
 }
 
 .progress-bar {
-    width: 250px;
-    height: 5px;
+    width: 300px;
+    height: 8px;
     background-color: #404040;
-    border-radius: 2.5px;
+    border-radius: 4px;
     margin-top: 20px;
 }
 
 .progress {
-    height: 5px;
+    height: 8px;
     background-color: #1db954;
-    border-radius: 2.5px;
+    border-radius: 4px;
 }
 
 @keyframes fadeIn {
-    to {
-        opacity: 1;
-    }
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+@keyframes fadeInSlogan {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+@keyframes smoothTransition {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
 }
