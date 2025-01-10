@@ -4,15 +4,36 @@ const playBtn = document.getElementById('playBtn');
 const prevBtn = document.getElementById('prevBtn');
 const nextBtn = document.getElementById('nextBtn');
 const progress = document.querySelector('.progress');
+const progressBar = document.querySelector('.progress-bar');
+const albumArt = document.getElementById('album-art');
+const songTitle = document.getElementById('song-title');
+const artistName = document.getElementById('artist-name');
 
-// Welcome screen transition
-window.onload = function() {
-    setTimeout(() => {
-        document.getElementById('welcome-screen').style.opacity = '0';
-        setTimeout(() => {
-            document.getElementById('welcome-screen').style.display = 'none';
-        }, 2000);
-    }, 3000);
+// Songs Array
+const songs = [
+    {
+        title: 'Duvidha',
+        artist: 'Lucke',
+        src: 'https://raw.githubusercontent.com/pixel143try7frs/VyrizPod/322e4bcd80fdff2cc7fd13347f66630e07cee582/DUVIDHA%20%20Hindi%20Rap%20Song%20%20By%20LUCKE.mp3',
+        albumArt: 'https://github.com/pixel143try7frs/VyrizPod/blob/main/Duvidha%20downloaded%20from%20SpotiSongDownloader.com_.jpg?raw=true'
+    },
+    {
+        title: 'Bumpy Ride',
+        artist: 'Mohombi',
+        src: 'https://github.com/pixel143try7frs/VyrizPod/blob/main/Mohombi%20-%20Bumpy%20Ride.mp3?raw=true',
+        albumArt: 'https://github.com/pixel143try7frs/VyrizPod/blob/main/Bumpy%20Ride%20downloaded%20from%20SpotiSongDownloader.com_.jpg?raw=true'
+    }
+];
+
+let currentSongIndex = 0;
+
+// Load a song
+function loadSong(index) {
+    const song = songs[index];
+    audioPlayer.src = song.src;
+    albumArt.src = song.albumArt;
+    songTitle.textContent = song.title;
+    artistName.textContent = song.artist;
 }
 
 // Play/Pause functionality
@@ -34,6 +55,29 @@ function updateProgress() {
     progress.style.width = progressWidth;
 }
 
+// Set progress when user clicks on the progress bar
+function setProgress(e) {
+    const width = progressBar.clientWidth;
+    const clickX = e.offsetX;
+    const duration = audioPlayer.duration;
+
+    audioPlayer.currentTime = (clickX / width) * duration;
+}
+
+// Previous Song
+function prevSong() {
+    currentSongIndex = (currentSongIndex - 1 + songs.length) % songs.length;
+    loadSong(currentSongIndex);
+    playAudio();
+}
+
+// Next Song
+function nextSong() {
+    currentSongIndex = (currentSongIndex + 1) % songs.length;
+    loadSong(currentSongIndex);
+    playAudio();
+}
+
 // Event listeners
 playBtn.addEventListener('click', () => {
     if (audioPlayer.paused) {
@@ -43,13 +87,22 @@ playBtn.addEventListener('click', () => {
     }
 });
 
+prevBtn.addEventListener('click', prevSong);
+nextBtn.addEventListener('click', nextSong);
 audioPlayer.addEventListener('timeupdate', updateProgress);
 
-// Dummy previous and next buttons functionality
-prevBtn.addEventListener('click', () => {
-    alert('Previous song');
-});
+// Add event listener for progress bar interaction
+progressBar.addEventListener('click', setProgress);
 
-nextBtn.addEventListener('click', () => {
-    alert('Next song');
-});
+// Load the first song when the page loads
+window.onload = function () {
+    loadSong(currentSongIndex);
+
+    // Welcome screen transition
+    setTimeout(() => {
+        document.getElementById('welcome-screen').style.opacity = '0';
+        setTimeout(() => {
+            document.getElementById('welcome-screen').style.display = 'none';
+        }, 1000);
+    }, 3000);
+};
