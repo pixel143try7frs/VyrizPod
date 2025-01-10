@@ -50,6 +50,7 @@ body {
     align-items: center;
     justify-content: center;
     box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.6);
+    margin-top: 20px;
 }
 
 /* Album Art */
@@ -143,11 +144,11 @@ body {
     }
 
     .controls {
-        justify-content: space-around; /* This ensures the buttons stay in one line */
+        justify-content: space-around;
     }
 
     .control-button {
-        margin: 0 10px; /* Reduces the gap between buttons */
+        margin: 0 10px;
     }
 }
 
@@ -159,4 +160,43 @@ body {
     .artist-name {
         font-size: 1rem;
     }
+}
+#song-list {
+    margin-top: 20px;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.song-item {
+    padding: 10px;
+    border-bottom: 1px solid #333;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.song-item:hover {
+    background-color: #222;
+}
+.search-bar{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0;
+}
+.search-bar input{
+    width: 300px;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    background-color: #333;
+    color: white;
+    margin-right: 10px;
+}
+.search-bar button{
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
+    background-color: #1db954;
+    color: white;
+    cursor: pointer;
 }
