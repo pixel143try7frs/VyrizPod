@@ -1,12 +1,15 @@
 // Get elements
 const audioPlayer = document.getElementById('audioPlayer');
 const playBtn = document.getElementById('playBtn');
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
+const progressBar = document.querySelector('.progress-bar');
 const progress = document.querySelector('.progress');
 const lyricsBtn = document.getElementById('lyricsBtn');
 const lyricsSection = document.getElementById('lyrics');
 const lyricsContent = document.getElementById('lyrics-content');
 
-// Lyrics Data
+// Song lyrics
 const lyrics = [
     { time: 2.580, text: '[संगीत]' },
     { time: 32.570, text: '[प्रशंसा]' },
@@ -15,9 +18,10 @@ const lyrics = [
     { time: 44.079, text: 'पहले मेरी मौत इंतजार में कैसे कहूं' },
     { time: 46.079, text: 'कहानियां अब सुनो पूरी लंबी कतार में जन्म' },
     // Add all the remaining lyrics with their corresponding time
+    // Example:
     { time: 59.440, text: 'मिली मुझे भेंट में मामा से मिला उपहार ये' },
     { time: 102.440, text: 'मेरे मात पिता लाचार थे छह भाइयों को मारा' },
-    // Continue with all lyrics...
+    // Continue the lyrics...
 ];
 
 // Play/Pause functionality
@@ -70,9 +74,10 @@ function updateProgress() {
 
 // Event listeners for audio
 audioPlayer.addEventListener('timeupdate', updateProgress);
+audioPlayer.addEventListener('play', displayLyrics);
 
-// Show the player after 5 seconds
-setTimeout(() => {
-    document.getElementById('welcome-screen').style.display = 'none';
-    document.getElementById('player-container').style.display = 'block';
-}, 5000);
+// Initialize player
+function init() {
+    lyricsSection.style.display = 'none';
+}
+init();
