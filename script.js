@@ -1,9 +1,17 @@
+// Grab the elements
 const audioPlayer = document.getElementById('audioPlayer');
 const playBtn = document.getElementById('playBtn');
 const prevBtn = document.getElementById('prevBtn');
 const nextBtn = document.getElementById('nextBtn');
-const progressBar = document.querySelector('.progress-bar');
 const progress = document.querySelector('.progress');
+const playerContainer = document.getElementById('player-container');
+const welcomeScreen = document.getElementById('welcome-screen');
+
+// Function to show the player after welcome screen fades out
+setTimeout(() => {
+    welcomeScreen.style.display = 'none';
+    playerContainer.style.display = 'flex';
+}, 7000);
 
 // Audio playback functions
 function playAudio() {
@@ -34,4 +42,11 @@ playBtn.addEventListener('click', () => {
 
 audioPlayer.addEventListener('timeupdate', updateProgress);
 
-// Functionality for next/prev buttons can be added here if desired
+// For next/prev buttons (can be expanded later)
+nextBtn.addEventListener('click', () => {
+    console.log("Next song functionality goes here");
+});
+
+prevBtn.addEventListener('click', () => {
+    console.log("Previous song functionality goes here");
+});
