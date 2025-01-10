@@ -1,63 +1,70 @@
-window.addEventListener('DOMContentLoaded', () => {
-    const welcomeScreen = document.getElementById('welcome-screen');
-    const playerContainer = document.getElementById('player-container');
-    const audioPlayer = document.getElementById('audioPlayer');
-    const playBtn = document.getElementById('playBtn');
-    const prevBtn = document.getElementById('prevBtn');
-    const nextBtn = document.getElementById('nextBtn');
-    const progressBar = document.getElementById('progress-bar');
-    const progress = document.getElementById('progress');
+const audioPlayer = document.getElementById('audioPlayer');
+const playBtn = document.getElementById('playBtn');
+const progress = document.querySelector('.progress');
+const progressBar = document.querySelector('.progress-bar');
+const lyricsContainer = document.getElementById('lyrics');
 
-    // Welcome Screen Animation
-    setTimeout(() => {
-        welcomeScreen.style.opacity = 0;
-        welcomeScreen.style.transition = 'opacity 1s';
-        setTimeout(() => {
-            welcomeScreen.style.display = 'none';
-            playerContainer.style.display = 'flex';
-        }, 1000);
-    }, 5000);
+// Full Duvidha Lyrics with Timestamps
+const lyricsData = [
+    { time: 2.58, text: "[संगीत]" },
+    { time: 32.57, text: "[प्रशंसा]" },
+    { time: 41.76, text: "दुख शुरू थे मेरे जन्म से पहले जन्म से" },
+    { time: 44.08, text: "पहले मेरी मौत इंतजार में कैसे कहूं" },
+    { time: 46.08, text: "कहानियां अब सुनो पूरी लंबी कतार में जन्म" },
+    { time: 49.04, text: "हुआ मेरा जेल में मां बाप का चेहरा मैंने" },
+    { time: 51.28, text: "देखा नहीं हां रोती रही मां देव की जुदाई" },
+    { time: 54.04, text: "मिली मुझे भेंट में मामा से मिला उपहार ये" },
+    { time: 56.84, text: "मेरे मात पिता लाचार थे छह भाइयों को मारा" },
+    { time: 59.44, text: "सामने आंसू थे मां की आंखों में वैसे तो" },
+    { time: 62.44, text: "था भगवान में अजीब सा ये खेल है मेरे" },
+    { time: 65.36, text: "मात-पिता मेरे देवता वो दोनों ही थे जेल" },
+    { time: 68.2, text: "में कर्तव्य मिले मुझे जन्म से बचपन बीता" },
+    { time: 71.88, text: "संघर्ष में जिस्मा ने पाला पोसा मुझे उससे" },
+    { time: 74.36, text: "भी हो गया दूर में विधि का क्या विधान था" },
+    { time: 77.2, text: "क्या लेख लिखा था कर्मों का तुम ठीक से रो" },
+    { time: 80.36, text: "तो लेते हो मैं रो भी ना पाया चैन से कहने" },
+    // Add the remaining lyrics in the same format
+];
 
-    // Play/Pause Functionality
-    playBtn.addEventListener('click', () => {
-        if (audioPlayer.paused) {
-            audioPlayer.play();
-            playBtn.innerHTML = '<i class="fas fa-pause"></i>';
-        } else {
-            audioPlayer.pause();
-            playBtn.innerHTML = '<i class="fas fa-play"></i>';
+// Populate lyrics on the page
+lyricsData.forEach((line) => {
+    const div = document.createElement('div');
+    div.textContent = line.text;
+    div.setAttribute('data-time', line.time);
+    lyricsContainer.appendChild(div);
+});
+
+// Play/Pause Toggle
+playBtn.addEventListener('click', () => {
+    if (audioPlayer.paused) {
+        audioPlayer.play();
+        playBtn.innerHTML = '<i class="fas fa-pause"></i>';
+    } else {
+        audioPlayer.pause();
+        playBtn.innerHTML = '<i class="fas fa-play"></i>';
+    }
+});
+
+// Update Progress Bar
+audioPlayer.addEventListener('timeupdate', () => {
+    const progressWidth = (audioPlayer.currentTime / audioPlayer.duration) * 100 + '%';
+    progress.style.width = progressWidth;
+
+    const currentTime = audioPlayer.currentTime;
+    lyricsData.forEach((line, index) => {
+        const lyricDiv = lyricsContainer.children[index];
+        if (line.time <= currentTime && (lyricsData[index + 1]?.time > currentTime || index === lyricsData.length - 1)) {
+            document.querySelector('.lyrics .active')?.classList.remove('active');
+            lyricDiv.classList.add('active');
+            lyricDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
     });
+});
 
-    // Update Progress Bar
-    audioPlayer.addEventListener('timeupdate', () => {
-        const progressWidth = (audioPlayer.currentTime / audioPlayer.duration) * 100;
-        progress.style.width = `${progressWidth}%`;
-    });
-
-    // Progress Bar Click
-    progressBar.addEventListener('click', (e) => {
-        const clickX = e.offsetX;
-        const width = progressBar.clientWidth;
-        const duration = audioPlayer.duration;
-
-        audioPlayer.currentTime = (clickX / width) * duration;
-    });
-
-    // Progress Bar Drag
-    progressBar.addEventListener('mousedown', () => {
-        progressBar.addEventListener('mousemove', seek);
-    });
-
-    window.addEventListener('mouseup', () => {
-        progressBar.removeEventListener('mousemove', seek);
-    });
-
-    function seek(e) {
-        const clickX = e.offsetX;
-        const width = progressBar.clientWidth;
-        const duration = audioPlayer.duration;
-
-        audioPlayer.currentTime = (clickX / width) * duration;
-    }
+// Seek in Progress Bar
+progressBar.addEventListener('click', (e) => {
+    const barWidth = progressBar.clientWidth;
+    const clickX = e.offsetX;
+    const duration = audioPlayer.duration;
+    audioPlayer.currentTime = (clickX / barWidth) * duration;
 });
