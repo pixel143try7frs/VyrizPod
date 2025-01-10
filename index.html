@@ -1,81 +1,88 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VyrizPod - Music Platform</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="https://sdk.scdn.co/spotify-player.js"></script>
-</head>
-<body>
-    <header>
-        <h1>VyrizPod</h1>
-        <p>Your ultimate music platform. Enjoy the beats!</p>
-    </header>
+window.onSpotifyWebPlaybackSDKReady = () => {
+    const token = 'YOUR_ACCESS_TOKEN_HERE'; // Replace with a valid token
+    const playlistId = '4hA72ROeqv56jOEsM5PyV1'; // Your Spotify playlist ID
 
-    <div class="container">
-        <h2>Now Playing:</h2>
-        <p id="now-playing">Select a song to play.</p>
+    const player = new Spotify.Player({
+        name: 'VyrizPod Player',
+        getOAuthToken: cb => { cb(token); },
+        volume: 0.5,
+    });
 
-        <!-- All songs will appear here -->
-        <div id="playlist"></div>
-    </div>
+    // Connect the player and handle state changes
+    player.connect().then(success => {
+        if (success) {
+            console.log('Player connected!');
+        }
+    });
 
-    <footer>
-        Powered by Spotify
-    </footer>
+    player.addListener('ready', ({ device_id }) => {
+        console.log('Ready with Device ID', device_id);
+    });
 
-    <script>
-        window.onSpotifyWebPlaybackSDKReady = () => {
-            const token = 'BQDY2kynMgrdBSpM_rjqmDv5b5bWucyVh_rJplu5QB0lu6GoSBN29pTCxZwwDCNaoC3Zx21b6P9k9sI_h_aAEBiWbQ_luyPdZEQhRO6hxgTE5Ha14uY'; // Your Spotify access token
-            const playlistId = '4hA72ROeqv56jOEsM5PyV1'; // Your Spotify playlist ID
+    player.addListener('not_ready', ({ device_id }) => {
+        console.error('Device ID has gone offline', device_id);
+    });
 
-            // Initialize the Spotify Player
-            const player = new Spotify.Player({
-                name: 'VyrizPod Player',
-                getOAuthToken: cb => { cb(token); },
-                volume: 0.5
+    player.addListener('player_state_changed', state => {
+        if (state) {
+            const currentTrack = state.track_window.current_track;
+            document.getElementById('now-playing').innerText = `Now Playing: ${currentTrack.name} by ${currentTrack.artists.map(artist => artist.name).join(', ')}`;
+        }
+    });
+
+    player.addListener('initialization_error', ({ message }) => {
+        console.error('Initialization Error:', message);
+    });
+
+    player.addListener('authentication_error', ({ message }) => {
+        console.error('Authentication Error:', message);
+        alert('Authentication error! Please check your Spotify token.');
+    });
+
+    player.addListener('account_error', ({ message }) => {
+        console.error('Account Error:', message);
+        alert('You need a Spotify Premium account to use this feature.');
+    });
+
+    player.addListener('playback_error', ({ message }) => {
+        console.error('Playback Error:', message);
+        alert('Playback error! Please check your Spotify app.');
+    });
+
+    // Fetch playlist and display tracks
+    fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+    })
+    .then(response => response.json())
+    .then(data => {
+        const playlistDiv = document.getElementById('playlist');
+
+        data.items.forEach(item => {
+            const track = item.track;
+            const songElement = document.createElement('div');
+            songElement.className = 'song';
+            songElement.innerHTML = `
+                <strong>${track.name}</strong>
+                <p>By ${track.artists.map(artist => artist.name).join(', ')}</p>
+            `;
+
+            songElement.addEventListener('click', () => {
+                player.activateElement().then(() => {
+                    player.setVolume(0.5);
+                    player.play({
+                        uris: [track.uri]
+                    });
+                }).catch(error => {
+                    console.error('Error activating player:', error);
+                    alert('Failed to play track. Please make sure your Spotify app is open and running.');
+                });
             });
 
-            // Connect the player
-            player.connect();
-
-            // Fetch the playlist and display songs
-            fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, {
-                headers: { 'Authorization': `Bearer ${token}` }
-            })
-            .then(response => response.json())
-            .then(data => {
-                const playlistDiv = document.getElementById('playlist');
-
-                data.items.forEach(item => {
-                    const track = item.track;
-
-                    // Create a song element
-                    const songElement = document.createElement('div');
-                    songElement.className = 'song';
-                    songElement.innerHTML = `
-                        <strong>${track.name}</strong>
-                        <p>By ${track.artists.map(artist => artist.name).join(', ')}</p>
-                    `;
-
-                    // Add click functionality to play the song
-                    songElement.addEventListener('click', () => {
-                        player.activateElement().then(() => {
-                            player.setVolume(0.5);
-                            player.play({
-                                uris: [track.uri]
-                            });
-                        });
-
-                        document.getElementById('now-playing').innerText = `Now Playing: ${track.name} by ${track.artists.map(artist => artist.name).join(', ')}`;
-                    });
-
-                    playlistDiv.appendChild(songElement);
-                });
-            })
-            .catch(error => console.error('Error fetching playlist:', error));
-        };
-    </script>
-</body>
-</html>
+            playlistDiv.appendChild(songElement);
+        });
+    })
+    .catch(error => {
+        console.error('Error fetching playlist:', error);
+        alert('Failed to load playlist. Please check your Spotify token or playlist ID.');
+    });
+};
