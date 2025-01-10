@@ -1,52 +1,128 @@
+/* General Styling */
 body {
-    background-color: #181818;
-    color: #fff;
-    font-family: 'Poppins', sans-serif;
     margin: 0;
     padding: 0;
+    background-color: #181818;
+    font-family: 'Poppins', sans-serif;
+    color: #fff;
     text-align: center;
+    overflow: hidden;
 }
 
+h1, h2, p {
+    margin: 0;
+}
+
+/* Welcome Screen */
+.welcome-screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right, #1db954, #181818);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    opacity: 1;
+    animation: fadeOut 5s forwards;
+}
+
+.welcome-screen h1 {
+    font-size: 50px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.welcome-screen p {
+    font-size: 20px;
+    margin-bottom: 30px;
+}
+
+.loader {
+    border: 5px solid #fff;
+    border-top: 5px solid #1db954;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 2s linear infinite;
+}
+
+/* Fade-out animation for the Welcome Screen */
+@keyframes fadeOut {
+    0% { opacity: 1; }
+    100% { opacity: 0; visibility: hidden; }
+}
+
+/* Loader Spin */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Music Player */
 .player-container {
     display: flex;
     flex-direction: column;
     align-items: center;
+    max-width: 400px;
     margin: 20px auto;
     padding: 20px;
-    max-width: 400px;
-    background: #282828;
-    border-radius: 10px;
+    background-color: #282828;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    transform: translateY(30px);
+    opacity: 0;
+    animation: fadeIn 1s ease-in-out forwards 5s; /* Delayed fade-in */
 }
 
 .album-art-container img {
-    width: 200px;
-    height: 200px;
-    border-radius: 5px;
+    width: 250px;
+    height: 250px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
 
 .song-info {
-    margin: 10px 0;
+    margin: 20px 0;
+}
+
+.song-title {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.artist-name {
+    font-size: 18px;
+    color: #aaa;
 }
 
 .controls {
     display: flex;
     justify-content: center;
-    margin: 20px 0;
+    margin-top: 20px;
 }
 
 .control-button {
-    width: 50px;
-    height: 50px;
+    width: 60px;
+    height: 60px;
     border: none;
-    background: #1db954;
+    background: transparent;
     color: #fff;
     border-radius: 50%;
-    margin: 0 10px;
+    margin: 0 20px;
+    font-size: 1.5rem;
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.2rem;
+    transition: background 0.3s ease;
+}
+
+.control-button:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+#playBtn.playing {
+    background-color: #1db954; /* Green color when playing */
 }
 
 .progress-bar {
@@ -66,6 +142,7 @@ body {
     border-radius: 5px;
 }
 
+/* Lyrics Section */
 .lyrics-container {
     margin: 20px auto;
     max-width: 400px;
@@ -86,4 +163,10 @@ body {
     color: #1db954;
     opacity: 1;
     font-weight: bold;
+}
+
+/* Animation for fade-in effect */
+@keyframes fadeIn {
+    0% { opacity: 0; transform: translateY(30px); }
+    100% { opacity: 1; transform: translateY(0); }
 }
