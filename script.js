@@ -12,38 +12,39 @@ const searchInput = document.getElementById('searchInput');
 const searchButton = document.getElementById('searchButton');
 const mainContent = document.getElementById('main-content');
 const welcomeScreen = document.getElementById('welcome-screen');
-const currentTimeDisplay = document.getElementById('current-time');
-const durationDisplay = document.getElementById('duration');
 
 const songs = [
     {
         title: 'Duvidha',
         artist: 'Lucke',
         src: 'https://raw.githubusercontent.com/pixel143try7frs/VyrizPod/322e4bcd80fdff2cc7fd13347f66630e07cee582/DUVIDHA%20%20Hindi%20Rap%20Song%20%20By%20LUCKE.mp3',
-        albumArt: 'https://github.com/pixel143try7frs/VyrizPod/blob/main/Duvidha%20downloaded%20from%20SpotiSongDownloader.com_.jpg?raw=true'
+        albumArt: 'https://github.com/pixel143try7frs/VyrizPod/blob/main/Duvidha%20downloaded%20from%20SpotiSongDownloader.com_.jpg?raw=true',
+        image: 'https://github.com/pixel143try7frs/VyrizPod/blob/main/Duvidha%20downloaded%20from%20SpotiSongDownloader.com_.jpg?raw=true'
     },
     {
         title: 'Bumpy Ride',
         artist: 'Mohombi',
         src: 'https://github.com/pixel143try7frs/VyrizPod/blob/main/Mohombi%20-%20Bumpy%20Ride.mp3?raw=true',
-        albumArt: 'https://github.com/pixel143try7frs/VyrizPod/blob/main/Bumpy%20Ride%20downloaded%20from%20SpotiSongDownloader.com_.jpg?raw=true'
+        albumArt: 'https://github.com/pixel143try7frs/VyrizPod/blob/main/Bumpy%20Ride%20downloaded%20from%20SpotiSongDownloader.com_.jpg?raw=true',
+        image: 'https://github.com/pixel143try7frs/VyrizPod/blob/main/Bumpy%20Ride%20downloaded%20from%20SpotiSongDownloader.com_.jpg?raw=true'
     },
     {
         title: 'Song 3',
         artist: 'Artist 3',
         src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
-        albumArt: 'https://via.placeholder.com/300'
+        albumArt: 'https://via.placeholder.com/300',
+        image: 'https://via.placeholder.com/50'
     },
     {
         title: 'Song 4',
         artist: 'Artist 4',
         src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-16.mp3',
-        albumArt: 'https://via.placeholder.com/300'
+        albumArt: 'https://via.placeholder.com/300',
+        image: 'https://via.placeholder.com/50'
     }
 ];
 
 let currentSongIndex = 0;
-let isPlaying = false; // Track play state
 
 function loadSong(index) {
     const song = songs[index];
@@ -51,41 +52,23 @@ function loadSong(index) {
     albumArt.src = song.albumArt;
     songTitle.textContent = song.title;
     artistName.textContent = song.artist;
-    audioPlayer.onloadedmetadata = () => {
-        updateProgress()
-    }
 }
 
 function playAudio() {
     audioPlayer.play();
     playBtn.innerHTML = '<i class="fas fa-pause"></i>';
-    isPlaying = true;
 }
 
 function pauseAudio() {
     audioPlayer.pause();
     playBtn.innerHTML = '<i class="fas fa-play"></i>';
-    isPlaying = false;
 }
 
 function updateProgress() {
     const currentTime = audioPlayer.currentTime;
     const duration = audioPlayer.duration;
-
-    if (isNaN(duration)) return; // Prevents errors if duration isn't available
-
     const progressWidth = (currentTime / duration) * 100 + '%';
     progress.style.width = progressWidth;
-
-    currentTimeDisplay.textContent = formatTime(currentTime);
-    durationDisplay.textContent = formatTime(duration);
-}
-
-function formatTime(seconds) {
-    const minutes = Math.floor(seconds / 60);
-    const remainingSeconds = Math.floor(seconds % 60);
-    const formattedSeconds = remainingSeconds < 10 ? '0' + remainingSeconds : remainingSeconds;
-    return `${minutes}:${formattedSeconds}`;
 }
 
 function setProgress(e) {
@@ -98,13 +81,13 @@ function setProgress(e) {
 function prevSong() {
     currentSongIndex = (currentSongIndex - 1 + songs.length) % songs.length;
     loadSong(currentSongIndex);
-    if (isPlaying) playAudio();
+    playAudio();
 }
 
 function nextSong() {
     currentSongIndex = (currentSongIndex + 1) % songs.length;
     loadSong(currentSongIndex);
-    if (isPlaying) playAudio();
+    playAudio();
 }
 
 function displaySongs(songsToDisplay) {
@@ -112,7 +95,7 @@ function displaySongs(songsToDisplay) {
     songsToDisplay.forEach((song, index) => {
         const songDiv = document.createElement('div');
         songDiv.classList.add('song-item');
-        songDiv.innerHTML = `<h3>${song.title}</h3><p>${song.artist}</p>`;
+        songDiv.innerHTML = `<img src="${song.image}" alt="${song.title} Album Art"><h3>${song.title}</h3><p>${song.artist}</p>`;
         songDiv.addEventListener('click', () => {
             currentSongIndex = index;
             loadSong(currentSongIndex);
@@ -132,10 +115,10 @@ searchButton.addEventListener('click', () => {
 });
 
 playBtn.addEventListener('click', () => {
-    if (isPlaying) {
-        pauseAudio();
-    } else {
+    if (audioPlayer.paused) {
         playAudio();
+    } else {
+        pauseAudio();
     }
 });
 
@@ -143,7 +126,6 @@ prevBtn.addEventListener('click', prevSong);
 nextBtn.addEventListener('click', nextSong);
 audioPlayer.addEventListener('timeupdate', updateProgress);
 progressBar.addEventListener('click', setProgress);
-audioPlayer.addEventListener('ended', nextSong); // Play next song when current ends
 
 window.onload = function () {
     setTimeout(() => {
@@ -152,7 +134,7 @@ window.onload = function () {
             welcomeScreen.style.display = 'none';
             mainContent.style.display = 'block';
             displaySongs(songs);
-            loadSong(currentSongIndex); // Load the initial song
         }, 1000);
     }, 3000);
+    loadSong(currentSongIndex);
 };
