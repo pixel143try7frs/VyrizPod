@@ -1,70 +1,107 @@
+/* General styles */
 body {
-    background-color: #181818;
+    background-color: #121212;
     color: #fff;
-    font-family: sans-serif;
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
 }
 
+/* Music player container */
 .player-container {
+    width: 350px;
+    background-color: #181818;
+    border-radius: 10px;
+    padding: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Album art container */
+.album-art-container {
+    width: 250px;
+    height: 250px;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    border: 2px solid #282828;
 }
 
 .album-art {
-    width: 200px;
-    height: 200px;
-    border-radius: 5px;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.album-art:hover {
+    transform: scale(1.05);
+}
+
+/* Song info */
+.song-info {
+    text-align: center;
     margin-bottom: 20px;
 }
 
-.song-info {
-    text-align: center;
-}
-
 .song-title {
-    font-size: 1.2rem;
+    font-size: 1.5rem;
+    font-weight: 500;
     margin-bottom: 5px;
 }
 
 .artist-name {
-    font-size: 1rem;
+    font-size: 1.1rem;
     opacity: 0.8;
 }
 
+/* Controls */
 .controls {
     display: flex;
     justify-content: center;
-    margin-top: 20px;
+    align-items: center;
+    margin-bottom: 20px;
 }
 
 .control-button {
     width: 50px;
     height: 50px;
-    border-radius: 50%;
     background-color: #282828;
+    border: none;
+    border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
     margin: 0 10px;
     cursor: pointer;
+    transition: background-color 0.2s ease;
 }
 
 .control-button:hover {
-    background-color: #383838;
+    background-color: #404040;
 }
 
+.control-button i {
+    font-size: 20px;
+    color: #fff;
+}
+
+/* Progress bar */
 .progress-bar {
-    width: 250px;
+    width: 100%;
     height: 5px;
     background-color: #404040;
     border-radius: 2.5px;
-    margin-top: 20px;
 }
 
 .progress {
-    height: 5px;
-    background-color: #ff0000;
+    height: 100%;
+    background-color: #1DB954;
     border-radius: 2.5px;
+    width: 0%;
 }
-
