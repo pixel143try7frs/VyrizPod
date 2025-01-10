@@ -48,6 +48,12 @@ body {
     position: absolute;
     top: 10px;
     z-index: 20;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+}
+
+.search-bar.show {
+    opacity: 1;
 }
 
 .search-input {
