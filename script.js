@@ -1,17 +1,18 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const playlistItems = document.querySelectorAll('.song');
-    const audioPlayer = document.getElementById('audio-player');
-    const currentTrackDisplay = document.getElementById('current-track');
+document.querySelectorAll('.song').forEach(song => {
+    song.addEventListener('click', function() {
+        const audioPlayer = document.getElementById('audio-player');
+        const songSrc = song.getAttribute('data-src');
+        const songCover = song.getAttribute('data-cover');
+        
+        // Set the audio source
+        audioPlayer.src = songSrc;
+        audioPlayer.play();
 
-    // When a song is clicked, play it
-    playlistItems.forEach(item => {
-        item.addEventListener('click', () => {
-            const songUrl = item.getAttribute('data-src');
-            audioPlayer.src = songUrl;
-            audioPlayer.play();
+        // Update Now Playing text
+        document.getElementById('current-track').innerText = `Now Playing: ${song.querySelector('strong').innerText}`;
 
-            const songName = item.querySelector('strong').textContent;
-            currentTrackDisplay.textContent = `Now Playing: ${songName}`;
-        });
+        // Display the image of the current song
+        const songImage = document.getElementById('song-image');
+        songImage.innerHTML = `<img src="${songCover}" alt="Song Image" style="max-width: 300px; margin-top: 20px;">`;
     });
 });
