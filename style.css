@@ -1,8 +1,7 @@
 /* Global Styles */
 body {
     font-family: 'Poppins', sans-serif;
-    background: url('https://your-luxury-image-url.jpg') no-repeat center center fixed;
-    background-size: cover;
+    background: linear-gradient(to bottom, #1db954, #191414);
     color: #fff;
     margin: 0;
     padding: 0;
@@ -96,7 +95,7 @@ body {
 }
 
 .control-button {
-    background-color: #444;
+    background-color: #1db954;
     border: none;
     padding: 20px;
     border-radius: 50%;
@@ -108,7 +107,7 @@ body {
 }
 
 .control-button:hover {
-    background-color: #555;
+    background-color: #1ed760;
 }
 
 /* Progress Bar */
@@ -146,7 +145,7 @@ body {
 }
 
 #show-lyrics-btn {
-    background-color: #444;
+    background-color: #1db954;
     border: none;
     color: white;
     padding: 15px 30px;
@@ -157,7 +156,7 @@ body {
 }
 
 #show-lyrics-btn:hover {
-    background-color: #555;
+    background-color: #1ed760;
 }
 
 /* Fade-out effect */
