@@ -1,8 +1,14 @@
 const audioPlayer = document.getElementById('audioPlayer');
 const playBtn = document.getElementById('playBtn');
+const nextBtn = document.getElementById('nextBtn');
+const prevBtn = document.getElementById('prevBtn');
 const progress = document.querySelector('.progress');
 const progressBar = document.querySelector('.progress-bar');
-const lyricsContainer = document.getElementById('lyrics');
+const lyricsContainer = document.getElementById('lyrics-container');
+const lyricsBtn = document.getElementById('lyricsBtn');
+
+let isPlaying = false;
+let currentTime = 0;
 
 // Full Duvidha Lyrics with Timestamps
 const lyricsData = [
@@ -34,46 +40,65 @@ lyricsData.forEach((line) => {
     lyricsContainer.appendChild(div);
 });
 
-// Play/Pause Toggle
+// Toggle Play/Pause functionality
 playBtn.addEventListener('click', () => {
-    if (audioPlayer.paused) {
-        audioPlayer.play();
-        playBtn.innerHTML = '<i class="fas fa-pause"></i>';
-        playBtn.classList.add('playing'); // Change button style when playing
-    } else {
+    if (isPlaying) {
         audioPlayer.pause();
         playBtn.innerHTML = '<i class="fas fa-play"></i>';
-        playBtn.classList.remove('playing'); // Reset button style when paused
+    } else {
+        audioPlayer.play();
+        playBtn.innerHTML = '<i class="fas fa-pause"></i>';
+    }
+    isPlaying = !isPlaying;
+});
+
+// Update Progress Bar as the song plays
+audioPlayer.addEventListener('timeupdate', () => {
+    const currentTime = audioPlayer.currentTime;
+    const duration = audioPlayer.duration;
+    const progressWidth = (currentTime / duration) * 100;
+    progress.style.width = progressWidth + '%';
+
+    // Sync lyrics with the audio time
+    const currentLyric = lyricsData.find((line) => currentTime >= line.time);
+    if (currentLyric) {
+        const lyricsDivs = document.querySelectorAll('#lyrics-container div');
+        lyricsDivs.forEach((div) => {
+            if (parseFloat(div.getAttribute('data-time')) === currentLyric.time) {
+                div.classList.add('active');
+            } else {
+                div.classList.remove('active');
+            }
+        });
     }
 });
 
-// Update Progress Bar
-audioPlayer.addEventListener('timeupdate', () => {
-    const progressWidth = (audioPlayer.currentTime / audioPlayer.duration) * 100 + '%';
-    progress.style.width = progressWidth;
-
-    const currentTime = audioPlayer.currentTime;
-    lyricsData.forEach((line, index) => {
-        const lyricDiv = lyricsContainer.children[index];
-        if (line.time <= currentTime && (lyricsData[index + 1]?.time > currentTime || index === lyricsData.length - 1)) {
-            document.querySelector('.lyrics .active')?.classList.remove('active');
-            lyricDiv.classList.add('active');
-            lyricDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
-    });
-});
-
-// Seek in Progress Bar
+// Allow user to click on the progress bar to seek to a specific time
 progressBar.addEventListener('click', (e) => {
-    const barWidth = progressBar.clientWidth;
-    const clickX = e.offsetX;
+    const barWidth = progressBar.offsetWidth;
+    const clickPosition = e.offsetX;
     const duration = audioPlayer.duration;
-    audioPlayer.currentTime = (clickX / barWidth) * duration;
+    audioPlayer.currentTime = (clickPosition / barWidth) * duration;
 });
 
-// Remove Welcome Screen and Show Player
-setTimeout(() => {
-    document.getElementById('welcome-screen').style.display = 'none';
-    document.getElementById('player-container').style.opacity = 1;
-    document.getElementById('player-container').style.visibility = 'visible';
-}, 5000);
+// Lyrics Toggle
+lyricsBtn.addEventListener('click', () => {
+    lyricsContainer.classList.toggle('visible');
+    if (lyricsContainer.classList.contains('visible')) {
+        lyricsBtn.textContent = 'Hide Lyrics';
+    } else {
+        lyricsBtn.textContent = 'Show Lyrics';
+    }
+});
+
+// Next button functionality (if you have multiple songs, this can be used)
+nextBtn.addEventListener('click', () => {
+    // Placeholder: You can change the song by updating the audio src
+    alert('Next song functionality to be added.');
+});
+
+// Previous button functionality (if you have multiple songs, this can be used)
+prevBtn.addEventListener('click', () => {
+    // Placeholder: You can change the song by updating the audio src
+    alert('Previous song functionality to be added.');
+});
