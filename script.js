@@ -44,5 +44,20 @@ window.addEventListener('DOMContentLoaded', () => {
         audioPlayer.currentTime = (clickX / width) * duration;
     });
 
-    // TODO: Add next and previous song functionality
+    // Progress Bar Drag
+    progressBar.addEventListener('mousedown', () => {
+        progressBar.addEventListener('mousemove', seek);
+    });
+
+    window.addEventListener('mouseup', () => {
+        progressBar.removeEventListener('mousemove', seek);
+    });
+
+    function seek(e) {
+        const clickX = e.offsetX;
+        const width = progressBar.clientWidth;
+        const duration = audioPlayer.duration;
+
+        audioPlayer.currentTime = (clickX / width) * duration;
+    }
 });
