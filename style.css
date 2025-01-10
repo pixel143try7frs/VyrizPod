@@ -130,7 +130,6 @@ body {
     border-radius: 5px;
 }
 
-/* Media Queries for Mobile */
 @media (max-width: 768px) {
     .player-container {
         max-width: 90%;
@@ -143,11 +142,11 @@ body {
     }
 
     .controls {
-        justify-content: space-around; /* This ensures the buttons stay in one line */
+        flex-direction: column;
     }
 
     .control-button {
-        margin: 0 10px; /* Reduces the gap between buttons */
+        margin: 10px 0;
     }
 }
 
