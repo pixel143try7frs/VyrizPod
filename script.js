@@ -2,13 +2,13 @@
 const songs = [
     {
         title: "Duvidha",
-        artist: "By Unknown",
+        artist: "Unknown",
         audioSrc: "https://github.com/pixel143try7frs/VyrizPod/blob/main/Duvidha%20downloaded%20from%20SpotiSongDownloader.com_.mp3",
         albumArt: "https://github.com/pixel143try7frs/VyrizPod/blob/main/Duvidha%20downloaded%20from%20SpotiSongDownloader.com_.jpg"
     },
     {
         title: "Bumpy Ride",
-        artist: "By Mohombi",
+        artist: "Mohombi",
         audioSrc: "https://github.com/pixel143try7frs/VyrizPod/blob/main/Mohombi%20-%20Bumpy%20Ride.mp3",
         albumArt: "https://github.com/pixel143try7frs/VyrizPod/blob/main/Bumpy%20Ride%20downloaded%20from%20SpotiSongDownloader.com_.jpg"
     }
