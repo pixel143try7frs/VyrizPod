@@ -8,40 +8,47 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
+    <!-- Welcome Screen -->
+    <div id="welcome-screen" class="welcome-screen">
+        <h1>Welcome to VyrizPod</h1>
+        <p>Your ultimate music experience</p>
+    </div>
+
     <!-- Music Player -->
-    <div class="player-container">
+    <div id="player-container" class="player-container">
+        <!-- Album Art -->
         <div class="album-art-container">
-            <img src="https://github.com/pixel143try7frs/VyrizPod/blob/main/Duvidha%20downloaded%20from%20SpotiSongDownloader.com_.jpg" alt="Album Art" class="album-art">
+            <img id="album-art" src="https://via.placeholder.com/300" alt="Album Art" class="album-art">
         </div>
 
+        <!-- Song Info -->
         <div class="song-info">
-            <h2 class="song-title">Duvidha</h2>
-            <p class="artist-name">Luckee</p>
+            <h2 class="song-title" id="song-title">Duvidha</h2>
+            <p class="artist-name" id="artist-name">Lucke</p>
         </div>
 
+        <!-- Controls -->
         <div class="controls">
             <button class="control-button" id="prevBtn"><i class="fas fa-step-backward"></i></button>
             <button class="control-button" id="playBtn"><i class="fas fa-play"></i></button>
             <button class="control-button" id="nextBtn"><i class="fas fa-step-forward"></i></button>
         </div>
 
+        <!-- Progress Bar -->
         <div class="progress-bar">
-            <div class="progress"></div>
+            <div class="progress" id="progress"></div>
         </div>
-    </div>
-
-    <!-- Lyrics Section -->
-    <div class="lyrics-container">
-        <div id="lyrics" class="lyrics"></div>
     </div>
 
     <!-- Audio Player -->
     <audio id="audioPlayer" src="https://raw.githubusercontent.com/pixel143try7frs/VyrizPod/322e4bcd80fdff2cc7fd13347f66630e07cee582/DUVIDHA%20%20Hindi%20Rap%20Song%20%20By%20LUCKE.mp3"></audio>
 
     <!-- Font Awesome Icons -->
-    <script src="https://kit.fontawesome.com/your-fontawesome-kit.js" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 
     <!-- Custom JS -->
     <script src="script.js"></script>
+
 </body>
 </html>
