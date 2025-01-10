@@ -9,6 +9,7 @@ const albumArt = document.getElementById('album-art');
 const songTitle = document.getElementById('song-title');
 const artistName = document.getElementById('artist-name');
 const songItems = document.getElementById('song-items');
+const playerContainer = document.getElementById('player-container');
 
 // Songs Array
 const songs = [
@@ -35,6 +36,12 @@ function loadSong(index) {
     albumArt.src = song.albumArt;
     songTitle.textContent = song.title;
     artistName.textContent = song.artist;
+}
+
+// Show Player and Play Song
+function showPlayer() {
+    playerContainer.style.display = 'block';
+    playerContainer.style.transform = 'translateY(0)';
 }
 
 // Play/Pause functionality
@@ -95,6 +102,7 @@ function displaySongs() {
             currentSongIndex = index;
             loadSong(currentSongIndex);
             playAudio();
+            showPlayer();
         });
         songItems.appendChild(songElement);
     });
@@ -118,7 +126,6 @@ progressBar.addEventListener('click', setProgress);
 
 // Load the first song and display all songs when the page loads
 window.onload = function () {
-    loadSong(currentSongIndex);
     displaySongs();
 
     // Welcome screen transition
