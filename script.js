@@ -8,6 +8,7 @@ const progressBar = document.querySelector('.progress-bar');
 const albumArt = document.getElementById('album-art');
 const songTitle = document.getElementById('song-title');
 const artistName = document.getElementById('artist-name');
+const songItems = document.getElementById('song-items');
 
 // Songs Array
 const songs = [
@@ -78,6 +79,27 @@ function nextSong() {
     playAudio();
 }
 
+// Display all songs on homepage
+function displaySongs() {
+    songs.forEach((song, index) => {
+        const songElement = document.createElement('div');
+        songElement.classList.add('song-item');
+        songElement.innerHTML = `
+            <img src="${song.albumArt}" alt="${song.title}" class="song-album-art">
+            <div class="song-info">
+                <h3 class="song-title">${song.title}</h3>
+                <p class="artist-name">${song.artist}</p>
+            </div>
+        `;
+        songElement.addEventListener('click', () => {
+            currentSongIndex = index;
+            loadSong(currentSongIndex);
+            playAudio();
+        });
+        songItems.appendChild(songElement);
+    });
+}
+
 // Event listeners
 playBtn.addEventListener('click', () => {
     if (audioPlayer.paused) {
@@ -94,15 +116,17 @@ audioPlayer.addEventListener('timeupdate', updateProgress);
 // Add event listener for progress bar interaction
 progressBar.addEventListener('click', setProgress);
 
-// Load the first song when the page loads
+// Load the first song and display all songs when the page loads
 window.onload = function () {
     loadSong(currentSongIndex);
+    displaySongs();
 
     // Welcome screen transition
     setTimeout(() => {
         document.getElementById('welcome-screen').style.opacity = '0';
         setTimeout(() => {
             document.getElementById('welcome-screen').style.display = 'none';
+            document.getElementById('songs-list').style.display = 'block';  // Show the songs list
         }, 1000);
     }, 3000);
 };
