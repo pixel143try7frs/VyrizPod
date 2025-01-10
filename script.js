@@ -22,4 +22,58 @@ const lyricsData = [
     { time: 71.88, text: "संघर्ष में जिस्मा ने पाला पोसा मुझे उससे" },
     { time: 74.36, text: "भी हो गया दूर में विधि का क्या विधान था" },
     { time: 77.2, text: "क्या लेख लिखा था कर्मों का तुम ठीक से रो" },
-    { time: 80.36, text: "तो
+    { time: 80.36, text: "तो लेते हो मैं रो भी ना पाया चैन से कहने" },
+    // Add the remaining lyrics in the same format
+];
+
+// Populate lyrics on the page
+lyricsData.forEach((line) => {
+    const div = document.createElement('div');
+    div.textContent = line.text;
+    div.setAttribute('data-time', line.time);
+    lyricsContainer.appendChild(div);
+});
+
+// Play/Pause Toggle
+playBtn.addEventListener('click', () => {
+    if (audioPlayer.paused) {
+        audioPlayer.play();
+        playBtn.innerHTML = '<i class="fas fa-pause"></i>';
+        playBtn.classList.add('playing'); // Change button style when playing
+    } else {
+        audioPlayer.pause();
+        playBtn.innerHTML = '<i class="fas fa-play"></i>';
+        playBtn.classList.remove('playing'); // Reset button style when paused
+    }
+});
+
+// Update Progress Bar
+audioPlayer.addEventListener('timeupdate', () => {
+    const progressWidth = (audioPlayer.currentTime / audioPlayer.duration) * 100 + '%';
+    progress.style.width = progressWidth;
+
+    const currentTime = audioPlayer.currentTime;
+    lyricsData.forEach((line, index) => {
+        const lyricDiv = lyricsContainer.children[index];
+        if (line.time <= currentTime && (lyricsData[index + 1]?.time > currentTime || index === lyricsData.length - 1)) {
+            document.querySelector('.lyrics .active')?.classList.remove('active');
+            lyricDiv.classList.add('active');
+            lyricDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    });
+});
+
+// Seek in Progress Bar
+progressBar.addEventListener('click', (e) => {
+    const barWidth = progressBar.clientWidth;
+    const clickX = e.offsetX;
+    const duration = audioPlayer.duration;
+    audioPlayer.currentTime = (clickX / barWidth) * duration;
+});
+
+// Remove Welcome Screen and Show Player
+setTimeout(() => {
+    document.getElementById('welcome-screen').style.display = 'none';
+    document.getElementById('player-container').style.opacity = 1;
+}, 5000);
+
