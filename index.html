@@ -3,56 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>VyrizPod - Your Ultimate Music Platform</title>
+    <title>VyrizPod - Music Player</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <header>
-        <h1>Welcome to VyrizPod</h1>
-        <p>Your ultimate music platform. Enjoy the beats!</p>
-    </header>
+    <div class="player-container">
+        <!-- Album Art (Replace with your image) -->
+        <img src="https://raw.githubusercontent.com/pixel143try7frs/VyrizPod/main/SHRI%20KRISHNA%20%26%20ARJUNA.jpg" alt="Album Art" class="album-art">
 
-    <main>
-        <section id="now-playing-section">
-            <div id="song-image">
-                <!-- Song cover will be displayed here -->
-            </div>
-            <div id="now-playing-details">
-                <h2 id="current-track">Select a song to play.</h2>
-                <p id="current-artist"></p>
-                <div id="player-controls">
-                    <button id="prev-btn">⏮️</button>
-                    <button id="play-btn">▶️</button>
-                    <button id="next-btn">⏭️</button>
-                </div>
-                <input type="range" id="progress-bar" value="0" max="100">
-            </div>
-            <!-- Audio Player -->
-            <audio id="audio-player" controls>
-                Your browser does not support the audio element.
-            </audio>
-        </section>
+        <div class="song-info">
+            <h2 class="song-title">Duvidha</h2>
+            <p class="artist-name">Lucke</p>
+        </div>
 
-        <section>
-            <h2>Playlist:</h2>
-            <div id="playlist">
-                <div class="song" data-src="https://raw.githubusercontent.com/pixel143try7frs/VyrizPod/322e4bcd80fdff2cc7fd13347f66630e07cee582/DUVIDHA%20%20Hindi%20Rap%20Song%20%20By%20LUCKE.mp3" data-cover="https://raw.githubusercontent.com/pixel143try7frs/VyrizPod/main/SHRI%20KRISHNA%20%26%20ARJUNA.jpg">
-                    <strong>Duvidha</strong>
-                    <p>Lucke</p>
-                </div>
-                <!-- Add more songs here -->
-            </div>
-        </section>
-    </main>
+        <div class="controls">
+            <button class="control-button" id="prevBtn"><i class="fas fa-step-backward"></i></button>
+            <button class="control-button" id="playBtn"><i class="fas fa-play"></i></button>
+            <button class="control-button" id="nextBtn"><i class="fas fa-step-forward"></i></button>
+        </div>
 
-    <footer>
-        <p>Powered by VyrizPod</p>
-    </footer>
+        <div class="progress-bar">
+            <div class="progress"></div>
+        </div>
+    </div>
 
-    <!-- Link to the script.js -->
+    <!-- Replace with your song link -->
+    <audio id="audioPlayer" src="https://raw.githubusercontent.com/pixel143try7frs/VyrizPod/322e4bcd80fdff2cc7fd13347f66630e07cee582/DUVIDHA%20%20Hindi%20Rap%20Song%20%20By%20LUCKE.mp3"></audio>
+
     <script src="script.js"></script>
+    <script src="https://kit.fontawesome.com/your-fontawesome-kit.js"></script>
 
 </body>
 </html>
