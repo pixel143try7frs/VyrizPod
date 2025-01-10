@@ -6,29 +6,17 @@
     <title>VyrizPod - Music Player</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-    <!-- Font Awesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 </head>
 <body>
-    <!-- Welcome Screen -->
-    <div id="welcome-screen" class="welcome-screen">
-        <h1>Welcome to VyrizPod</h1>
-        <p>Your ultimate music experience</p>
-    </div>
-
     <!-- Music Player -->
-    <div class="player-container" id="player-container">
+    <div class="player-container">
         <div class="album-art-container">
-            <img 
-                id="album-art" 
-                src="https://github.com/pixel143try7frs/VyrizPod/blob/main/Duvidha%20downloaded%20from%20SpotiSongDownloader.com_.jpg?raw=true" 
-                alt="Album Art" 
-                class="album-art">
+            <img src="https://github.com/pixel143try7frs/VyrizPod/blob/main/Duvidha%20downloaded%20from%20SpotiSongDownloader.com_.jpg" alt="Album Art" class="album-art">
         </div>
 
         <div class="song-info">
-            <h2 class="song-title" id="song-title">Duvidha</h2>
-            <p class="artist-name" id="artist-name">Lucke</p>
+            <h2 class="song-title">Duvidha</h2>
+            <p class="artist-name">Luckee</p>
         </div>
 
         <div class="controls">
@@ -37,13 +25,21 @@
             <button class="control-button" id="nextBtn"><i class="fas fa-step-forward"></i></button>
         </div>
 
-        <div class="progress-bar" id="progress-bar">
-            <div class="progress" id="progress"></div>
+        <div class="progress-bar">
+            <div class="progress"></div>
         </div>
+    </div>
+
+    <!-- Lyrics Section -->
+    <div class="lyrics-container">
+        <div id="lyrics" class="lyrics"></div>
     </div>
 
     <!-- Audio Player -->
     <audio id="audioPlayer" src="https://raw.githubusercontent.com/pixel143try7frs/VyrizPod/322e4bcd80fdff2cc7fd13347f66630e07cee582/DUVIDHA%20%20Hindi%20Rap%20Song%20%20By%20LUCKE.mp3"></audio>
+
+    <!-- Font Awesome Icons -->
+    <script src="https://kit.fontawesome.com/your-fontawesome-kit.js" crossorigin="anonymous"></script>
 
     <!-- Custom JS -->
     <script src="script.js"></script>
