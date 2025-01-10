@@ -9,57 +9,43 @@
 </head>
 <body>
     <div class="container">
-        <aside>
-            <nav>
-                <ul>
-                    <li><a href="#"><i class="fas fa-home"></i> Home</a></li>
-                    <li><a href="#"><i class="fas fa-search"></i> Search</a></li>
-                    <li><a href="#"><i class="fas fa-compact-disc"></i> Library</a></li>
-                    <li><a href="#"><i class="fas fa-list"></i> Playlists</a></li>
-                </ul>
-            </nav>
-        </aside>
+        <header>
+            <input type="text" id="searchInput" placeholder="Search for songs...">
+        </header>
 
         <main>
-            <section id="search">
-                <input type="text" id="searchInput" placeholder="Search for songs...">
-            </section>
-
-            <section id="songList">
-                <h2>Your Library</h2>
-                <ul id="song-list">
-                    </ul>
-            </section>
+            <div class="now-playing">
+                <img id="albumArt" src="https://i.scdn.co/image/ab67616d0000b273767936a59650055722099309" alt="Album Art">
+                <div class="song-details">
+                    <h1 id="songTitle">Bumpy Ride</h1>
+                    <h2 id="artist">Mohombi</h2>
+                    <div class="time">
+                        <span id="currentTime">0:00</span>
+                        <div class="progress-bar" id="progressBar">
+                            <div class="progress" id="progress"></div>
+                        </div>
+                        <span id="duration">3:38</span>
+                    </div>
+                </div>
+            </div>
         </main>
 
         <footer>
-            <div id="player">
-                <div class="album-art">
-                    <img id="album-art" src="" alt="Album Art">
-                </div>
-    
-                <div class="song-info">
-                    <h2 id="songTitle"></h2>
-                    <p id="artist"></p>
-                </div>
-    
-                <div class="controls">
-                    <button id="prevBtn"><i class="fas fa-backward"></i></button>
-                    <button id="playBtn"><i class="fas fa-play"></i></button>
-                    <button id="nextBtn"><i class="fas fa-forward"></i></button>
-                </div>
-    
-                <div class="progress-bar">
-                    <div class="progress"></div>
-                </div>
-    
-                <div class="time-controls">
-                    <span id="currentTime">0:00</span> / <span id="duration">0:00</span>
-                </div>
-                <audio id="audioPlayer"></audio>
+            <div class="controls">
+                <button id="shuffleBtn"><i class="fa-solid fa-shuffle"></i></button>
+                <button id="prevBtn"><i class="fa-solid fa-backward-step"></i></button>
+                <button id="playBtn"><i class="fa-solid fa-circle-play"></i></button>
+                <button id="nextBtn"><i class="fa-solid fa-forward-step"></i></button>
+                <button id="repeatBtn"><i class="fa-solid fa-repeat"></i></button>
+            </div>
+            <div class="other-controls">
+                <button><i class="fa-solid fa-list"></i></button>
+                <button><i class="fa-solid fa-volume-high"></i></button>
+                <button><i class="fa-solid fa-bars"></i></button>
             </div>
         </footer>
     </div>
+    <audio id="audio" src="https://github.com/pixel143try7frs/VyrizPod/blob/main/Mohombi%20-%20Bumpy%20Ride.mp3?raw=true"></audio>
     <script src="script.js"></script>
 </body>
 </html>
