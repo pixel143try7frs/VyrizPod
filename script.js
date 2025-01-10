@@ -1,55 +1,38 @@
-// Elements
+const welcomeScreen = document.getElementById('welcomeScreen');
+const musicPlayer = document.getElementById('musicPlayer');
 const audioPlayer = document.getElementById('audioPlayer');
 const playBtn = document.getElementById('playBtn');
 const prevBtn = document.getElementById('prevBtn');
 const nextBtn = document.getElementById('nextBtn');
-const progress = document.querySelector('.progress');
+const songTitle = document.getElementById('songTitle');
+const artistName = document.getElementById('artistName');
+const albumArt = document.getElementById('albumArt');
 
-// Welcome screen transition
-window.onload = function() {
-    setTimeout(() => {
-        document.getElementById('welcome-screen').style.opacity = '0';
-        setTimeout(() => {
-            document.getElementById('welcome-screen').style.display = 'none';
-        }, 2000);
-    }, 3000);
-}
+let isPlaying = false;
 
-// Play/Pause functionality
-function playAudio() {
-    audioPlayer.play();
-    playBtn.innerHTML = '<i class="fas fa-pause"></i>';
-}
+// Fade in music player after welcome screen disappears
+setTimeout(() => {
+    welcomeScreen.style.display = 'none';
+    musicPlayer.style.display = 'block';
+}, 3000);
 
-function pauseAudio() {
-    audioPlayer.pause();
-    playBtn.innerHTML = '<i class="fas fa-play"></i>';
-}
-
-// Update progress bar
-function updateProgress() {
-    const currentTime = audioPlayer.currentTime;
-    const duration = audioPlayer.duration;
-    const progressWidth = (currentTime / duration) * 100 + '%';
-    progress.style.width = progressWidth;
-}
-
-// Event listeners
+// Play and Pause functionality
 playBtn.addEventListener('click', () => {
-    if (audioPlayer.paused) {
-        playAudio();
+    if (isPlaying) {
+        audioPlayer.pause();
+        playBtn.innerHTML = '<i class="fas fa-play"></i>';
     } else {
-        pauseAudio();
+        audioPlayer.play();
+        playBtn.innerHTML = '<i class="fas fa-pause"></i>';
     }
+    isPlaying = !isPlaying;
 });
 
-audioPlayer.addEventListener('timeupdate', updateProgress);
-
-// Dummy previous and next buttons functionality
+// Next and Previous button functionality
 prevBtn.addEventListener('click', () => {
-    alert('Previous song');
+    alert('Previous song functionality not implemented yet.');
 });
 
 nextBtn.addEventListener('click', () => {
-    alert('Next song');
+    alert('Next song functionality not implemented yet.');
 });
