@@ -4,6 +4,7 @@ const playBtn = document.getElementById('playBtn');
 const prevBtn = document.getElementById('prevBtn');
 const nextBtn = document.getElementById('nextBtn');
 const progress = document.querySelector('.progress');
+const progressBar = document.querySelector('.progress-bar');
 const albumArt = document.getElementById('album-art');
 const songTitle = document.getElementById('song-title');
 const artistName = document.getElementById('artist-name');
@@ -54,6 +55,15 @@ function updateProgress() {
     progress.style.width = progressWidth;
 }
 
+// Set progress when user clicks on the progress bar
+function setProgress(e) {
+    const width = progressBar.clientWidth;
+    const clickX = e.offsetX;
+    const duration = audioPlayer.duration;
+
+    audioPlayer.currentTime = (clickX / width) * duration;
+}
+
 // Previous Song
 function prevSong() {
     currentSongIndex = (currentSongIndex - 1 + songs.length) % songs.length;
@@ -80,6 +90,9 @@ playBtn.addEventListener('click', () => {
 prevBtn.addEventListener('click', prevSong);
 nextBtn.addEventListener('click', nextSong);
 audioPlayer.addEventListener('timeupdate', updateProgress);
+
+// Add event listener for progress bar interaction
+progressBar.addEventListener('click', setProgress);
 
 // Load the first song when the page loads
 window.onload = function () {
