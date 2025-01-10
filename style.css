@@ -154,6 +154,7 @@ h1, h2, p {
     border-radius: 10px;
     overflow-y: auto;
     height: 200px;
+    display: none; /* Initially hidden */
 }
 
 .lyrics div {
@@ -166,6 +167,23 @@ h1, h2, p {
     color: #1db954;
     opacity: 1;
     font-weight: bold;
+}
+
+/* Lyrics Button */
+.lyrics-btn {
+    background-color: #1db954;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    margin-top: 20px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.lyrics-btn:hover {
+    background-color: #16b33e;
 }
 
 /* Animation for fade-in effect */
