@@ -1,13 +1,30 @@
+// Get elements
 const audioPlayer = document.getElementById('audioPlayer');
 const playBtn = document.getElementById('playBtn');
 const prevBtn = document.getElementById('prevBtn');
 const nextBtn = document.getElementById('nextBtn');
+const progressBar = document.querySelector('.progress-bar');
 const progress = document.querySelector('.progress');
-const lyricsContainer = document.getElementById('lyrics-container');
-const welcomeScreen = document.getElementById('welcome-screen');
-const playerContainer = document.getElementById('player-container');
+const lyricsBtn = document.getElementById('lyricsBtn');
+const lyricsSection = document.getElementById('lyrics');
+const lyricsContent = document.getElementById('lyrics-content');
 
-// Audio playback functions
+// Song lyrics
+const lyrics = [
+    { time: 2.580, text: '[संगीत]' },
+    { time: 32.570, text: '[प्रशंसा]' },
+    { time: 34.380, text: '[संगीत]' },
+    { time: 41.760, text: 'दुख शुरू थे मेरे जन्म से पहले जन्म से' },
+    { time: 44.079, text: 'पहले मेरी मौत इंतजार में कैसे कहूं' },
+    { time: 46.079, text: 'कहानियां अब सुनो पूरी लंबी कतार में जन्म' },
+    // Add all the remaining lyrics with their corresponding time
+    // Example:
+    { time: 59.440, text: 'मिली मुझे भेंट में मामा से मिला उपहार ये' },
+    { time: 102.440, text: 'मेरे मात पिता लाचार थे छह भाइयों को मारा' },
+    // Continue the lyrics...
+];
+
+// Play/Pause functionality
 function playAudio() {
     audioPlayer.play();
     playBtn.innerHTML = '<i class="fas fa-pause"></i>';
@@ -18,23 +35,6 @@ function pauseAudio() {
     playBtn.innerHTML = '<i class="fas fa-play"></i>';
 }
 
-function updateProgress() {
-    const currentTime = audioPlayer.currentTime;
-    const duration = audioPlayer.duration;
-    const progressWidth = (currentTime / duration) * 100 + '%';
-    progress.style.width = progressWidth;
-}
-
-// Show or hide lyrics
-function toggleLyrics() {
-    if (lyricsContainer.style.display === 'block') {
-        lyricsContainer.style.display = 'none';
-    } else {
-        lyricsContainer.style.display = 'block';
-    }
-}
-
-// Event listeners
 playBtn.addEventListener('click', () => {
     if (audioPlayer.paused) {
         playAudio();
@@ -43,15 +43,41 @@ playBtn.addEventListener('click', () => {
     }
 });
 
-audioPlayer.addEventListener('timeupdate', updateProgress);
+// Lyrics Display functionality
+lyricsBtn.addEventListener('click', () => {
+    if (lyricsSection.style.display === 'block') {
+        lyricsSection.style.display = 'none';
+        lyricsBtn.textContent = 'Show Lyrics';
+    } else {
+        lyricsSection.style.display = 'block';
+        lyricsBtn.textContent = 'Hide Lyrics';
+        displayLyrics();
+    }
+});
 
-// Welcome screen fadeout
-window.onload = () => {
-    setTimeout(() => {
-        welcomeScreen.classList.add('fade-out');
-        setTimeout(() => {
-            welcomeScreen.style.display = 'none';
-            playerContainer.style.display = 'block';
-        }, 1000);
-    }, 5000); // Fade out after 5 seconds
-};
+// Display Lyrics based on audio time
+function displayLyrics() {
+    const currentTime = audioPlayer.currentTime;
+    const lyric = lyrics.find((lyric) => currentTime >= lyric.time);
+    if (lyric) {
+        lyricsContent.innerHTML = lyric.text;
+    }
+}
+
+// Update progress bar
+function updateProgress() {
+    const currentTime = audioPlayer.currentTime;
+    const duration = audioPlayer.duration;
+    const progressWidth = (currentTime / duration) * 100 + '%';
+    progress.style.width = progressWidth;
+}
+
+// Event listeners for audio
+audioPlayer.addEventListener('timeupdate', updateProgress);
+audioPlayer.addEventListener('play', displayLyrics);
+
+// Initialize player
+function init() {
+    lyricsSection.style.display = 'none';
+}
+init();
