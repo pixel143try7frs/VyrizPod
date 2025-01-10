@@ -65,3 +65,4 @@ nextBtn.addEventListener('click', () => {
 prevBtn.addEventListener('click', () => {
     audioPlayer.currentTime -= 10;
 });
+
