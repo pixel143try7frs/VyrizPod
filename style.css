@@ -95,6 +95,7 @@ body {
     background-color: #404040;
     border-radius: 5px;
     position: relative;
+    cursor: pointer;
 }
 
 .progress {
