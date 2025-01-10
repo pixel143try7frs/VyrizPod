@@ -40,7 +40,7 @@ body {
 
 /* Search Bar */
 .search-bar {
-    display: none; /* Hidden initially */
+    display: flex;
     justify-content: center;
     align-items: center;
     width: 100%;
@@ -48,10 +48,6 @@ body {
     position: absolute;
     top: 10px;
     z-index: 20;
-}
-
-.search-bar.show {
-    display: flex; /* Will show the search bar */
 }
 
 .search-input {
@@ -136,12 +132,24 @@ body {
 }
 
 .song-info {
+    display: flex;
+    align-items: center;
     margin-bottom: 10px;
+    justify-content: center;
+}
+
+.song-info img {
+    width: 30px;
+    height: 30px;
+    border-radius: 5px;
+    object-fit: cover;
+    margin-right: 10px;
 }
 
 .song-title {
     font-size: 1.2rem;
     font-weight: 600;
+    margin-left: 10px;
 }
 
 .artist-name {
