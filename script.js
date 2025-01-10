@@ -7,18 +7,27 @@ const progress = document.querySelector('.progress');
 const progressBar = document.querySelector('.progress-bar');
 const songTitle = document.getElementById('song-title');
 const artistName = document.getElementById('artist-name');
+const searchInput = document.getElementById('search');
+const searchButton = document.getElementById('search-btn');
+const searchContainer = document.getElementById('search-container');
+const songsContainer = document.getElementById('songs-container');
+const welcomeScreen = document.getElementById('welcome-screen');
+const mainContent = document.getElementById('main-content');
+const musicPlayer = document.getElementById('music-player');
 
 // Songs Array
 const songs = [
     {
         title: 'Duvidha',
         artist: 'Lucke',
-        src: 'https://raw.githubusercontent.com/pixel143try7frs/VyrizPod/322e4bcd80fdff2cc7fd13347f66630e07cee582/DUVIDHA%20%20Hindi%20Rap%20Song%20%20By%20LUCKE.mp3'
+        src: 'https://raw.githubusercontent.com/pixel143try7frs/VyrizPod/322e4bcd80fdff2cc7fd13347f66630e07cee582/DUVIDHA%20%20Hindi%20Rap%20Song%20%20By%20LUCKE.mp3',
+        albumArt: 'https://github.com/pixel143try7frs/VyrizPod/blob/main/Duvidha%20downloaded%20from%20SpotiSongDownloader.com_.jpg?raw=true'
     },
     {
         title: 'Bumpy Ride',
         artist: 'Mohombi',
-        src: 'https://github.com/pixel143try7frs/VyrizPod/blob/main/Mohombi%20-%20Bumpy%20Ride.mp3?raw=true'
+        src: 'https://github.com/pixel143try7frs/VyrizPod/blob/main/Mohombi%20-%20Bumpy%20Ride.mp3?raw=true',
+        albumArt: 'https://github.com/pixel143try7frs/VyrizPod/blob/main/Bumpy%20Ride%20downloaded%20from%20SpotiSongDownloader.com_.jpg?raw=true'
     }
 ];
 
@@ -74,6 +83,11 @@ function nextSong() {
     playAudio();
 }
 
+// Show the music player
+function showMusicPlayer() {
+    musicPlayer.classList.add('show');
+}
+
 // Event listeners
 playBtn.addEventListener('click', () => {
     if (audioPlayer.paused) {
@@ -90,16 +104,14 @@ audioPlayer.addEventListener('timeupdate', updateProgress);
 // Add event listener for progress bar interaction
 progressBar.addEventListener('click', setProgress);
 
-// Load the first song when the page loads
+// Show the main content after welcome screen disappears
 window.onload = function () {
-    loadSong(currentSongIndex);
-
-    // Welcome screen transition
     setTimeout(() => {
-        document.getElementById('welcome-screen').style.opacity = '0';
+        welcomeScreen.style.opacity = '0';
         setTimeout(() => {
-            document.getElementById('welcome-screen').style.display = 'none';
-            document.getElementById('search-container').style.display = 'block';
+            welcomeScreen.style.display = 'none';
+            searchContainer.style.display = 'block';
+            searchContainer.classList.add('fadeIn');
         }, 1000);
-    }, 2000);
+    }, 3000);
 };
