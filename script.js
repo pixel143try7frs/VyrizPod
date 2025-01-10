@@ -75,5 +75,5 @@ progressBar.addEventListener('click', (e) => {
 setTimeout(() => {
     document.getElementById('welcome-screen').style.display = 'none';
     document.getElementById('player-container').style.opacity = 1;
+    document.getElementById('player-container').style.visibility = 'visible';
 }, 5000);
-
