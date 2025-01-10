@@ -64,7 +64,7 @@ body {
     gap: 20px;
 }
 
-.control-btn {
+.controls button {
     background: #1db954;
     border: none;
     color: white;
@@ -79,10 +79,10 @@ body {
     transition: transform 0.2s;
 }
 
-.control-btn:hover {
+.controls button:hover {
     transform: scale(1.1);
 }
 
-.control-btn:active {
+.controls button:active {
     transform: scale(0.95);
 }
