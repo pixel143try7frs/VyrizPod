@@ -101,11 +101,17 @@ body {
     cursor: pointer;
     border: none;
     font-size: 1.5rem;
-    transition: background-color 0.3s;
+    color: white;
+    transition: background-color 0.3s, transform 0.2s;
 }
 
 .control-button:hover {
     background-color: #1db954;
+    transform: scale(1.1);
+}
+
+.control-button i {
+    font-size: 1.5rem;
 }
 
 /* Progress Bar */
