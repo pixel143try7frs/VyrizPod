@@ -1,4 +1,44 @@
-/* Song List */
+/* Global Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(45deg, #1db954, #191414);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    height: 100vh;
+    overflow-x: hidden;
+}
+
+/* Welcome Screen */
+.welcome-screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #000;
+    z-index: 10;
+    opacity: 1;
+    transition: opacity 1s ease-in-out;
+}
+
+.welcome-screen h1 {
+    font-size: 3rem;
+    color: #1db954;
+}
+
+/* Songs List */
 .songs-list {
     display: none;
     text-align: center;
@@ -43,4 +83,111 @@
 .artist-name {
     font-size: 1rem;
     opacity: 0.8;
+}
+
+/* Music Player (Initially Hidden) */
+.player-container {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
+    z-index: 20;
+    transition: transform 0.3s ease-in-out;
+}
+
+.album-art-container {
+    margin-bottom: 20px;
+}
+
+.album-art {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.song-info {
+    margin-top: 20px;
+}
+
+.song-title {
+    font-size: 1.5rem;
+}
+
+.artist-name {
+    font-size: 1rem;
+}
+
+.controls {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.control-button {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: #282828;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 15px;
+    cursor: pointer;
+    border: none;
+    font-size: 1.5rem;
+    color: white;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.control-button:hover {
+    background-color: #1db954;
+    transform: scale(1.1);
+}
+
+.progress-bar {
+    width: 100%;
+    height: 5px;
+    background-color: #404040;
+    border-radius: 5px;
+    margin-top: 20px;
+}
+
+.progress {
+    width: 0;
+    height: 100%;
+    background-color: #1db954;
+    border-radius: 5px;
+}
+
+/* Media Queries for Mobile */
+@media (max-width: 768px) {
+    .song-items {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .player-container {
+        bottom: 0;
+        padding: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .song-title {
+        font-size: 1rem;
+    }
+
+    .controls {
+        justify-content: space-around;
+    }
+
+    .control-button {
+        width: 50px;
+        height: 50px;
+    }
 }
