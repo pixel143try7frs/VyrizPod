@@ -7,13 +7,10 @@ const progress = document.querySelector('.progress');
 const progressBar = document.querySelector('.progress-bar');
 const songTitle = document.getElementById('song-title');
 const artistName = document.getElementById('artist-name');
-const searchInput = document.getElementById('search');
-const searchButton = document.getElementById('search-btn');
-const searchContainer = document.getElementById('search-container');
-const songsContainer = document.getElementById('songs-container');
-const welcomeScreen = document.getElementById('welcome-screen');
-const mainContent = document.getElementById('main-content');
-const musicPlayer = document.getElementById('music-player');
+const songItems = document.getElementById('song-items');
+const playerContainer = document.getElementById('player-container');
+const searchInput = document.getElementById('search-input');
+const searchBtn = document.getElementById('search-btn');
 
 // Songs Array
 const songs = [
@@ -39,6 +36,12 @@ function loadSong(index) {
     audioPlayer.src = song.src;
     songTitle.textContent = song.title;
     artistName.textContent = song.artist;
+}
+
+// Show Player and Play Song
+function showPlayer() {
+    playerContainer.style.display = 'block';
+    playerContainer.style.transform = 'translateY(0)';
 }
 
 // Play/Pause functionality
@@ -83,9 +86,35 @@ function nextSong() {
     playAudio();
 }
 
-// Show the music player
-function showMusicPlayer() {
-    musicPlayer.classList.add('show');
+// Display all songs on homepage
+function displaySongs(filteredSongs) {
+    songItems.innerHTML = '';  // Clear current list
+    filteredSongs.forEach((song, index) => {
+        const songElement = document.createElement('div');
+        songElement.classList.add('song-item');
+        songElement.innerHTML = `
+            <div class="song-info">
+                <h3 class="song-title">${song.title}</h3>
+                <p class="artist-name">${song.artist}</p>
+            </div>
+        `;
+        songElement.addEventListener('click', () => {
+            currentSongIndex = index;
+            loadSong(currentSongIndex);
+            playAudio();
+            showPlayer();
+        });
+        songItems.appendChild(songElement);
+    });
+}
+
+// Filter songs based on search input
+function filterSongs(query) {
+    const filteredSongs = songs.filter(song => 
+        song.title.toLowerCase().includes(query.toLowerCase()) || 
+        song.artist.toLowerCase().includes(query.toLowerCase())
+    );
+    displaySongs(filteredSongs);
 }
 
 // Event listeners
@@ -104,14 +133,22 @@ audioPlayer.addEventListener('timeupdate', updateProgress);
 // Add event listener for progress bar interaction
 progressBar.addEventListener('click', setProgress);
 
-// Show the main content after welcome screen disappears
+// Add event listener for search functionality
+searchBtn.addEventListener('click', () => {
+    const query = searchInput.value.trim();
+    filterSongs(query);
+});
+
+// Load the first song and display all songs when the page loads
 window.onload = function () {
+    displaySongs(songs);
+
+    // Welcome screen transition
     setTimeout(() => {
-        welcomeScreen.style.opacity = '0';
+        document.getElementById('welcome-screen').style.opacity = '0';
         setTimeout(() => {
-            welcomeScreen.style.display = 'none';
-            searchContainer.style.display = 'block';
-            searchContainer.classList.add('fadeIn');
+            document.getElementById('welcome-screen').style.display = 'none';
+            document.getElementById('songs-list').style.display = 'block';  // Show the songs list
         }, 1000);
     }, 3000);
 };
