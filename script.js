@@ -4,8 +4,6 @@ const prevBtn = document.getElementById('prevBtn');
 const nextBtn = document.getElementById('nextBtn');
 const progressBar = document.querySelector('.progress-bar');
 const progress = document.querySelector('.progress');
-const audioVisualizer = document.getElementById('audio-visualizer');
-const cd = document.querySelector('.cd');
 
 // Play and Pause functionality
 function playAudio() {
@@ -37,39 +35,11 @@ playBtn.addEventListener('click', () => {
 
 audioPlayer.addEventListener('timeupdate', updateProgress);
 
-// Audio visualizer
-const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-const analyser = audioContext.createAnalyser();
-const source = audioContext.createMediaElementSource(audioPlayer);
-source.connect(analyser);
-analyser.connect(audioContext.destination);
-analyser.fftSize = 256;
+// Dummy previous and next buttons functionality (you can implement actual song switching)
+prevBtn.addEventListener('click', () => {
+    alert('Previous song');
+});
 
-const bufferLength = analyser.frequencyBinCount;
-const dataArray = new Uint8Array(bufferLength);
-
-function drawVisualizer() {
-    analyser.getByteFrequencyData(dataArray);
-    const canvasCtx = audioVisualizer.getContext('2d');
-    canvasCtx.clearRect(0, 0, audioVisualizer.width, audioVisualizer.height);
-    const barWidth = audioVisualizer.width / bufferLength;
-    let x = 0;
-
-    for (let i = 0; i < bufferLength; i++) {
-        const barHeight = dataArray[i];
-        canvasCtx.fillStyle = '#1db954';
-        canvasCtx.fillRect(x, audioVisualizer.height - barHeight, barWidth, barHeight);
-        x += barWidth;
-    }
-
-    requestAnimationFrame(drawVisualizer);
-}
-
-drawVisualizer();
-
-// To start visualizer after audio is loaded
-audioPlayer.addEventListener('play', () => {
-    audioContext.resume().then(() => {
-        drawVisualizer();
-    });
+nextBtn.addEventListener('click', () => {
+    alert('Next song');
 });
