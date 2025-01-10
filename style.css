@@ -1,0 +1,142 @@
+/* Global Styles */
+body {
+    font-family: 'Poppins', sans-serif;
+    background: url('https://your-luxury-image-url.jpg') no-repeat center center fixed; 
+    background-size: cover;
+    color: #fff;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+/* Welcome Screen Styles */
+.welcome-screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7); /* Semi-transparent overlay */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    z-index: 10;
+    opacity: 1;
+    transition: opacity 1s ease;
+}
+
+.welcome-content h1 {
+    font-size: 4rem;
+    margin: 0;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.welcome-content p {
+    font-size: 1.8rem;
+    margin-top: 20px;
+}
+
+/* Player Container */
+.player-container {
+    display: none;
+    position: relative;
+    text-align: center;
+    z-index: 5;
+}
+
+.album-art-container {
+    margin-bottom: 20px;
+}
+
+.album-art {
+    width: 200px;
+    height: 200px;
+    border-radius: 10px;
+    transition: transform 0.3s;
+}
+
+.album-art:hover {
+    transform: scale(1.1);
+}
+
+.song-info {
+    margin-bottom: 20px;
+}
+
+.controls {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.control-button {
+    background-color: #282828;
+    border: none;
+    padding: 15px;
+    border-radius: 50%;
+    color: white;
+    cursor: pointer;
+    font-size: 1.5rem;
+    transition: background-color 0.3s ease;
+}
+
+.control-button:hover {
+    background-color: #383838;
+}
+
+.progress-bar {
+    width: 80%;
+    height: 5px;
+    background-color: #404040;
+    border-radius: 5px;
+    margin-top: 20px;
+}
+
+.progress {
+    width: 0;
+    height: 5px;
+    background-color: #ff0000;
+    border-radius: 5px;
+}
+
+/* Lyrics */
+.lyrics-container {
+    display: none;
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.8);
+    border-radius: 5px;
+    margin-top: 20px;
+    width: 80%;
+}
+
+#lyrics {
+    white-space: pre-wrap;
+    font-size: 1.1rem;
+    color: #fff;
+}
+
+#show-lyrics-btn {
+    background-color: #282828;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 20px;
+}
+
+#show-lyrics-btn:hover {
+    background-color: #383838;
+}
+
+/* Add some smooth fade-out effect */
+.welcome-screen.fade-out {
+    opacity: 0;
+}
