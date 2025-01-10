@@ -3,49 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VyrizPod</title>
+    <title>VyrizPod - Music Player</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Font Awesome Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
 </head>
 <body>
-    <div class="container">
-        <header>
-            <input type="text" id="searchInput" placeholder="Search for songs...">
-        </header>
-
-        <main>
-            <div class="now-playing">
-                <img id="albumArt" src="https://i.scdn.co/image/ab67616d0000b273767936a59650055722099309" alt="Album Art">
-                <div class="song-details">
-                    <h1 id="songTitle">Bumpy Ride</h1>
-                    <h2 id="artist">Mohombi</h2>
-                    <div class="time">
-                        <span id="currentTime">0:00</span>
-                        <div class="progress-bar" id="progressBar">
-                            <div class="progress" id="progress"></div>
-                        </div>
-                        <span id="duration">3:38</span>
-                    </div>
-                </div>
-            </div>
-        </main>
-
-        <footer>
-            <div class="controls">
-                <button id="shuffleBtn"><i class="fa-solid fa-shuffle"></i></button>
-                <button id="prevBtn"><i class="fa-solid fa-backward-step"></i></button>
-                <button id="playBtn"><i class="fa-solid fa-circle-play"></i></button>
-                <button id="nextBtn"><i class="fa-solid fa-forward-step"></i></button>
-                <button id="repeatBtn"><i class="fa-solid fa-repeat"></i></button>
-            </div>
-            <div class="other-controls">
-                <button><i class="fa-solid fa-list"></i></button>
-                <button><i class="fa-solid fa-volume-high"></i></button>
-                <button><i class="fa-solid fa-bars"></i></button>
-            </div>
-        </footer>
+    <!-- Welcome Screen -->
+    <div id="welcome-screen" class="welcome-screen">
+        <h1>VyrizPod</h1>
     </div>
-    <audio id="audio" src="https://github.com/pixel143try7frs/VyrizPod/blob/main/Mohombi%20-%20Bumpy%20Ride.mp3?raw=true"></audio>
+
+    <!-- Music Player -->
+    <div class="player-container" id="player-container">
+        <div class="album-art-container">
+            <img id="album-art" src="https://github.com/pixel143try7frs/VyrizPod/blob/main/Duvidha%20downloaded%20from%20SpotiSongDownloader.com_.jpg?raw=true" alt="Album Art" class="album-art">
+        </div>
+
+        <div class="song-info">
+            <h2 class="song-title" id="song-title">Duvidha</h2>
+            <p class="artist-name" id="artist-name">Lucke</p>
+        </div>
+
+        <div class="controls">
+            <button class="control-button" id="prevBtn"><i class="fas fa-step-backward"></i></button>
+            <button class="control-button" id="playBtn"><i class="fas fa-play"></i></button>
+            <button class="control-button" id="nextBtn"><i class="fas fa-step-forward"></i></button>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress"></div>
+        </div>
+    </div>
+
+    <!-- Audio Player -->
+    <audio id="audioPlayer" src="https://raw.githubusercontent.com/pixel143try7frs/VyrizPod/322e4bcd80fdff2cc7fd13347f66630e07cee582/DUVIDHA%20%20Hindi%20Rap%20Song%20%20By%20LUCKE.mp3"></audio>
+
+    <!-- Custom JS -->
     <script src="script.js"></script>
 </body>
 </html>
