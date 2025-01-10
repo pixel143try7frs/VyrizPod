@@ -14,38 +14,40 @@
         <h1>VyrizPod</h1>
     </div>
 
-    <!-- Main Content -->
-    <div id="main-content" class="main-content">
-        <div id="search-container" class="search-container">
-            <input type="text" id="search" placeholder="Search for songs..." class="search-bar">
-            <button id="search-btn" class="search-btn"><i class="fas fa-search"></i></button>
-        </div>
+    <!-- Search Bar -->
+    <div id="search-bar" class="search-bar">
+        <input type="text" id="search-input" placeholder="Search for songs..." class="search-input">
+        <button id="search-btn" class="search-btn"><i class="fas fa-search"></i></button>
+    </div>
 
-        <div id="songs-container" class="songs-container">
-            <!-- Songs will be dynamically displayed here -->
-        </div>
+    <!-- Homepage with Songs List -->
+    <div id="songs-list" class="songs-list">
+        <h2>All Songs</h2>
+        <div id="song-items" class="song-items"></div>
     </div>
 
     <!-- Music Player -->
-    <div id="music-player" class="music-player">
-        <div id="song-info">
-            <h2 id="song-title">Song Title</h2>
-            <p id="artist-name">Artist Name</p>
+    <div class="player-container" id="player-container">
+        <div class="song-info">
+            <h2 class="song-title" id="song-title">Duvidha</h2>
+            <p class="artist-name" id="artist-name">Lucke</p>
         </div>
 
         <div class="controls">
-            <button id="prevBtn"><i class="fas fa-step-backward"></i></button>
-            <button id="playBtn"><i class="fas fa-play"></i></button>
-            <button id="nextBtn"><i class="fas fa-step-forward"></i></button>
+            <button class="control-button" id="prevBtn"><i class="fas fa-step-backward"></i></button>
+            <button class="control-button" id="playBtn"><i class="fas fa-play"></i></button>
+            <button class="control-button" id="nextBtn"><i class="fas fa-step-forward"></i></button>
         </div>
 
         <div class="progress-bar">
             <div class="progress"></div>
         </div>
-
-        <audio id="audioPlayer"></audio>
     </div>
 
+    <!-- Audio Player -->
+    <audio id="audioPlayer"></audio>
+
+    <!-- Custom JS -->
     <script src="script.js"></script>
 </body>
 </html>
