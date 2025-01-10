@@ -59,6 +59,41 @@ function prevSong() {
     playAudio();
 }
 
+// Handle drag on the progress bar
+let isDragging = false;
+
+progressBar.addEventListener('click', (event) => {
+    if (!isDragging) {
+        const clickPosition = event.offsetX;
+        const progressBarWidth = progressBar.offsetWidth;
+        const newTime = (clickPosition / progressBarWidth) * audioPlayer.duration;
+        audioPlayer.currentTime = newTime;
+    }
+});
+
+progressBar.addEventListener('mousedown', (event) => {
+    isDragging = true;
+    const clickPosition = event.offsetX;
+    const progressBarWidth = progressBar.offsetWidth;
+    const newTime = (clickPosition / progressBarWidth) * audioPlayer.duration;
+    audioPlayer.currentTime = newTime;
+});
+
+document.addEventListener('mousemove', (event) => {
+    if (isDragging) {
+        const mousePosition = event.clientX - progressBar.getBoundingClientRect().left;
+        const progressBarWidth = progressBar.offsetWidth;
+        const newTime = (mousePosition / progressBarWidth) * audioPlayer.duration;
+        audioPlayer.currentTime = newTime;
+        const progressWidth = (audioPlayer.currentTime / audioPlayer.duration) * 100 + '%';
+        progress.style.width = progressWidth;
+    }
+});
+
+document.addEventListener('mouseup', () => {
+    isDragging = false;
+});
+
 // Event listeners
 playBtn.addEventListener('click', () => {
     if (audioPlayer.paused) {
