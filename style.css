@@ -27,6 +27,7 @@ h1, h2, p {
     align-items: center;
     opacity: 1;
     animation: fadeOut 5s forwards;
+    z-index: 1;
 }
 
 .welcome-screen h1 {
@@ -74,7 +75,9 @@ h1, h2, p {
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
     transform: translateY(30px);
     opacity: 0;
+    visibility: hidden;
     animation: fadeIn 1s ease-in-out forwards 5s; /* Delayed fade-in */
+    z-index: 0;
 }
 
 .album-art-container img {
