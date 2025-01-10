@@ -1,41 +1,49 @@
-// Elements
-const playBtn = document.getElementById('playBtn');
-const prevBtn = document.getElementById('prevBtn');
-const nextBtn = document.getElementById('nextBtn');
-const audioPlayer = document.getElementById('audioPlayer');
-const progress = document.getElementById('progress');
-const songTitle = document.getElementById('song-title');
-const welcomeScreen = document.getElementById('welcome-screen');
+// Show the welcome screen for 5 seconds, then hide it and show the player
+window.onload = function() {
+    setTimeout(() => {
+        document.getElementById('welcome-screen').style.display = 'none';
+        document.getElementById('player-container').style.display = 'block';
+    }, 5000);
+};
 
-// Play / Pause Button
-let isPlaying = false;
-playBtn.addEventListener('click', () => {
-    if (isPlaying) {
-        audioPlayer.pause();
-        playBtn.innerHTML = '<i class="fas fa-play"></i>';
-    } else {
+// Play/Pause functionality
+const playBtn = document.getElementById('playBtn');
+const audioPlayer = document.getElementById('audioPlayer');
+
+playBtn.addEventListener('click', function() {
+    if (audioPlayer.paused) {
         audioPlayer.play();
         playBtn.innerHTML = '<i class="fas fa-pause"></i>';
+    } else {
+        audioPlayer.pause();
+        playBtn.innerHTML = '<i class="fas fa-play"></i>';
     }
-    isPlaying = !isPlaying;
 });
 
-// Update Progress Bar
-audioPlayer.addEventListener('timeupdate', () => {
-    const progressPercentage = (audioPlayer.currentTime / audioPlayer.duration) * 100;
-    progress.style.width = `${progressPercentage}%`;
+// Toggle lyrics visibility
+const lyricsBtn = document.getElementById('lyricsBtn');
+const lyricsDiv = document.getElementById('lyrics');
+
+lyricsBtn.addEventListener('click', function() {
+    if (lyricsDiv.style.display === 'none') {
+        lyricsDiv.style.display = 'block';
+        lyricsBtn.innerText = 'Hide Lyrics';
+    } else {
+        lyricsDiv.style.display = 'none';
+        lyricsBtn.innerText = 'Show Lyrics';
+    }
 });
 
-// Next / Previous Button Functionality (for demo, just toggles the song)
-nextBtn.addEventListener('click', () => {
-    audioPlayer.currentTime += 10;
+// Next/Previous buttons functionality (Can be expanded)
+const nextBtn = document.getElementById('nextBtn');
+const prevBtn = document.getElementById('prevBtn');
+
+nextBtn.addEventListener('click', function() {
+    // You can add logic to skip to the next song here
+    console.log('Next song');
 });
 
-prevBtn.addEventListener('click', () => {
-    audioPlayer.currentTime -= 10;
+prevBtn.addEventListener('click', function() {
+    // You can add logic to go to the previous song here
+    console.log('Previous song');
 });
-
-// Welcome Screen Fade Out
-setTimeout(() => {
-    welcomeScreen.classList.add('fade-out');
-}, 5000);
