@@ -42,10 +42,6 @@
         .song:hover {
             background-color: #f1f1f1;
         }
-        #player {
-            margin-top: 20px;
-            width: 100%;
-        }
     </style>
 </head>
 <body>
@@ -56,30 +52,29 @@
         <!-- All songs will appear here -->
         <div id="playlist"></div>
 
-        <div id="player">
-            <h2>Now Playing:</h2>
-            <p id="now-playing">Select a song to play.</p>
-        </div>
+        <p id="now-playing">Now Playing: Select a song to play.</p>
     </div>
 
-    <!-- Spotify Web Player SDK -->
     <script src="https://sdk.scdn.co/spotify-player.js"></script>
     <script>
-        // Your Spotify Authorization Token
-        const token = 'BQDv7eCUTBTSjR12drOUwKAF7W290zgfgKTNai7FtnODDO1IK0bUy01ImLWdyiGH3H5otDNZLdB81CJBfAg3JKyCHPuPReMiK42dLVEhuHfhAoMAC6ybS4UOFY2K1F-2P1_TwK_UNi9_2Kz_UTHaaG5VWrpsqgLjsqRZCpO8SybX5FjXKQGccoS07-F2ICjI2BrFKGfpoL-yyLmUwiThEqrN2g';
-        const playlistId = '4hA72ROeqv56jOEsM5PyV1';  // Your Spotify Playlist ID
-
-        // Initialize Spotify Player
         window.onSpotifyWebPlaybackSDKReady = () => {
+            const token = 'BQDY2kynMgrdBSpM_rjqmDv5b5bWucyVh_rJplu5QB0lu6GoSBN29pTCxZwwDCNaoC3Zx21b6P9k9sI_h_aAEBiWbQ_luyPdZEQhRO6hxgTE5Ha14uY'; // Your Spotify access token
+            const playlistId = '4hA72ROeqv56jOEsM5PyV1'; // Your Spotify playlist ID
+
             const player = new Spotify.Player({
                 name: 'VyrizPod Player',
                 getOAuthToken: cb => { cb(token); },
                 volume: 0.5
             });
 
+            player.addListener('player_state_changed', state => {
+                if (!state) return;
+                const currentTrack = state.track_window.current_track;
+                document.getElementById('now-playing').innerText = `Now Playing: ${currentTrack.name} by ${currentTrack.artists.map(artist => artist.name).join(', ')}`;
+            });
+
             player.connect();
 
-            // Fetch the playlist and display it
             fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -88,6 +83,7 @@
             .then(response => response.json())
             .then(data => {
                 const playlistDiv = document.getElementById('playlist');
+
                 data.items.forEach(item => {
                     const track = item.track;
                     const songElement = document.createElement('div');
@@ -96,15 +92,19 @@
                         <strong>${track.name}</strong>
                         <p>By ${track.artists.map(artist => artist.name).join(', ')}</p>
                     `;
-                    
-                    // Add click event to play the song
+
                     songElement.addEventListener('click', () => {
-                        player.play({
-                            uris: [track.uri]
-                        }).then(() => {
-                            document.getElementById('now-playing').innerText = `Now playing: ${track.name}`;
-                        }).catch(error => {
-                            console.error('Error playing track:', error);
+                        player._options.getOAuthToken(accessToken => {
+                            fetch(`https://api.spotify.com/v1/me/player/play`, {
+                                method: 'PUT',
+                                headers: {
+                                    'Authorization': `Bearer ${accessToken}`,
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({ uris: [track.uri] })
+                            }).then(() => {
+                                console.log(`Now playing: ${track.name}`);
+                            }).catch(error => console.error('Error playing track:', error));
                         });
                     });
 
