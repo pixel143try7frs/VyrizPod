@@ -1,4 +1,12 @@
-/* Improved CSS */
+:root {
+    --primary-color: #1ed760;
+    --bg-color: #0d0d0d;
+    --text-color: #ffffff;
+    --secondary-text: #b3b3b3;
+    --border-color: #282828;
+    --shadow-color: rgba(0, 0, 0, 0.3);
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -6,62 +14,186 @@
 }
 
 body {
-    background: #121212;
-    color: #fff;
+    background-color: var(--bg-color);
+    color: var(--text-color);
     font-family: 'Poppins', sans-serif;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
     min-height: 100vh;
     overflow-x: hidden;
+    padding: 20px;
 }
 
-/* ... (Welcome Screen CSS - No changes needed) */
-
-.container {
+.welcome-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     display: flex;
-    width: 90%;
-    max-width: 900px; /* Increased max width */
-    margin: 20px auto;
-    background-color: #1e1e1e;
-    border-radius: 10px;
-    overflow: hidden; /* Prevent content from overflowing rounded corners */
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    justify-content: center;
+    align-items: center;
+    background-color: #000;
+    z-index: 10;
+    opacity: 1;
+    transition: opacity 1s ease-in-out;
 }
 
-.left-panel {
-    flex: 1; /* Takes up available space */
-    padding: 20px;
-    border-right: 1px solid #282828;
+.welcome-screen h1 {
+    font-size: 3rem;
+    color: var(--primary-color);
 }
 
-.right-panel {
-    flex: 1;
-    padding: 20px;
+#main-content {
+    width: 100%;
+    max-width: 700px;
+    margin-top: 20px;
 }
 
-/* ... (Search Bar, Song List CSS - No Major changes needed) */
-#song-list{
+.search-bar {
+    display: flex;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.search-bar input {
+    flex-grow: 1;
+    padding: 12px 16px;
+    border-radius: 8px;
+    border: none;
+    background-color: #181818;
+    color: var(--text-color);
+    margin-right: 10px;
+    font-size: 1rem;
+    outline: none;
+}
+.search-bar input::placeholder{
+    color: var(--secondary-text);
+}
+
+.search-bar button {
+    padding: 12px 24px;
+    border-radius: 8px;
+    border: none;
+    background-color: var(--primary-color);
+    color: var(--bg-color);
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.search-bar button:hover {
+    background-color: #19b954;
+}
+
+#song-list {
+    background-color: #181818;
+    border-radius: 12px;
     max-height: 300px;
+    overflow-y: auto;
+    margin-bottom: 30px;
+    padding: 20px;
+    box-shadow: 0 4px 10px var(--shadow-color);
 }
-/* ... (Player Container, Album Art, Song Info, Controls, Progress Bar CSS - No Major changes needed) */
-.player-container{
-    background-color: transparent;
-    box-shadow: none;
+
+.song-item {
+    padding: 15px;
+    border-bottom: 1px solid var(--border-color);
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    display: flex;
+    align-items: center;
 }
-.album-art{
-    max-height: 200px;
+.song-item img{
+    width: 50px;
+    height: 50px;
+    margin-right: 15px;
+    border-radius: 5px;
+    object-fit: cover;
 }
-/* Media Queries */
-@media (max-width: 768px) {
-    .container {
-        flex-direction: column; /* Stack panels vertically on smaller screens */
-    }
-    .left-panel{
-        border-right: none;
-        border-bottom: 1px solid #282828;
-    }
-    .player-container{
-        margin-top: 20px;
-    }
+
+.song-item:last-child {
+    border-bottom: none;
 }
+
+.song-item:hover {
+    background-color: #282828;
+}
+.song-item h3{
+    font-weight: 600;
+}
+.song-item p{
+    color: var(--secondary-text);
+    font-size: 0.9rem;
+}
+
+.player-container {
+    background-color: #181818;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 10px var(--shadow-color);
+    width: 100%;
+}
+
+.album-art-container {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.album-art {
+    width: 100%;
+    max-width: 300px;
+    height: auto;
+    object-fit: cover;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px var(--shadow-color);
+}
+
+.song-info {
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.song-title {
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.artist-name {
+    font-size: 1rem;
+    color: var(--secondary-text);
+}
+
+.controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.control-button {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #282828;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    font-size: 1.4rem;
+    color: var(--text-color);
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.control-button:hover {
+    background-color: var(--primary-color);
+    transform: scale(1.1);
+}
+
+.progress-bar {
+    width: 100%;
+    height: 6px;
+    background-color: #
