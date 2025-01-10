@@ -11,7 +11,6 @@ const songItems = document.getElementById('song-items');
 const playerContainer = document.getElementById('player-container');
 const searchInput = document.getElementById('search-input');
 const searchBtn = document.getElementById('search-btn');
-const albumArt = document.getElementById('album-art');
 
 // Songs Array
 const songs = [
@@ -37,7 +36,6 @@ function loadSong(index) {
     audioPlayer.src = song.src;
     songTitle.textContent = song.title;
     artistName.textContent = song.artist;
-    albumArt.src = song.albumArt;
 }
 
 // Show Player and Play Song
@@ -76,26 +74,24 @@ function setProgress(e) {
 
 // Previous Song
 function prevSong() {
-    currentSongIndex = (currentSongIndex - 1 + songs.length) % songs.length;
+    currentSongIndex = (currentSongIndex === 0) ? songs.length - 1 : currentSongIndex - 1;
     loadSong(currentSongIndex);
+    showPlayer();
     playAudio();
 }
 
 // Next Song
 function nextSong() {
-    currentSongIndex = (currentSongIndex + 1) % songs.length;
+    currentSongIndex = (currentSongIndex === songs.length - 1) ? 0 : currentSongIndex + 1;
     loadSong(currentSongIndex);
+    showPlayer();
     playAudio();
 }
-
-// Load the first song on page load
-loadSong(currentSongIndex);
 
 // Event Listeners
 playBtn.addEventListener('click', () => {
     if (audioPlayer.paused) {
         playAudio();
-        showPlayer();
     } else {
         pauseAudio();
     }
@@ -103,31 +99,16 @@ playBtn.addEventListener('click', () => {
 
 prevBtn.addEventListener('click', prevSong);
 nextBtn.addEventListener('click', nextSong);
-audioPlayer.addEventListener('timeupdate', updateProgress);
 progressBar.addEventListener('click', setProgress);
+audioPlayer.addEventListener('timeupdate', updateProgress);
 
-// Simulate loading songs into the list (optional search feature)
-// Add this part if you want to have song items in the list (for searching)
-function displaySongs() {
-    songItems.innerHTML = '';
-    songs.forEach((song, index) => {
-        const songElement = document.createElement('div');
-        songElement.classList.add('song-item');
-        songElement.innerHTML = `
-            <img src="${song.albumArt}" alt="${song.title}">
-            <div>
-                <h3 class="song-title">${song.title}</h3>
-                <p class="artist-name">${song.artist}</p>
-            </div>
-        `;
-        songElement.addEventListener('click', () => {
-            currentSongIndex = index;
-            loadSong(currentSongIndex);
-            playAudio();
-            showPlayer();
-        });
-        songItems.appendChild(songElement);
-    });
-}
+// Initialize app
+loadSong(currentSongIndex);
 
-displaySongs();
+// Welcome Screen fade out logic
+setTimeout(() => {
+    document.getElementById('welcome-screen').style.opacity = '0';
+    document.getElementById('welcome-screen').style.transition = 'opacity 1s ease-in-out';
+    document.getElementById('search-bar').classList.add('show');
+    document.getElementById('songs-list').style.display = 'block';
+}, 3000);
