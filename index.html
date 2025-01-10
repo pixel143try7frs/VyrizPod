@@ -3,120 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VyrizPod</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-        }
-        header {
-            background-color: #333;
-            color: #fff;
-            text-align: center;
-            padding: 20px;
-        }
-        h1 {
-            font-size: 2.5em;
-        }
-        #now-playing {
-            margin: 20px;
-            font-size: 1.5em;
-            text-align: center;
-        }
-        #playlist {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin: 20px;
-        }
-        .song {
-            background-color: #fff;
-            margin: 10px 0;
-            padding: 10px 20px;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            cursor: pointer;
-            text-align: center;
-            width: 90%;
-            max-width: 400px;
-        }
-        .song:hover {
-            background-color: #f0f0f0;
-        }
-    </style>
+    <title>VyrizPod - Your Music Platform</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <header>
         <h1>VyrizPod</h1>
         <p>Your ultimate music platform. Enjoy the beats!</p>
     </header>
-    <div id="now-playing">Now Playing: Select a song to play.</div>
-    <div id="playlist"></div>
 
-    <!-- Include the Spotify Player SDK -->
-    <script src="https://sdk.scdn.co/spotify-player.js"></script>
+    <main>
+        <div class="now-playing" id="now-playing">
+            <h2>Now Playing:</h2>
+            <p id="current-track">Select a song to play.</p>
+        </div>
+
+        <div class="playlist" id="playlist">
+            <h2>Your Playlist</h2>
+            <!-- Songs will be added here -->
+            <div class="song" data-src="songs/malang.mp3">
+                <strong>Malang</strong>
+                <p>By Artist 1</p>
+            </div>
+            <div class="song" data-src="songs/track2.mp3">
+                <strong>Song Title 2</strong>
+                <p>By Artist 2</p>
+            </div>
+            <div class="song" data-src="songs/track3.mp3">
+                <strong>Song Title 3</strong>
+                <p>By Artist 3</p>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>© 2025 VyrizPod. All rights reserved.</p>
+    </footer>
+
+    <audio id="audio-player" controls></audio>
+
     <script>
-        window.onSpotifyWebPlaybackSDKReady = () => {
-            const token = 'BQA0WyMVfP2DcXABMWJ1AoVXveCwPjPUzQKjr0vkK3q1wRupKggk7lUnUUheYbh0wIPLnqo3Gmzk50xwGSyGVH4VKilJ9xZt9oGcsXgzYld7RY3ZMqs'; // Your provided token
-            const playlistId = '<iframe src="https://open.spotify.com/embed/playlist/4hA72ROeqv56jOEsM5PyV1" width="300" height="380" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
-'; // Replace with your Spotify playlist ID
+        const audioPlayer = document.getElementById('audio-player');
+        const nowPlaying = document.getElementById('current-track');
 
-            const player = new Spotify.Player({
-                name: 'VyrizPod Player',
-                getOAuthToken: cb => { cb(token); },
-                volume: 0.5,
-            });
+        // Add event listeners to each song
+        document.querySelectorAll('.song').forEach(song => {
+            song.addEventListener('click', () => {
+                const trackSrc = song.getAttribute('data-src');
+                const trackName = song.querySelector('strong').textContent;
+                const trackArtist = song.querySelector('p').textContent;
 
-            // Connect the player
-            player.connect().then(success => {
-                if (success) console.log('Player connected!');
+                // Update Now Playing and Play the selected song
+                nowPlaying.textContent = `${trackName} by ${trackArtist}`;
+                audioPlayer.src = trackSrc;
+                audioPlayer.play();
             });
-
-            player.addListener('ready', ({ device_id }) => {
-                console.log('Ready with Device ID', device_id);
-            });
-
-            player.addListener('player_state_changed', state => {
-                if (state) {
-                    const currentTrack = state.track_window.current_track;
-                    document.getElementById('now-playing').innerText = `Now Playing: ${currentTrack.name} by ${currentTrack.artists.map(artist => artist.name).join(', ')}`;
-                }
-            });
-
-            // Fetch playlist and display tracks
-            fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, {
-                headers: { 'Authorization': `Bearer ${token}` }
-            })
-            .then(response => response.json())
-            .then(data => {
-                const playlistDiv = document.getElementById('playlist');
-                data.items.forEach(item => {
-                    const track = item.track;
-                    const songElement = document.createElement('div');
-                    songElement.className = 'song';
-                    songElement.innerHTML = `
-                        <strong>${track.name}</strong>
-                        <p>By ${track.artists.map(artist => artist.name).join(', ')}</p>
-                    `;
-                    songElement.addEventListener('click', () => {
-                        player.activateElement().then(() => {
-                            player.setVolume(0.5);
-                            player.play({ uris: [track.uri] });
-                        }).catch(error => {
-                            console.error('Error activating player:', error);
-                            alert('Failed to play track. Please make sure your Spotify app is open and running.');
-                        });
-                    });
-                    playlistDiv.appendChild(songElement);
-                });
-            })
-            .catch(error => {
-                console.error('Error fetching playlist:', error);
-                alert('Failed to load playlist. Please check your Spotify token or playlist ID.');
-            });
-        };
+        });
     </script>
 </body>
 </html>
