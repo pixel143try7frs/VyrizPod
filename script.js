@@ -8,7 +8,6 @@ const progressBar = document.querySelector('.progress-bar');
 const albumArt = document.getElementById('album-art');
 const songTitle = document.getElementById('song-title');
 const artistName = document.getElementById('artist-name');
-const lyricsContainer = document.getElementById('lyrics');
 
 // Songs Array
 const songs = [
@@ -16,19 +15,13 @@ const songs = [
         title: 'Duvidha',
         artist: 'Lucke',
         src: 'https://raw.githubusercontent.com/pixel143try7frs/VyrizPod/322e4bcd80fdff2cc7fd13347f66630e07cee582/DUVIDHA%20%20Hindi%20Rap%20Song%20%20By%20LUCKE.mp3',
-        albumArt: 'https://github.com/pixel143try7frs/VyrizPod/blob/main/Duvidha%20downloaded%20from%20SpotiSongDownloader.com_.jpg?raw=true',
-        lyrics: ''  // No lyrics for Duvidha
+        albumArt: 'https://github.com/pixel143try7frs/VyrizPod/blob/main/Duvidha%20downloaded%20from%20SpotiSongDownloader.com_.jpg?raw=true'
     },
     {
         title: 'Bumpy Ride',
         artist: 'Mohombi',
         src: 'https://github.com/pixel143try7frs/VyrizPod/blob/main/Mohombi%20-%20Bumpy%20Ride.mp3?raw=true',
-        albumArt: 'https://github.com/pixel143try7frs/VyrizPod/blob/main/Bumpy%20Ride%20downloaded%20from%20SpotiSongDownloader.com_.jpg?raw=true',
-        lyrics: `I wanna boom bang bang with your body yo\n
-        Were gonna rough it up before we take it slow\n
-        Girl lemme rock you rock you like a rodeo\n
-        (Its gonna be a bumpy ride)\n
-        ... (add the rest of the lyrics here) ...`
+        albumArt: 'https://github.com/pixel143try7frs/VyrizPod/blob/main/Bumpy%20Ride%20downloaded%20from%20SpotiSongDownloader.com_.jpg?raw=true'
     }
 ];
 
@@ -41,7 +34,6 @@ function loadSong(index) {
     albumArt.src = song.albumArt;
     songTitle.textContent = song.title;
     artistName.textContent = song.artist;
-    lyricsContainer.textContent = song.lyrics;
 }
 
 // Play/Pause functionality
