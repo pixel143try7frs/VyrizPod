@@ -1,76 +1,81 @@
-// Song Data
-const songs = [
-    {
-        title: "Duvidha",
-        artist: "Unknown",
-        audioSrc: "https://github.com/pixel143try7frs/VyrizPod/blob/main/Duvidha%20downloaded%20from%20SpotiSongDownloader.com_.mp3",
-        albumArt: "https://github.com/pixel143try7frs/VyrizPod/blob/main/Duvidha%20downloaded%20from%20SpotiSongDownloader.com_.jpg"
-    },
-    {
-        title: "Bumpy Ride",
-        artist: "Mohombi",
-        audioSrc: "https://github.com/pixel143try7frs/VyrizPod/blob/main/Mohombi%20-%20Bumpy%20Ride.mp3",
-        albumArt: "https://github.com/pixel143try7frs/VyrizPod/blob/main/Bumpy%20Ride%20downloaded%20from%20SpotiSongDownloader.com_.jpg"
-    }
-];
-
-let currentSongIndex = 0;
-
-// DOM Elements
-const welcomeScreen = document.getElementById('welcomeScreen');
-const musicPlayer = document.getElementById('musicPlayer');
-const audioPlayer = document.getElementById('audioPlayer');
-const albumArt = document.getElementById('albumArt');
-const songTitle = document.getElementById('songTitle');
-const artistName = document.getElementById('artistName');
+// Select elements
 const playBtn = document.getElementById('playBtn');
 const prevBtn = document.getElementById('prevBtn');
 const nextBtn = document.getElementById('nextBtn');
-
+const audioPlayer = document.getElementById('audioPlayer');
+const playerContainer = document.getElementById('player-container');
+const welcomeScreen = document.getElementById('welcome-screen');
+const songTitle = document.getElementById('song-title');
+const artistName = document.getElementById('artist-name');
 let isPlaying = false;
 
-// Welcome Screen Fade-Out
-setTimeout(() => {
-    welcomeScreen.style.display = 'none';
-    musicPlayer.style.display = 'block';
-    loadSong(currentSongIndex);
-}, 3000);
+// Web Audio API setup
+const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+const analyser = audioContext.createAnalyser();
+const source = audioContext.createMediaElementSource(audioPlayer);
+source.connect(analyser);
+analyser.connect(audioContext.destination);
+analyser.fftSize = 256; // Number of frequency bins
 
-// Load Song
-function loadSong(index) {
-    const song = songs[index];
-    audioPlayer.src = song.audioSrc;
-    albumArt.src = song.albumArt;
-    songTitle.textContent = song.title;
-    artistName.textContent = song.artist;
-}
+// Set up gradient colors
+let gradientColors = ['#1db954', '#191414']; // Default colors
 
-// Play and Pause Functionality
+// Welcome Screen animation
+window.onload = () => {
+    setTimeout(() => {
+        welcomeScreen.style.opacity = '0';
+        setTimeout(() => {
+            welcomeScreen.style.display = 'none';
+        }, 1000);
+    }, 3000);
+};
+
+// Play/Pause functionality
 playBtn.addEventListener('click', () => {
     if (isPlaying) {
         audioPlayer.pause();
-        playBtn.innerHTML = '<i class="fas fa-play"></i>';
+        resetBackgroundColor();
     } else {
         audioPlayer.play();
-        playBtn.innerHTML = '<i class="fas fa-pause"></i>';
+        audioContext.resume(); // Ensure the audio context is resumed after play
+        updateBackgroundColor();
     }
     isPlaying = !isPlaying;
 });
 
-// Next Song
+// Next and Previous functionality (you can implement song changes later)
 nextBtn.addEventListener('click', () => {
-    currentSongIndex = (currentSongIndex + 1) % songs.length;
-    loadSong(currentSongIndex);
-    if (isPlaying) {
-        audioPlayer.play();
-    }
+    console.log("Next song");
 });
 
-// Previous Song
 prevBtn.addEventListener('click', () => {
-    currentSongIndex = (currentSongIndex - 1 + songs.length) % songs.length;
-    loadSong(currentSongIndex);
-    if (isPlaying) {
-        audioPlayer.play();
-    }
+    console.log("Previous song");
 });
+
+// Update background gradient based on audio frequency
+function updateBackgroundColor() {
+    const bufferLength = analyser.frequencyBinCount;
+    const dataArray = new Uint8Array(bufferLength);
+    analyser.getByteFrequencyData(dataArray);
+
+    let average = 0;
+    for (let i = 0; i < bufferLength; i++) {
+        average += dataArray[i];
+    }
+    average = average / bufferLength;
+
+    // Map the average frequency to a gradient effect
+    let color1 = `hsl(${average % 360}, 100%, 50%)`;
+    let color2 = `hsl(${(average + 120) % 360}, 100%, 50%)`;
+
+    playerContainer.style.background = `linear-gradient(45deg, ${color1}, ${color2})`;
+
+    if (isPlaying) {
+        requestAnimationFrame(updateBackgroundColor);
+    }
+}
+
+// Reset to default color when paused
+function resetBackgroundColor() {
+    playerContainer.style.background = `linear-gradient(45deg, #1db954, #191414)`;
+}
