@@ -1,162 +1,36 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+/* Lyrics Container */
+#lyrics-container {
+    margin-top: 20px;
+    max-height: 200px;
+    overflow-y: scroll;
+    font-size: 1rem;
+    line-height: 1.5;
+    text-align: left;
+    padding: 10px;
+    color: #f1f1f1;
 }
 
-body {
-    background: linear-gradient(45deg, #1db954, #191414);
-    color: white;
-    font-family: 'Poppins', sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    transition: all 0.3s ease;
+.lyric {
+    opacity: 0.7;
+    transition: all 0.3s;
 }
 
-/* Welcome Screen */
-.welcome-screen {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #000;
-    z-index: 10;
+.lyric.highlight {
     opacity: 1;
-    transition: opacity 1s ease-in-out;
-}
-
-.welcome-screen h1 {
-    font-size: 3rem;
     color: #1db954;
+    font-weight: bold;
 }
 
-/* Music Player Container */
-.player-container {
-    position: relative;
-    background-color: rgba(0, 0, 0, 0.7);
-    width: 100%;
-    max-width: 500px;
-    border-radius: 20px;
-    padding: 20px;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.6);
+/* Scrollbar styling */
+#lyrics-container::-webkit-scrollbar {
+    width: 8px;
 }
 
-/* Album Art */
-.album-art-container {
-    margin-bottom: 20px;
+#lyrics-container::-webkit-scrollbar-thumb {
+    background: #1db954;
+    border-radius: 10px;
 }
 
-.album-art {
-    width: 100%;
-    height: 300px;
-    object-fit: cover;
-    border-radius: 15px;
-    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.8);
-}
-
-/* Song Info */
-.song-info {
-    text-align: center;
-    margin-top: 20px;
-}
-
-.song-title {
-    font-size: 1.8rem;
-    margin: 10px 0;
-}
-
-.artist-name {
-    font-size: 1.2rem;
-    opacity: 0.8;
-}
-
-/* Control Buttons */
-.controls {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    margin-top: 30px;
-}
-
-.control-button {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    background-color: #282828;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 0 15px;
-    cursor: pointer;
-    border: none;
-    font-size: 1.5rem;
-    color: white;
-    transition: background-color 0.3s, transform 0.2s;
-}
-
-.control-button:hover {
-    background-color: #1db954;
-    transform: scale(1.1);
-}
-
-.control-button i {
-    font-size: 1.5rem;
-}
-
-/* Progress Bar */
-.progress-bar {
-    width: 100%;
-    height: 5px;
-    background-color: #404040;
-    border-radius: 5px;
-    margin-top: 20px;
-}
-
-.progress {
-    width: 0;
-    height: 100%;
-    background-color: #1db954;
-    border-radius: 5px;
-}
-
-/* Media Queries for Mobile */
-@media (max-width: 768px) {
-    .player-container {
-        max-width: 90%;
-        padding: 15px;
-    }
-
-    .album-art {
-        width: 90%;
-        height: auto;
-    }
-
-    .controls {
-        justify-content: space-around; /* This ensures the buttons stay in one line */
-    }
-
-    .control-button {
-        margin: 0 10px; /* Reduces the gap between buttons */
-    }
-}
-
-@media (max-width: 480px) {
-    .song-title {
-        font-size: 1.4rem;
-    }
-
-    .artist-name {
-        font-size: 1rem;
-    }
+#lyrics-container::-webkit-scrollbar-track {
+    background: #282828;
 }
