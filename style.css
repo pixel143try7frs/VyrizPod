@@ -1,173 +1,88 @@
-* {
+/* General Styles */
+body {
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    background: linear-gradient(45deg, #1db954, #191414);
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #1db954, #191414);
     color: white;
-    font-family: 'Poppins', sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    transition: all 0.3s ease;
-}
-
-/* Welcome Screen */
-.welcome-screen {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #000;
-    z-index: 10;
-    opacity: 1;
-    transition: opacity 1s ease-in-out;
-}
-
-.welcome-screen h1 {
-    font-size: 3rem;
-    color: #1db954;
-}
-
-/* Music Player Container */
-.player-container {
-    position: relative;
-    background-color: rgba(0, 0, 0, 0.7);
-    width: 100%;
-    max-width: 500px;
-    border-radius: 20px;
-    padding: 20px;
-    text-align: center;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.6);
+    height: 100vh;
+    overflow: hidden;
 }
 
-/* Album Art */
-.album-art-container {
+/* Welcome Screen */
+.welcome-screen {
+    text-align: center;
+    animation: fadeOut 3s ease-in-out forwards;
+    animation-delay: 2s;
+}
+
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+        visibility: hidden;
+    }
+}
+
+/* Music Player */
+.music-player {
+    display: none;
+    text-align: center;
+    animation: fadeIn 1s ease-in-out forwards;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+.album-art img {
+    width: 250px;
+    height: 250px;
+    border-radius: 15px;
+    margin-bottom: 20px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+}
+
+.song-info {
     margin-bottom: 20px;
 }
 
-.album-art {
-    width: 100%;
-    height: 300px;
-    object-fit: cover;
-    border-radius: 15px;
-    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.8);
-}
-
-/* Song Info */
-.song-info {
-    text-align: center;
-    margin-top: 20px;
-}
-
-.song-title {
-    font-size: 1.8rem;
-    margin: 10px 0;
-}
-
-.artist-name {
-    font-size: 1.2rem;
-    opacity: 0.8;
-}
-
-/* Control Buttons */
 .controls {
     display: flex;
-    justify-content: space-between;
-    width: 100%;
-    margin-top: 30px;
+    justify-content: center;
+    gap: 20px;
 }
 
-.control-button {
+.control-btn {
+    background: #1db954;
+    border: none;
+    color: white;
+    border-radius: 50%;
     width: 60px;
     height: 60px;
-    border-radius: 50%;
-    background-color: #282828;
+    font-size: 24px;
     display: flex;
-    justify-content: center;
     align-items: center;
-    margin: 0 15px;
+    justify-content: center;
     cursor: pointer;
-    border: none;
-    font-size: 1.5rem;
-    color: white;
-    transition: background-color 0.3s, transform 0.2s;
+    transition: transform 0.2s;
 }
 
-.control-button:hover {
-    background-color: #1db954;
+.control-btn:hover {
     transform: scale(1.1);
 }
 
-.control-button i {
-    font-size: 1.5rem;
-}
-
-/* Progress Bar */
-.progress-bar {
-    width: 100%;
-    height: 5px;
-    background-color: #404040;
-    border-radius: 5px;
-    margin-top: 20px;
-}
-
-.progress {
-    width: 0;
-    height: 100%;
-    background-color: #1db954;
-    border-radius: 5px;
-}
-
-/* Lyrics Section */
-.lyrics-container {
-    margin-top: 20px;
-    font-size: 1rem;
-    line-height: 1.5;
-    color: #ccc;
-    text-align: left;
-    max-height: 300px;
-    overflow-y: auto;
-}
-
-/* Media Queries for Mobile */
-@media (max-width: 768px) {
-    .player-container {
-        max-width: 90%;
-        padding: 15px;
-    }
-
-    .album-art {
-        width: 90%;
-        height: auto;
-    }
-
-    .controls {
-        justify-content: space-around; /* This ensures the buttons stay in one line */
-    }
-
-    .control-button {
-        margin: 0 10px; /* Reduces the gap between buttons */
-    }
-}
-
-@media (max-width: 480px) {
-    .song-title {
-        font-size: 1.4rem;
-    }
-
-    .artist-name {
-        font-size: 1rem;
-    }
+.control-btn:active {
+    transform: scale(0.95);
 }
