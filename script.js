@@ -34,4 +34,4 @@ playBtn.addEventListener('click', () => {
 
 audioPlayer.addEventListener('timeupdate', updateProgress);
 
-// Add more functionality for prevBtn, nextBtn, and progress bar interaction here
+// Functionality for next/prev buttons can be added here if desired
