@@ -1,35 +1,64 @@
-/* General styles */
+/* General Styles */
 body {
-    background-color: #121212;
-    color: #fff;
-    font-family: 'Poppins', sans-serif;
     margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background-color: #121212;
+    color: white;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
+    overflow: hidden;
 }
 
-/* Music player container */
+/* Welcome Screen */
+.welcome-screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(18, 18, 18, 0.9);
+    color: #fff;
+    opacity: 1;
+    animation: fadeOut 3s ease-in-out 5s forwards;
+}
+
+.welcome-screen h1 {
+    font-size: 2.5rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.welcome-screen p {
+    font-size: 1.2rem;
+    opacity: 0.8;
+}
+
+/* Music Player */
 .player-container {
     width: 350px;
     background-color: #181818;
-    border-radius: 10px;
     padding: 20px;
-    display: flex;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    display: none;
     flex-direction: column;
     align-items: center;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    position: relative;
+    animation: fadeIn 1.5s ease-in-out;
 }
 
-/* Album art container */
 .album-art-container {
-    width: 250px;
-    height: 250px;
+    width: 200px;
+    height: 200px;
     border-radius: 10px;
     overflow: hidden;
     margin-bottom: 20px;
-    border: 2px solid #282828;
 }
 
 .album-art {
@@ -43,7 +72,6 @@ body {
     transform: scale(1.05);
 }
 
-/* Song info */
 .song-info {
     text-align: center;
     margin-bottom: 20px;
@@ -51,16 +79,15 @@ body {
 
 .song-title {
     font-size: 1.5rem;
-    font-weight: 500;
+    font-weight: 600;
     margin-bottom: 5px;
 }
 
 .artist-name {
-    font-size: 1.1rem;
+    font-size: 1rem;
     opacity: 0.8;
 }
 
-/* Controls */
 .controls {
     display: flex;
     justify-content: center;
@@ -88,10 +115,9 @@ body {
 
 .control-button i {
     font-size: 20px;
-    color: #fff;
+    color: white;
 }
 
-/* Progress bar */
 .progress-bar {
     width: 100%;
     height: 5px;
@@ -104,4 +130,15 @@ body {
     background-color: #1DB954;
     border-radius: 2.5px;
     width: 0%;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+@keyframes fadeOut {
+    0% { opacity: 1; }
+    100% { opacity: 0; }
 }
