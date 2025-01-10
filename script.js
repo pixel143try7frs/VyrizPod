@@ -1,30 +1,25 @@
-// Display a welcome message in the console
-console.log("Welcome to VyrizPod!");
+// Get reference to the audio player and the 'Now Playing' text
+const audioPlayer = document.getElementById('audio-player');
+const nowPlaying = document.getElementById('current-track');
 
-// Spotify API token
-const token = 'BQDv7eCUTBTSjR12drOUwKAF7W290zgfgKTNai7FtnODDO1IK0bUy01ImLWdyiGH3H5otDNZLdB81CJBfAg3JKyCHPuPReMiK42dLVEhuHfhAoMAC6ybS4UOFY2K1F-2P1_TwK_UNi9_2Kz_UTHaaG5VWrpsqgLjsqRZCpO8SybX5FjXKQGccoS07-F2ICjI2BrFKGfpoL-yyLmUwiThEqrN2g';
+// Add event listeners to each song in the playlist
+document.querySelectorAll('.song').forEach(song => {
+    song.addEventListener('click', () => {
+        // Get the source (path) of the audio file and the song details
+        const trackSrc = song.getAttribute('data-src');
+        const trackName = song.querySelector('strong').textContent;
+        const trackArtist = song.querySelector('p').textContent;
 
-// Function to fetch top artists and display them
-function fetchTopArtists() {
-    fetch('https://api.spotify.com/v1/me/top/artists', {
-        headers: {
-            'Authorization': `Bearer ${token}`
-        }
-    })
-    .then(response => response.json())
-    .then(data => {
-        const playlistDiv = document.getElementById('playlist');
-        playlistDiv.innerHTML = ''; // Clear previous content
-        data.items.forEach(artist => {
-            const artistElement = document.createElement('div');
-            artistElement.innerHTML = `<h3>${artist.name}</h3>`;
-            playlistDiv.appendChild(artistElement);
+        // Update the "Now Playing" text with the current song's name and artist
+        nowPlaying.textContent = `${trackName} by ${trackArtist}`;
+
+        // Set the source of the audio player to the selected track
+        audioPlayer.src = trackSrc;
+
+        // Play the selected track
+        audioPlayer.play().catch(error => {
+            console.error('Error playing track:', error);
+            alert('Failed to play the track. Please try again.');
         });
-    })
-    .catch(error => {
-        console.error('Error fetching top artists:', error);
     });
-}
-
-// Call the function to fetch top artists
-fetchTopArtists();
+});
