@@ -13,6 +13,7 @@ body {
     align-items: center;
     height: 100vh;
     transition: all 0.3s ease;
+    overflow: hidden;
 }
 
 /* Welcome Screen */
@@ -22,18 +23,32 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
+    background-color: #000;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #000;
     z-index: 10;
     opacity: 1;
     transition: opacity 1s ease-in-out;
+    animation: fadeIn 2s forwards;
 }
 
-.welcome-screen h1 {
+.welcome-content {
+    text-align: center;
+}
+
+.welcome-content h1 {
     font-size: 3rem;
     color: #1db954;
+    animation: scaleUp 2s forwards;
+}
+
+.welcome-content p {
+    font-size: 1.2rem;
+    color: white;
+    margin-top: 10px;
+    opacity: 0.8;
+    animation: fadeIn 3s forwards;
 }
 
 /* Music Player Container */
@@ -50,6 +65,8 @@ body {
     align-items: center;
     justify-content: center;
     box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.6);
+    opacity: 0;
+    animation: slideIn 1s 2s forwards;
 }
 
 /* Album Art */
@@ -158,5 +175,35 @@ body {
 
     .artist-name {
         font-size: 1rem;
+    }
+}
+
+/* Keyframe animations */
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes scaleUp {
+    0% {
+        transform: scale(0);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes slideIn {
+    0% {
+        opacity: 0;
+        transform: translateY(100px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
     }
 }
