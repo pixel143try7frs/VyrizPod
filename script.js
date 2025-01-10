@@ -1,83 +1,67 @@
-// Get elements
-const audioPlayer = document.getElementById('audioPlayer');
+// Elements
 const playBtn = document.getElementById('playBtn');
 const prevBtn = document.getElementById('prevBtn');
 const nextBtn = document.getElementById('nextBtn');
-const progressBar = document.querySelector('.progress-bar');
-const progress = document.querySelector('.progress');
-const lyricsBtn = document.getElementById('lyricsBtn');
-const lyricsSection = document.getElementById('lyrics');
-const lyricsContent = document.getElementById('lyrics-content');
+const audioPlayer = document.getElementById('audioPlayer');
+const progress = document.getElementById('progress');
+const songTitle = document.getElementById('song-title');
+const showLyricsBtn = document.getElementById('showLyricsBtn');
+const lyricsContainer = document.getElementById('lyrics');
+const welcomeScreen = document.getElementById('welcome-screen');
 
-// Song lyrics
+// Lyrics
 const lyrics = [
-    { time: 2.580, text: '[संगीत]' },
-    { time: 32.570, text: '[प्रशंसा]' },
-    { time: 34.380, text: '[संगीत]' },
-    { time: 41.760, text: 'दुख शुरू थे मेरे जन्म से पहले जन्म से' },
-    { time: 44.079, text: 'पहले मेरी मौत इंतजार में कैसे कहूं' },
-    { time: 46.079, text: 'कहानियां अब सुनो पूरी लंबी कतार में जन्म' },
-    // Add all the remaining lyrics with their corresponding time
-    // Example:
-    { time: 59.440, text: 'मिली मुझे भेंट में मामा से मिला उपहार ये' },
-    { time: 102.440, text: 'मेरे मात पिता लाचार थे छह भाइयों को मारा' },
-    // Continue the lyrics...
+    { time: 0, text: "[संगीत]" },
+    { time: 5, text: "दुख शुरू थे मेरे जन्म से पहले जन्म से" },
+    { time: 15, text: "पहले मेरी मौत इंतजार में कैसे कहूं" },
+    { time: 25, text: "कहानियां अब सुनो पूरी लंबी कतार में जन्म" },
+    // Add more lyrics here...
 ];
 
-// Play/Pause functionality
-function playAudio() {
-    audioPlayer.play();
-    playBtn.innerHTML = '<i class="fas fa-pause"></i>';
-}
+let isPlaying = false;
+let currentIndex = 0;
 
-function pauseAudio() {
-    audioPlayer.pause();
-    playBtn.innerHTML = '<i class="fas fa-play"></i>';
-}
+// Welcome Screen Fade Out
+setTimeout(() => {
+    welcomeScreen.classList.add('fade-out');
+}, 5000);
 
+// Play / Pause Button
 playBtn.addEventListener('click', () => {
-    if (audioPlayer.paused) {
-        playAudio();
+    if (isPlaying) {
+        audioPlayer.pause();
+        playBtn.innerHTML = '<i class="fas fa-play"></i>';
     } else {
-        pauseAudio();
+        audioPlayer.play();
+        playBtn.innerHTML = '<i class="fas fa-pause"></i>';
     }
+    isPlaying = !isPlaying;
 });
 
-// Lyrics Display functionality
-lyricsBtn.addEventListener('click', () => {
-    if (lyricsSection.style.display === 'block') {
-        lyricsSection.style.display = 'none';
-        lyricsBtn.textContent = 'Show Lyrics';
-    } else {
-        lyricsSection.style.display = 'block';
-        lyricsBtn.textContent = 'Hide Lyrics';
-        displayLyrics();
-    }
+// Update Progress Bar
+audioPlayer.addEventListener('timeupdate', () => {
+    const progressPercentage = (audioPlayer.currentTime / audioPlayer.duration) * 100;
+    progress.style.width = `${progressPercentage}%`;
+    
+    // Sync lyrics with time
+    lyrics.forEach((lyric, index) => {
+        if (audioPlayer.currentTime >= lyric.time && currentIndex !== index) {
+            currentIndex = index;
+            document.getElementById('lyrics-text').innerText = lyric.text;
+        }
+    });
 });
 
-// Display Lyrics based on audio time
-function displayLyrics() {
-    const currentTime = audioPlayer.currentTime;
-    const lyric = lyrics.find((lyric) => currentTime >= lyric.time);
-    if (lyric) {
-        lyricsContent.innerHTML = lyric.text;
-    }
-}
+// Show Lyrics Button
+showLyricsBtn.addEventListener('click', () => {
+    lyricsContainer.style.display = 'block';
+});
 
-// Update progress bar
-function updateProgress() {
-    const currentTime = audioPlayer.currentTime;
-    const duration = audioPlayer.duration;
-    const progressWidth = (currentTime / duration) * 100 + '%';
-    progress.style.width = progressWidth;
-}
+// Next / Previous Button Functionality (for demo, just toggles the song)
+nextBtn.addEventListener('click', () => {
+    audioPlayer.currentTime += 10;
+});
 
-// Event listeners for audio
-audioPlayer.addEventListener('timeupdate', updateProgress);
-audioPlayer.addEventListener('play', displayLyrics);
-
-// Initialize player
-function init() {
-    lyricsSection.style.display = 'none';
-}
-init();
+prevBtn.addEventListener('click', () => {
+    audioPlayer.currentTime -= 10;
+});
