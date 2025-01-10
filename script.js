@@ -7,24 +7,18 @@ const progress = document.querySelector('.progress');
 const progressBar = document.querySelector('.progress-bar');
 const songTitle = document.getElementById('song-title');
 const artistName = document.getElementById('artist-name');
-const songItems = document.getElementById('song-items');
-const playerContainer = document.getElementById('player-container');
-const searchInput = document.getElementById('search-input');
-const searchBtn = document.getElementById('search-btn');
 
 // Songs Array
 const songs = [
     {
         title: 'Duvidha',
         artist: 'Lucke',
-        src: 'https://raw.githubusercontent.com/pixel143try7frs/VyrizPod/322e4bcd80fdff2cc7fd13347f66630e07cee582/DUVIDHA%20%20Hindi%20Rap%20Song%20%20By%20LUCKE.mp3',
-        albumArt: 'https://github.com/pixel143try7frs/VyrizPod/blob/main/Duvidha%20downloaded%20from%20SpotiSongDownloader.com_.jpg?raw=true'
+        src: 'https://raw.githubusercontent.com/pixel143try7frs/VyrizPod/322e4bcd80fdff2cc7fd13347f66630e07cee582/DUVIDHA%20%20Hindi%20Rap%20Song%20%20By%20LUCKE.mp3'
     },
     {
         title: 'Bumpy Ride',
         artist: 'Mohombi',
-        src: 'https://github.com/pixel143try7frs/VyrizPod/blob/main/Mohombi%20-%20Bumpy%20Ride.mp3?raw=true',
-        albumArt: 'https://github.com/pixel143try7frs/VyrizPod/blob/main/Bumpy%20Ride%20downloaded%20from%20SpotiSongDownloader.com_.jpg?raw=true'
+        src: 'https://github.com/pixel143try7frs/VyrizPod/blob/main/Mohombi%20-%20Bumpy%20Ride.mp3?raw=true'
     }
 ];
 
@@ -36,12 +30,6 @@ function loadSong(index) {
     audioPlayer.src = song.src;
     songTitle.textContent = song.title;
     artistName.textContent = song.artist;
-}
-
-// Show Player and Play Song
-function showPlayer() {
-    playerContainer.style.display = 'block';
-    playerContainer.style.transform = 'translateY(0)';
 }
 
 // Play/Pause functionality
@@ -86,37 +74,6 @@ function nextSong() {
     playAudio();
 }
 
-// Display all songs on homepage
-function displaySongs(filteredSongs) {
-    songItems.innerHTML = '';  // Clear current list
-    filteredSongs.forEach((song, index) => {
-        const songElement = document.createElement('div');
-        songElement.classList.add('song-item');
-        songElement.innerHTML = `
-            <div class="song-info">
-                <h3 class="song-title">${song.title}</h3>
-                <p class="artist-name">${song.artist}</p>
-            </div>
-        `;
-        songElement.addEventListener('click', () => {
-            currentSongIndex = index;
-            loadSong(currentSongIndex);
-            playAudio();
-            showPlayer();
-        });
-        songItems.appendChild(songElement);
-    });
-}
-
-// Filter songs based on search input
-function filterSongs(query) {
-    const filteredSongs = songs.filter(song => 
-        song.title.toLowerCase().includes(query.toLowerCase()) || 
-        song.artist.toLowerCase().includes(query.toLowerCase())
-    );
-    displaySongs(filteredSongs);
-}
-
 // Event listeners
 playBtn.addEventListener('click', () => {
     if (audioPlayer.paused) {
@@ -133,22 +90,16 @@ audioPlayer.addEventListener('timeupdate', updateProgress);
 // Add event listener for progress bar interaction
 progressBar.addEventListener('click', setProgress);
 
-// Add event listener for search functionality
-searchBtn.addEventListener('click', () => {
-    const query = searchInput.value.trim();
-    filterSongs(query);
-});
-
-// Load the first song and display all songs when the page loads
+// Load the first song when the page loads
 window.onload = function () {
-    displaySongs(songs);
+    loadSong(currentSongIndex);
 
     // Welcome screen transition
     setTimeout(() => {
         document.getElementById('welcome-screen').style.opacity = '0';
         setTimeout(() => {
             document.getElementById('welcome-screen').style.display = 'none';
-            document.getElementById('songs-list').style.display = 'block';  // Show the songs list
+            document.getElementById('search-container').style.display = 'block';
         }, 1000);
-    }, 3000);
+    }, 2000);
 };
