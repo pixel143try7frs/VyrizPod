@@ -33,11 +33,6 @@ body {
     flex-direction: column;
 }
 
-.welcome-screen .logo {
-    width: 100px;
-    margin-bottom: 20px;
-}
-
 .welcome-screen h1 {
     font-size: 3rem;
     color: #1db954;
