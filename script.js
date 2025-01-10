@@ -149,6 +149,7 @@ window.onload = function () {
         setTimeout(() => {
             document.getElementById('welcome-screen').style.display = 'none';
             document.getElementById('songs-list').style.display = 'block';  // Show the songs list
-        }, 1000);
-    }, 3000);
+            document.getElementById('search-bar').classList.add('show');  // Show the search bar
+        }, 1000); // Wait for fade effect
+    }, 3000); // Fade out welcome screen after 3 seconds
 };
