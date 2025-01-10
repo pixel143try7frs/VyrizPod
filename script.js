@@ -5,11 +5,12 @@ const prevBtn = document.getElementById('prevBtn');
 const nextBtn = document.getElementById('nextBtn');
 const progress = document.querySelector('.progress');
 const progressBar = document.querySelector('.progress-bar');
-const albumArt = document.getElementById('album-art');
 const songTitle = document.getElementById('song-title');
 const artistName = document.getElementById('artist-name');
 const songItems = document.getElementById('song-items');
 const playerContainer = document.getElementById('player-container');
+const searchInput = document.getElementById('search-input');
+const searchBtn = document.getElementById('search-btn');
 
 // Songs Array
 const songs = [
@@ -33,7 +34,6 @@ let currentSongIndex = 0;
 function loadSong(index) {
     const song = songs[index];
     audioPlayer.src = song.src;
-    albumArt.src = song.albumArt;
     songTitle.textContent = song.title;
     artistName.textContent = song.artist;
 }
@@ -87,12 +87,12 @@ function nextSong() {
 }
 
 // Display all songs on homepage
-function displaySongs() {
-    songs.forEach((song, index) => {
+function displaySongs(filteredSongs) {
+    songItems.innerHTML = '';  // Clear current list
+    filteredSongs.forEach((song, index) => {
         const songElement = document.createElement('div');
         songElement.classList.add('song-item');
         songElement.innerHTML = `
-            <img src="${song.albumArt}" alt="${song.title}" class="song-album-art">
             <div class="song-info">
                 <h3 class="song-title">${song.title}</h3>
                 <p class="artist-name">${song.artist}</p>
@@ -106,6 +106,15 @@ function displaySongs() {
         });
         songItems.appendChild(songElement);
     });
+}
+
+// Filter songs based on search input
+function filterSongs(query) {
+    const filteredSongs = songs.filter(song => 
+        song.title.toLowerCase().includes(query.toLowerCase()) || 
+        song.artist.toLowerCase().includes(query.toLowerCase())
+    );
+    displaySongs(filteredSongs);
 }
 
 // Event listeners
@@ -124,9 +133,15 @@ audioPlayer.addEventListener('timeupdate', updateProgress);
 // Add event listener for progress bar interaction
 progressBar.addEventListener('click', setProgress);
 
+// Add event listener for search functionality
+searchBtn.addEventListener('click', () => {
+    const query = searchInput.value.trim();
+    filterSongs(query);
+});
+
 // Load the first song and display all songs when the page loads
 window.onload = function () {
-    displaySongs();
+    displaySongs(songs);
 
     // Welcome screen transition
     setTimeout(() => {
