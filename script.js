@@ -1,11 +1,23 @@
+// Elements
 const audioPlayer = document.getElementById('audioPlayer');
 const playBtn = document.getElementById('playBtn');
 const prevBtn = document.getElementById('prevBtn');
 const nextBtn = document.getElementById('nextBtn');
-const progressBar = document.querySelector('.progress-bar');
 const progress = document.querySelector('.progress');
 
-// Play and Pause functionality
+// Welcome screen transition
+window.onload = function() {
+    setTimeout(() => {
+        document.getElementById('welcome-screen').style.opacity = '0';
+        setTimeout(() => {
+            document.getElementById('welcome-screen').style.display = 'none';
+            document.getElementById('slogan-screen').style.display = 'block';
+            document.getElementById('slogan-screen').style.opacity = '1';
+        }, 2000);
+    }, 3000);
+}
+
+// Play/Pause functionality
 function playAudio() {
     audioPlayer.play();
     playBtn.innerHTML = '<i class="fas fa-pause"></i>';
@@ -35,7 +47,7 @@ playBtn.addEventListener('click', () => {
 
 audioPlayer.addEventListener('timeupdate', updateProgress);
 
-// Dummy previous and next buttons functionality (you can implement actual song switching)
+// Dummy previous and next buttons functionality
 prevBtn.addEventListener('click', () => {
     alert('Previous song');
 });
