@@ -13,37 +13,40 @@
         <h1>Welcome to My Music Platform</h1>
     </div>
 
-    <!-- Player Container -->
-    <div id="player-container" style="display: none;">
-        <div id="song-info">
-            <h2 id="song-title">Song Title</h2>
-            <p id="artist-name">Artist Name</p>
-        </div>
-
-        <audio id="audioPlayer" controls>
-            <source id="audioSource" src="" type="audio/mp3">
-        </audio>
-
-        <div id="progress-container">
-            <span id="current-time">0:00</span> <!-- Current Time -->
-            <div class="progress-bar" onclick="setProgress(event)"></div>
-            <span id="remaining-time">3:30</span> <!-- Remaining Time -->
-        </div>
-
-        <div id="controls">
-            <button id="prevBtn">Previous</button>
-            <button id="playBtn"><i class="fas fa-play"></i></button>
-            <button id="nextBtn">Next</button>
-        </div>
-    </div>
-
     <!-- Song List -->
     <div id="songs-list" style="display: none;">
         <input type="text" id="search-input" placeholder="Search for a song...">
         <button id="search-btn">Search</button>
 
         <div id="song-items">
-            <!-- Song items will be dynamically displayed here -->
+            <!-- Songs will be dynamically loaded here -->
+        </div>
+    </div>
+
+    <!-- Music Player -->
+    <div id="player-container" style="display: none;">
+        <div id="player-top">
+            <div id="album-art">
+                <!-- Album Art will appear here -->
+            </div>
+            <div id="song-details">
+                <h2 id="song-title">Song Title</h2>
+                <p id="artist-name">Artist Name</p>
+            </div>
+        </div>
+
+        <div id="progress-container">
+            <span id="current-time">0:00</span>
+            <div class="progress-bar" onclick="setProgress(event)">
+                <div class="progress"></div>
+            </div>
+            <span id="remaining-time">0:00</span>
+        </div>
+
+        <div id="controls">
+            <button id="prevBtn">Previous</button>
+            <button id="playBtn"><i class="fas fa-play"></i></button>
+            <button id="nextBtn">Next</button>
         </div>
     </div>
 
