@@ -7,7 +7,6 @@ const progress = document.querySelector('.progress');
 const progressBar = document.querySelector('.progress-bar');
 const songTitle = document.getElementById('song-title');
 const artistName = document.getElementById('artist-name');
-const albumArt = document.getElementById('album-art');
 const songItems = document.getElementById('song-items');
 const playerContainer = document.getElementById('player-container');
 const searchInput = document.getElementById('search-input');
@@ -37,12 +36,12 @@ function loadSong(index) {
     audioPlayer.src = song.src;
     songTitle.textContent = song.title;
     artistName.textContent = song.artist;
-    albumArt.src = song.albumArt;
 }
 
 // Show Player and Play Song
 function showPlayer() {
     playerContainer.style.display = 'block';
+    playerContainer.style.transform = 'translateY(0)';
 }
 
 // Play/Pause functionality
@@ -88,9 +87,9 @@ function nextSong() {
 }
 
 // Display all songs on homepage
-function displaySongs() {
-    songItems.innerHTML = ''; // Clear current list
-    songs.forEach((song, index) => {
+function displaySongs(filteredSongs) {
+    songItems.innerHTML = '';  // Clear current list
+    filteredSongs.forEach((song, index) => {
         const songElement = document.createElement('div');
         songElement.classList.add('song-item');
         songElement.innerHTML = `
@@ -109,6 +108,15 @@ function displaySongs() {
     });
 }
 
+// Filter songs based on search input
+function filterSongs(query) {
+    const filteredSongs = songs.filter(song => 
+        song.title.toLowerCase().includes(query.toLowerCase()) || 
+        song.artist.toLowerCase().includes(query.toLowerCase())
+    );
+    displaySongs(filteredSongs);
+}
+
 // Event listeners
 playBtn.addEventListener('click', () => {
     if (audioPlayer.paused) {
@@ -125,8 +133,22 @@ audioPlayer.addEventListener('timeupdate', updateProgress);
 // Add event listener for progress bar interaction
 progressBar.addEventListener('click', setProgress);
 
+// Add event listener for search functionality
+searchBtn.addEventListener('click', () => {
+    const query = searchInput.value.trim();
+    filterSongs(query);
+});
+
 // Load the first song and display all songs when the page loads
 window.onload = function () {
-    displaySongs();
-    loadSong(currentSongIndex);
+    displaySongs(songs);
+
+    // Welcome screen transition
+    setTimeout(() => {
+        document.getElementById('welcome-screen').style.opacity = '0';
+        setTimeout(() => {
+            document.getElementById('welcome-screen').style.display = 'none';
+            document.getElementById('songs-list').style.display = 'block';  // Show the songs list
+        }, 1000);
+    }, 3000);
 };
