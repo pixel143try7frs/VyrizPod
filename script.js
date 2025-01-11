@@ -3,33 +3,34 @@ const audioPlayer = document.getElementById('audioPlayer');
 const playBtn = document.getElementById('playBtn');
 const prevBtn = document.getElementById('prevBtn');
 const nextBtn = document.getElementById('nextBtn');
-const progressBar = document.querySelector('.progress-bar');
 const progress = document.querySelector('.progress');
+const progressBar = document.querySelector('.progress-bar');
 const songTitle = document.getElementById('song-title');
 const artistName = document.getElementById('artist-name');
 const songItems = document.getElementById('song-items');
 const playerContainer = document.getElementById('player-container');
 const searchInput = document.getElementById('search-input');
 const searchBtn = document.getElementById('search-btn');
-const currentTimeDisplay = document.getElementById('current-time');
-const remainingTimeDisplay = document.getElementById('remaining-time');
 
 // Songs Array
 const songs = [
     {
         title: 'Duvidha',
         artist: 'Lucke',
-        src: 'https://raw.githubusercontent.com/pixel143try7frs/VyrizPod/322e4bcd80fdff2cc7fd13347f66630e07cee582/DUVIDHA%20%20Hindi%20Rap%20Song%20%20By%20LUCKE.mp3'
+        src: 'https://raw.githubusercontent.com/pixel143try7frs/VyrizPod/322e4bcd80fdff2cc7fd13347f66630e07cee582/DUVIDHA%20%20Hindi%20Rap%20Song%20%20By%20LUCKE.mp3',
+        albumArt: 'https://github.com/pixel143try7frs/VyrizPod/blob/main/Duvidha%20downloaded%20from%20SpotiSongDownloader.com_.jpg?raw=true'
     },
     {
         title: 'Bumpy Ride',
         artist: 'Mohombi',
-        src: 'https://github.com/pixel143try7frs/VyrizPod/blob/main/Mohombi%20-%20Bumpy%20Ride.mp3?raw=true'
+        src: 'https://github.com/pixel143try7frs/VyrizPod/blob/main/Mohombi%20-%20Bumpy%20Ride.mp3?raw=true',
+        albumArt: 'https://github.com/pixel143try7frs/VyrizPod/blob/main/Bumpy%20Ride%20downloaded%20from%20SpotiSongDownloader.com_.jpg?raw=true'
     },
     {
         title: 'Ride It',
         artist: 'Jay Sean',
-        src: 'https://github.com/pixel143try7frs/VyrizPod/raw/main/Jay%20Sean%20-%20Ride%20It%20(Lyrics).mp3'
+        src: 'https://github.com/pixel143try7frs/VyrizPod/blob/main/Jay%20Sean%20-%20Ride%20It%20(Lyrics).mp3',
+        albumArt: 'https://github.com/pixel143try7frs/VyrizPod/blob/main/Bumpy%20Ride%20downloaded%20from%20SpotiSongDownloader.com_.jpg?raw=true'
     }
 ];
 
@@ -46,6 +47,7 @@ function loadSong(index) {
 // Show Player and Play Song
 function showPlayer() {
     playerContainer.style.display = 'block';
+    playerContainer.style.transform = 'translateY(0)';
 }
 
 // Play/Pause functionality
@@ -59,25 +61,12 @@ function pauseAudio() {
     playBtn.innerHTML = '<i class="fas fa-play"></i>';
 }
 
-// Update progress bar and time display
+// Update progress bar
 function updateProgress() {
     const currentTime = audioPlayer.currentTime;
     const duration = audioPlayer.duration;
-
-    // Update progress bar
     const progressWidth = (currentTime / duration) * 100 + '%';
     progress.style.width = progressWidth;
-
-    // Update current time and remaining time
-    currentTimeDisplay.textContent = formatTime(currentTime);
-    remainingTimeDisplay.textContent = formatTime(duration - currentTime);
-}
-
-// Format time as mm:ss
-function formatTime(seconds) {
-    const minutes = Math.floor(seconds / 60);
-    const remainingSeconds = Math.floor(seconds % 60);
-    return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
 }
 
 // Set progress when user clicks on the progress bar
@@ -104,22 +93,37 @@ function nextSong() {
 }
 
 // Display all songs on homepage
-function displaySongs() {
-    songs.forEach((song, index) => {
+function displaySongs(filteredSongs) {
+    songItems.innerHTML = '';  // Clear current list
+    filteredSongs.forEach((song, index) => {
         const songElement = document.createElement('div');
         songElement.classList.add('song-item');
-        songElement.textContent = `${song.title} - ${song.artist}`;
+        songElement.innerHTML = `
+            <div class="song-info">
+                <h3 class="song-title">${song.title}</h3>
+                <p class="artist-name">${song.artist}</p>
+            </div>
+        `;
         songElement.addEventListener('click', () => {
             currentSongIndex = index;
             loadSong(currentSongIndex);
-            showPlayer();
             playAudio();
+            showPlayer();
         });
         songItems.appendChild(songElement);
     });
 }
 
-// Event Listeners
+// Filter songs based on search input
+function filterSongs(query) {
+    const filteredSongs = songs.filter(song => 
+        song.title.toLowerCase().includes(query.toLowerCase()) || 
+        song.artist.toLowerCase().includes(query.toLowerCase())
+    );
+    displaySongs(filteredSongs);
+}
+
+// Event listeners
 playBtn.addEventListener('click', () => {
     if (audioPlayer.paused) {
         playAudio();
@@ -131,9 +135,27 @@ playBtn.addEventListener('click', () => {
 prevBtn.addEventListener('click', prevSong);
 nextBtn.addEventListener('click', nextSong);
 audioPlayer.addEventListener('timeupdate', updateProgress);
+
+// Add event listener for progress bar interaction
 progressBar.addEventListener('click', setProgress);
 
-// Load songs on page load
-window.onload = () => {
-    displaySongs();
+// Add event listener for search functionality
+searchBtn.addEventListener('click', () => {
+    const query = searchInput.value.trim();
+    filterSongs(query);
+});
+
+// Load the first song and display all songs when the page loads
+window.onload = function () {
+    displaySongs(songs);
+
+    // Welcome screen transition
+    setTimeout(() => {
+        document.getElementById('welcome-screen').style.opacity = '0';
+        setTimeout(() => {
+            document.getElementById('welcome-screen').style.display = 'none';
+            document.getElementById('songs-list').style.display = 'block';  // Show the songs list
+        }, 1000);
+    }, 3000);
 };
+
