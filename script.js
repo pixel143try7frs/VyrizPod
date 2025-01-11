@@ -89,9 +89,9 @@ function nextSong() {
 }
 
 // Render songs list
-function renderSongs() {
+function renderSongs(filteredSongs = songs) {
     songItems.innerHTML = ''; // Clear any existing content
-    songs.forEach((song, index) => {
+    filteredSongs.forEach((song, index) => {
         const songElement = document.createElement('div');
         songElement.classList.add('song-item');
         songElement.innerHTML = `
@@ -102,13 +102,22 @@ function renderSongs() {
             </div>
         `;
         songElement.addEventListener('click', () => {
-            currentSongIndex = index;
+            currentSongIndex = songs.findIndex((s) => s.title === song.title);
             loadSong(currentSongIndex);
             showPlayer();
             playAudio();
         });
         songItems.appendChild(songElement);
     });
+}
+
+// Search Songs
+function searchSongs() {
+    const query = searchInput.value.toLowerCase();
+    const filteredSongs = songs.filter((song) =>
+        song.title.toLowerCase().includes(query) || song.artist.toLowerCase().includes(query)
+    );
+    renderSongs(filteredSongs);
 }
 
 // Event Listeners
@@ -124,6 +133,9 @@ prevBtn.addEventListener('click', prevSong);
 nextBtn.addEventListener('click', nextSong);
 progressBar.addEventListener('click', setProgress);
 audioPlayer.addEventListener('timeupdate', updateProgress);
+
+searchBtn.addEventListener('click', searchSongs);
+searchInput.addEventListener('input', searchSongs);
 
 // Initialize app
 loadSong(currentSongIndex);
