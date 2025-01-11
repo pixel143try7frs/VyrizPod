@@ -29,7 +29,7 @@ const songs = [
     {
         title: 'Ride It',
         artist: 'Jay Sean',
-        src: 'https://github.com/pixel143try7frs/VyrizPod/blob/main/Jay%20Sean%20-%20Ride%20It%20(Lyrics).mp3',
+        src: 'https://github.com/pixel143try7frs/VyrizPod/raw/main/Jay%20Sean%20-%20Ride%20It%20(Lyrics).mp3',
         albumArt: 'https://github.com/pixel143try7frs/VyrizPod/blob/main/Bumpy%20Ride%20downloaded%20from%20SpotiSongDownloader.com_.jpg?raw=true'
     }
 ];
