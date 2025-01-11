@@ -30,6 +30,8 @@ const playBtn = document.getElementById('playBtn');
 const prevBtn = document.getElementById('prevBtn');
 const nextBtn = document.getElementById('nextBtn');
 const progressBar = document.querySelector('.progress');
+const progressBarContainer = document.querySelector('.progress-bar');
+const volumeControl = document.getElementById('volume-control');
 
 // Current State
 let currentSongIndex = 0;
@@ -130,6 +132,11 @@ function filterSongs(searchTerm) {
     });
 }
 
+// Volume Control Functionality
+function setVolume() {
+    audioPlayer.volume = volumeControl.value / 100;
+}
+
 // Event Listeners
 playBtn.addEventListener('click', togglePlayPause);
 prevBtn.addEventListener('click', prevSong);
@@ -140,6 +147,34 @@ searchInput.addEventListener('input', (e) => {
     const searchTerm = e.target.value.trim();
     filterSongs(searchTerm);
 });
+
+// Handle progress bar click or drag
+let isMouseDown = false;
+progressBarContainer.addEventListener('mousedown', (e) => {
+    isMouseDown = true;
+    setProgressBarPosition(e);
+});
+
+progressBarContainer.addEventListener('mousemove', (e) => {
+    if (isMouseDown) {
+        setProgressBarPosition(e);
+    }
+});
+
+progressBarContainer.addEventListener('mouseup', () => {
+    isMouseDown = false;
+});
+
+progressBarContainer.addEventListener('mouseleave', () => {
+    isMouseDown = false;
+});
+
+function setProgressBarPosition(e) {
+    const clickX = e.offsetX;
+    const width = progressBarContainer.clientWidth;
+    const newTime = (clickX / width) * audioPlayer.duration;
+    audioPlayer.currentTime = newTime;
+}
 
 // Initial Setup
 setTimeout(() => {
