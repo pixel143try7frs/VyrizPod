@@ -1,150 +1,162 @@
-// Elements
+// Songs Data
+const songs = [
+    {
+        title: "Duvidha",
+        artist: "Lucke",
+        url: "https://raw.githubusercontent.com/pixel143try7frs/VyrizPod/322e4bcd80fdff2cc7fd13347f66630e07cee582/DUVIDHA%20%20Hindi%20Rap%20Song%20%20By%20LUCKE.mp3",
+        albumArt: "https://github.com/pixel143try7frs/VyrizPod/blob/main/Duvidha%20downloaded%20from%20SpotiSongDownloader.com_.jpg?raw=true"
+    },
+    {
+        title: "Bumpy Ride",
+        artist: "Mohombi",
+        url: "https://github.com/pixel143try7frs/VyrizPod/blob/main/Mohombi%20-%20Bumpy%20Ride.mp3?raw=true",
+        albumArt: "https://github.com/pixel143try7frs/VyrizPod/blob/main/Bumpy%20Ride%20downloaded%20from%20SpotiSongDownloader.com_.jpg?raw=true"
+    },
+    {
+        title: "Ride It",
+        artist: "Jay Sean",
+        url: "https://github.com/pixel143try7frs/VyrizPod/blob/main/Jay%20Sean%20-%20Ride%20It%20(Lyrics).mp3?raw=true",
+        albumArt: "https://github.com/pixel143try7frs/VyrizPod/blob/main/Ride%20It%20downloaded%20from%20SpotiSongDownloader.com_.jpg?raw=true"
+    }
+];
+
+// DOM Elements
+const welcomeScreen = document.getElementById('welcome-screen');
+const searchBar = document.getElementById('search-bar');
+const searchInput = document.getElementById('search-input');
+const songItemsContainer = document.getElementById('song-items');
+const playerContainer = document.getElementById('player-container');
+const songTitleElement = document.getElementById('song-title');
+const artistNameElement = document.getElementById('artist-name');
 const audioPlayer = document.getElementById('audioPlayer');
 const playBtn = document.getElementById('playBtn');
 const prevBtn = document.getElementById('prevBtn');
 const nextBtn = document.getElementById('nextBtn');
-const progress = document.querySelector('.progress');
-const progressBar = document.querySelector('.progress-bar');
-const songTitle = document.getElementById('song-title');
-const artistName = document.getElementById('artist-name');
-const songItems = document.getElementById('song-items');
-const playerContainer = document.getElementById('player-container');
-const searchInput = document.getElementById('search-input');
-const searchBtn = document.getElementById('search-btn');
+const progressBar = document.querySelector('.progress');
 
-// Songs Array
-const songs = [
-    {
-        title: 'Duvidha',
-        artist: 'Lucke',
-        src: 'https://raw.githubusercontent.com/pixel143try7frs/VyrizPod/322e4bcd80fdff2cc7fd13347f66630e07cee582/DUVIDHA%20%20Hindi%20Rap%20Song%20%20By%20LUCKE.mp3',
-        albumArt: 'https://github.com/pixel143try7frs/VyrizPod/blob/main/Duvidha%20downloaded%20from%20SpotiSongDownloader.com_.jpg?raw=true'
-    },
-    {
-        title: 'Bumpy Ride',
-        artist: 'Mohombi',
-        src: 'https://github.com/pixel143try7frs/VyrizPod/blob/main/Mohombi%20-%20Bumpy%20Ride.mp3?raw=true',
-        albumArt: 'https://github.com/pixel143try7frs/VyrizPod/blob/main/Bumpy%20Ride%20downloaded%20from%20SpotiSongDownloader.com_.jpg?raw=true'
-    }
-];
-
+// Current State
 let currentSongIndex = 0;
+let isPlaying = false;
 
-// Load a song
-function loadSong(index) {
-    const song = songs[index];
-    audioPlayer.src = song.src;
-    songTitle.textContent = song.title;
-    artistName.textContent = song.artist;
-}
+// Functions
+function initializeSongs() {
+    songs.forEach((song, index) => {
+        const songItem = document.createElement('div');
+        songItem.classList.add('song-item');
+        songItem.setAttribute('data-index', index);
 
-// Show Player and Play Song
-function showPlayer() {
-    playerContainer.style.display = 'block';
-    playerContainer.style.transform = 'translateY(0)';
-}
-
-// Play/Pause functionality
-function playAudio() {
-    audioPlayer.play();
-    playBtn.innerHTML = '<i class="fas fa-pause"></i>';
-}
-
-function pauseAudio() {
-    audioPlayer.pause();
-    playBtn.innerHTML = '<i class="fas fa-play"></i>';
-}
-
-// Update progress bar
-function updateProgress() {
-    const currentTime = audioPlayer.currentTime;
-    const duration = audioPlayer.duration;
-    const progressWidth = (currentTime / duration) * 100 + '%';
-    progress.style.width = progressWidth;
-}
-
-// Set progress when user clicks on the progress bar
-function setProgress(e) {
-    const width = progressBar.clientWidth;
-    const clickX = e.offsetX;
-    const duration = audioPlayer.duration;
-
-    audioPlayer.currentTime = (clickX / width) * duration;
-}
-
-// Previous Song
-function prevSong() {
-    currentSongIndex = (currentSongIndex === 0) ? songs.length - 1 : currentSongIndex - 1;
-    loadSong(currentSongIndex);
-    showPlayer();
-    playAudio();
-}
-
-// Next Song
-function nextSong() {
-    currentSongIndex = (currentSongIndex === songs.length - 1) ? 0 : currentSongIndex + 1;
-    loadSong(currentSongIndex);
-    showPlayer();
-    playAudio();
-}
-
-// Render songs list
-function renderSongs(filteredSongs = songs) {
-    songItems.innerHTML = ''; // Clear any existing content
-    filteredSongs.forEach((song, index) => {
-        const songElement = document.createElement('div');
-        songElement.classList.add('song-item');
-        songElement.innerHTML = `
-            <img src="${song.albumArt}" alt="${song.title}" class="album-art" style="width: 100%; border-radius: 10px;">
+        songItem.innerHTML = `
+            <img src="${song.albumArt}" alt="${song.title} Album Art" class="album-art">
             <div class="song-info">
                 <h3 class="song-title">${song.title}</h3>
                 <p class="artist-name">${song.artist}</p>
             </div>
+            <a href="${song.url}" target="_blank" class="song-link">Open Song</a>
         `;
-        songElement.addEventListener('click', () => {
-            currentSongIndex = songs.indexOf(song);
+
+        songItem.addEventListener('click', () => {
+            currentSongIndex = index;
             loadSong(currentSongIndex);
-            showPlayer();
-            playAudio();
+            playSong();
         });
-        songItems.appendChild(songElement);
+
+        songItemsContainer.appendChild(songItem);
     });
 }
 
-// Search Songs
-function searchSongs() {
-    const query = searchInput.value.toLowerCase();
-    const filteredSongs = songs.filter((song) =>
-        song.title.toLowerCase().includes(query) || song.artist.toLowerCase().includes(query)
+function loadSong(index) {
+    const song = songs[index];
+    songTitleElement.textContent = song.title;
+    artistNameElement.textContent = song.artist;
+    audioPlayer.src = song.url;
+    updateProgressBar();
+}
+
+function playSong() {
+    audioPlayer.play();
+    isPlaying = true;
+    playerContainer.style.display = 'block';
+    playBtn.innerHTML = '<i class="fas fa-pause"></i>';
+}
+
+function pauseSong() {
+    audioPlayer.pause();
+    isPlaying = false;
+    playBtn.innerHTML = '<i class="fas fa-play"></i>';
+}
+
+function togglePlayPause() {
+    isPlaying ? pauseSong() : playSong();
+}
+
+function prevSong() {
+    currentSongIndex = (currentSongIndex - 1 + songs.length) % songs.length;
+    loadSong(currentSongIndex);
+    playSong();
+}
+
+function nextSong() {
+    currentSongIndex = (currentSongIndex + 1) % songs.length;
+    loadSong(currentSongIndex);
+    playSong();
+}
+
+function updateProgressBar() {
+    const progress = (audioPlayer.currentTime / audioPlayer.duration) * 100;
+    progressBar.style.width = `${progress}%`;
+}
+
+function filterSongs(searchTerm) {
+    const filteredSongs = songs.filter(song =>
+        song.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        song.artist.toLowerCase().includes(searchTerm.toLowerCase())
     );
-    renderSongs(filteredSongs);
+
+    songItemsContainer.innerHTML = '';
+    filteredSongs.forEach((song, index) => {
+        const songItem = document.createElement('div');
+        songItem.classList.add('song-item');
+        songItem.setAttribute('data-index', index);
+
+        songItem.innerHTML = `
+            <img src="${song.albumArt}" alt="${song.title} Album Art" class="album-art">
+            <div class="song-info">
+                <h3 class="song-title">${song.title}</h3>
+                <p class="artist-name">${song.artist}</p>
+            </div>
+            <a href="${song.url}" target="_blank" class="song-link">Open Song</a>
+        `;
+
+        songItem.addEventListener('click', () => {
+            currentSongIndex = songs.indexOf(song);
+            loadSong(currentSongIndex);
+            playSong();
+        });
+
+        songItemsContainer.appendChild(songItem);
+    });
 }
 
 // Event Listeners
-playBtn.addEventListener('click', () => {
-    if (audioPlayer.paused) {
-        playAudio();
-    } else {
-        pauseAudio();
-    }
-});
-
+playBtn.addEventListener('click', togglePlayPause);
 prevBtn.addEventListener('click', prevSong);
 nextBtn.addEventListener('click', nextSong);
-progressBar.addEventListener('click', setProgress);
-audioPlayer.addEventListener('timeupdate', updateProgress);
+audioPlayer.addEventListener('timeupdate', updateProgressBar);
 
-searchBtn.addEventListener('click', searchSongs);
-searchInput.addEventListener('input', searchSongs);
+searchInput.addEventListener('input', (e) => {
+    const searchTerm = e.target.value.trim();
+    filterSongs(searchTerm);
+});
 
-// Initialize app
-loadSong(currentSongIndex);
-renderSongs();
-
-// Welcome Screen fade out logic
+// Initial Setup
 setTimeout(() => {
-    document.getElementById('welcome-screen').style.opacity = '0';
-    document.getElementById('welcome-screen').style.transition = 'opacity 1s ease-in-out';
-    document.getElementById('search-bar').classList.add('show');
-    document.getElementById('songs-list').style.display = 'block';
-}, 3000);
+    welcomeScreen.style.opacity = 0;
+    setTimeout(() => {
+        welcomeScreen.style.display = 'none';
+        searchBar.classList.add('show');
+        document.getElementById('songs-list').style.display = 'block';
+    }, 1000);
+}, 2000);
+
+initializeSongs();
+loadSong(currentSongIndex);
