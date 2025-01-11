@@ -102,7 +102,7 @@ function renderSongs(filteredSongs = songs) {
             </div>
         `;
         songElement.addEventListener('click', () => {
-            currentSongIndex = songs.findIndex((s) => s.title === song.title);
+            currentSongIndex = songs.indexOf(song);
             loadSong(currentSongIndex);
             showPlayer();
             playAudio();
