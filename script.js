@@ -3,35 +3,33 @@ const audioPlayer = document.getElementById('audioPlayer');
 const playBtn = document.getElementById('playBtn');
 const prevBtn = document.getElementById('prevBtn');
 const nextBtn = document.getElementById('nextBtn');
-const progress = document.querySelector('.progress-bar');
+const progressBar = document.querySelector('.progress-bar');
+const progress = document.querySelector('.progress');
 const songTitle = document.getElementById('song-title');
 const artistName = document.getElementById('artist-name');
 const songItems = document.getElementById('song-items');
 const playerContainer = document.getElementById('player-container');
 const searchInput = document.getElementById('search-input');
 const searchBtn = document.getElementById('search-btn');
-const currentTimeDisplay = document.getElementById('current-time'); // New element for current time
-const remainingTimeDisplay = document.getElementById('remaining-time'); // New element for remaining time
+const currentTimeDisplay = document.getElementById('current-time');
+const remainingTimeDisplay = document.getElementById('remaining-time');
 
 // Songs Array
 const songs = [
     {
         title: 'Duvidha',
         artist: 'Lucke',
-        src: 'https://raw.githubusercontent.com/pixel143try7frs/VyrizPod/322e4bcd80fdff2cc7fd13347f66630e07cee582/DUVIDHA%20%20Hindi%20Rap%20Song%20%20By%20LUCKE.mp3',
-        albumArt: 'https://github.com/pixel143try7frs/VyrizPod/blob/main/Duvidha%20downloaded%20from%20SpotiSongDownloader.com_.jpg?raw=true'
+        src: 'https://raw.githubusercontent.com/pixel143try7frs/VyrizPod/322e4bcd80fdff2cc7fd13347f66630e07cee582/DUVIDHA%20%20Hindi%20Rap%20Song%20%20By%20LUCKE.mp3'
     },
     {
         title: 'Bumpy Ride',
         artist: 'Mohombi',
-        src: 'https://github.com/pixel143try7frs/VyrizPod/blob/main/Mohombi%20-%20Bumpy%20Ride.mp3?raw=true',
-        albumArt: 'https://github.com/pixel143try7frs/VyrizPod/blob/main/Bumpy%20Ride%20downloaded%20from%20SpotiSongDownloader.com_.jpg?raw=true'
+        src: 'https://github.com/pixel143try7frs/VyrizPod/blob/main/Mohombi%20-%20Bumpy%20Ride.mp3?raw=true'
     },
     {
         title: 'Ride It',
         artist: 'Jay Sean',
-        src: 'https://github.com/pixel143try7frs/VyrizPod/raw/main/Jay%20Sean%20-%20Ride%20It%20(Lyrics).mp3',
-        albumArt: 'https://github.com/pixel143try7frs/VyrizPod/blob/main/Bumpy%20Ride%20downloaded%20from%20SpotiSongDownloader.com_.jpg?raw=true'
+        src: 'https://github.com/pixel143try7frs/VyrizPod/raw/main/Jay%20Sean%20-%20Ride%20It%20(Lyrics).mp3'
     }
 ];
 
@@ -48,7 +46,6 @@ function loadSong(index) {
 // Show Player and Play Song
 function showPlayer() {
     playerContainer.style.display = 'block';
-    playerContainer.style.transform = 'translateY(0)';
 }
 
 // Play/Pause functionality
@@ -67,18 +64,13 @@ function updateProgress() {
     const currentTime = audioPlayer.currentTime;
     const duration = audioPlayer.duration;
 
-    // Update progress bar width
+    // Update progress bar
     const progressWidth = (currentTime / duration) * 100 + '%';
     progress.style.width = progressWidth;
 
-    // Format and update current time
-    const formattedCurrentTime = formatTime(currentTime);
-    currentTimeDisplay.textContent = formattedCurrentTime;
-
-    // Calculate remaining time
-    const remainingTime = duration - currentTime;
-    const formattedRemainingTime = formatTime(remainingTime);
-    remainingTimeDisplay.textContent = formattedRemainingTime;
+    // Update current time and remaining time
+    currentTimeDisplay.textContent = formatTime(currentTime);
+    remainingTimeDisplay.textContent = formatTime(duration - currentTime);
 }
 
 // Format time as mm:ss
@@ -90,7 +82,7 @@ function formatTime(seconds) {
 
 // Set progress when user clicks on the progress bar
 function setProgress(e) {
-    const width = progress.clientWidth;
+    const width = progressBar.clientWidth;
     const clickX = e.offsetX;
     const duration = audioPlayer.duration;
 
@@ -112,37 +104,22 @@ function nextSong() {
 }
 
 // Display all songs on homepage
-function displaySongs(filteredSongs) {
-    songItems.innerHTML = '';  // Clear current list
-    filteredSongs.forEach((song, index) => {
+function displaySongs() {
+    songs.forEach((song, index) => {
         const songElement = document.createElement('div');
         songElement.classList.add('song-item');
-        songElement.innerHTML = `
-            <div class="song-info">
-                <h3 class="song-title">${song.title}</h3>
-                <p class="artist-name">${song.artist}</p>
-            </div>
-        `;
+        songElement.textContent = `${song.title} - ${song.artist}`;
         songElement.addEventListener('click', () => {
             currentSongIndex = index;
             loadSong(currentSongIndex);
-            playAudio();
             showPlayer();
+            playAudio();
         });
         songItems.appendChild(songElement);
     });
 }
 
-// Filter songs based on search input
-function filterSongs(query) {
-    const filteredSongs = songs.filter(song => 
-        song.title.toLowerCase().includes(query.toLowerCase()) || 
-        song.artist.toLowerCase().includes(query.toLowerCase())
-    );
-    displaySongs(filteredSongs);
-}
-
-// Event listeners
+// Event Listeners
 playBtn.addEventListener('click', () => {
     if (audioPlayer.paused) {
         playAudio();
@@ -154,26 +131,9 @@ playBtn.addEventListener('click', () => {
 prevBtn.addEventListener('click', prevSong);
 nextBtn.addEventListener('click', nextSong);
 audioPlayer.addEventListener('timeupdate', updateProgress);
+progressBar.addEventListener('click', setProgress);
 
-// Add event listener for progress bar interaction
-progress.addEventListener('click', setProgress);
-
-// Add event listener for search functionality
-searchBtn.addEventListener('click', () => {
-    const query = searchInput.value.trim();
-    filterSongs(query);
-});
-
-// Load the first song and display all songs when the page loads
-window.onload = function () {
-    displaySongs(songs);
-
-    // Welcome screen transition
-    setTimeout(() => {
-        document.getElementById('welcome-screen').style.opacity = '0';
-        setTimeout(() => {
-            document.getElementById('welcome-screen').style.display = 'none';
-            document.getElementById('songs-list').style.display = 'block';  // Show the songs list
-        }, 1000);
-    }, 3000);
+// Load songs on page load
+window.onload = () => {
+    displaySongs();
 };
