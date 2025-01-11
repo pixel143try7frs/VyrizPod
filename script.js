@@ -15,6 +15,7 @@ const lyricsBtn = document.getElementById('lyricsBtn');
 const lyricsModal = document.getElementById('lyrics-modal');
 const closeLyrics = document.getElementById('close-lyrics');
 const lyricsText = document.getElementById('lyrics-text');
+const welcomeScreen = document.getElementById('welcome-screen');
 
 // Songs Array
 const songs = [
@@ -54,8 +55,9 @@ function loadSong(index) {
 
 // Show Player and Play Song
 function showPlayer() {
+    welcomeScreen.style.display = 'none'; // Hide welcome screen
     playerContainer.style.display = 'block';
-    playerContainer.style.transform = 'translateY(0)';
+    playerContainer.classList.remove('hidden');
 }
 
 // Lyrics Modal Logic
@@ -118,8 +120,11 @@ volumeControl.addEventListener('input', () => {
     audioPlayer.volume = volumeControl.value / 100;
 });
 
-// Initialize the player with the first song
+// Initialize the player with the first song after a delay
 window.onload = function () {
-    loadSong(currentSongIndex);
-    showPlayer();
+    setTimeout(function () {
+        loadSong(currentSongIndex);
+        showPlayer();
+        playAudio();
+    }, 3000); // Welcome screen shows for 3 seconds
 };
