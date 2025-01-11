@@ -40,7 +40,7 @@ body {
 
 /* Search Bar */
 .search-bar {
-    display: none; /* Hidden initially */
+    display: flex;
     justify-content: center;
     align-items: center;
     width: 100%;
@@ -48,10 +48,6 @@ body {
     position: absolute;
     top: 10px;
     z-index: 20;
-}
-
-.search-bar.show {
-    display: flex; /* Will show the search bar */
 }
 
 .search-input {
@@ -221,4 +217,3 @@ body {
         width: 80%;
     }
 }
-
