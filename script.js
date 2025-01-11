@@ -88,6 +88,29 @@ function nextSong() {
     playAudio();
 }
 
+// Render songs list
+function renderSongs() {
+    songItems.innerHTML = ''; // Clear any existing content
+    songs.forEach((song, index) => {
+        const songElement = document.createElement('div');
+        songElement.classList.add('song-item');
+        songElement.innerHTML = `
+            <img src="${song.albumArt}" alt="${song.title}" class="album-art" style="width: 100%; border-radius: 10px;">
+            <div class="song-info">
+                <h3 class="song-title">${song.title}</h3>
+                <p class="artist-name">${song.artist}</p>
+            </div>
+        `;
+        songElement.addEventListener('click', () => {
+            currentSongIndex = index;
+            loadSong(currentSongIndex);
+            showPlayer();
+            playAudio();
+        });
+        songItems.appendChild(songElement);
+    });
+}
+
 // Event Listeners
 playBtn.addEventListener('click', () => {
     if (audioPlayer.paused) {
@@ -104,6 +127,7 @@ audioPlayer.addEventListener('timeupdate', updateProgress);
 
 // Initialize app
 loadSong(currentSongIndex);
+renderSongs();
 
 // Welcome Screen fade out logic
 setTimeout(() => {
