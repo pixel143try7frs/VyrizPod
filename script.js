@@ -3,20 +3,17 @@ const songs = [
     {
         title: "Duvidha",
         artist: "Lucke",
-        url: "https://raw.githubusercontent.com/pixel143try7frs/VyrizPod/322e4bcd80fdff2cc7fd13347f66630e07cee582/DUVIDHA%20%20Hindi%20Rap%20Song%20%20By%20LUCKE.mp3",
-        albumArt: "https://github.com/pixel143try7frs/VyrizPod/blob/main/Duvidha%20downloaded%20from%20SpotiSongDownloader.com_.jpg?raw=true"
+        url: "https://raw.githubusercontent.com/pixel143try7frs/VyrizPod/322e4bcd80fdff2cc7fd13347f66630e07cee582/DUVIDHA%20%20Hindi%20Rap%20Song%20%20By%20LUCKE.mp3"
     },
     {
         title: "Bumpy Ride",
         artist: "Mohombi",
-        url: "https://github.com/pixel143try7frs/VyrizPod/blob/main/Mohombi%20-%20Bumpy%20Ride.mp3?raw=true",
-        albumArt: "https://github.com/pixel143try7frs/VyrizPod/blob/main/Bumpy%20Ride%20downloaded%20from%20SpotiSongDownloader.com_.jpg?raw=true"
+        url: "https://github.com/pixel143try7frs/VyrizPod/blob/main/Mohombi%20-%20Bumpy%20Ride.mp3?raw=true"
     },
     {
         title: "Ride It",
         artist: "Jay Sean",
-        url: "https://github.com/pixel143try7frs/VyrizPod/blob/main/Jay%20Sean%20-%20Ride%20It%20(Lyrics).mp3?raw=true",
-        albumArt: "https://github.com/pixel143try7frs/VyrizPod/blob/main/Ride%20It%20downloaded%20from%20SpotiSongDownloader.com_.jpg?raw=true"
+        url: "https://github.com/pixel143try7frs/VyrizPod/blob/main/Jay%20Sean%20-%20Ride%20It%20(Lyrics).mp3?raw=true"
     }
 ];
 
@@ -46,12 +43,10 @@ function initializeSongs() {
         songItem.setAttribute('data-index', index);
 
         songItem.innerHTML = `
-            <img src="${song.albumArt}" alt="${song.title} Album Art" class="album-art">
             <div class="song-info">
                 <h3 class="song-title">${song.title}</h3>
                 <p class="artist-name">${song.artist}</p>
             </div>
-            <a href="${song.url}" target="_blank" class="song-link">Open Song</a>
         `;
 
         songItem.addEventListener('click', () => {
@@ -119,12 +114,10 @@ function filterSongs(searchTerm) {
         songItem.setAttribute('data-index', index);
 
         songItem.innerHTML = `
-            <img src="${song.albumArt}" alt="${song.title} Album Art" class="album-art">
             <div class="song-info">
                 <h3 class="song-title">${song.title}</h3>
                 <p class="artist-name">${song.artist}</p>
             </div>
-            <a href="${song.url}" target="_blank" class="song-link">Open Song</a>
         `;
 
         songItem.addEventListener('click', () => {
