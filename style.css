@@ -9,6 +9,30 @@ body {
     align-items: center;
     height: 100vh;
     color: #333;
+    overflow: hidden;
+}
+
+/* Welcome Screen */
+#welcome-screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #1db954;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    flex-direction: column;
+    font-size: 24px;
+    transition: opacity 1s ease;
+}
+
+#welcome-screen h1 {
+    font-size: 40px;
+    margin-bottom: 20px;
 }
 
 /* Player Container */
@@ -20,6 +44,11 @@ body {
     text-align: center;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     position: relative;
+    display: none;
+}
+
+.hidden {
+    display: none;
 }
 
 /* Song Title and Artist */
@@ -53,7 +82,7 @@ button {
 }
 
 button:hover {
-    color: #1db954; /* Spotify Green */
+    color: #1db954;
 }
 
 /* Progress Bar */
@@ -140,7 +169,7 @@ button:hover {
 
 /* Green Modal for No Lyrics Available */
 .lyrics-modal.no-lyrics {
-    background-color: #1db954; /* Spotify Green */
+    background-color: #1db954;
 }
 
 .no-lyrics-message {
