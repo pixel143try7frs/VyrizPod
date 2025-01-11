@@ -3,52 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Music Player</title>
+    <title>VyrizPod - Music Player</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
 </head>
 <body>
-
     <!-- Welcome Screen -->
-    <div id="welcome-screen">
-        <h1>Welcome to My Music Platform</h1>
+    <div id="welcome-screen" class="welcome-screen">
+        <h1>VyrizPod</h1>
     </div>
 
-    <!-- Song List -->
-    <div id="songs-list" style="display: none;">
-        <input type="text" id="search-input" placeholder="Search for a song...">
-        <button id="search-btn">Search</button>
+    <!-- Search Bar -->
+    <div id="search-bar" class="search-bar">
+        <input type="text" id="search-input" placeholder="Search for songs..." class="search-input">
+        <button id="search-btn" class="search-btn"><i class="fas fa-search"></i></button>
+    </div>
 
-        <div id="song-items">
-            <!-- Songs will be dynamically loaded here -->
-        </div>
+    <!-- Homepage with Songs List -->
+    <div id="songs-list" class="songs-list">
+        <h2>All Songs</h2>
+        <div id="song-items" class="song-items"></div>
     </div>
 
     <!-- Music Player -->
-    <div id="player-container" style="display: none;">
-        <div id="player-top">
-            <div id="album-art">
-                <!-- Album Art will appear here -->
-            </div>
-            <div id="song-details">
-                <h2 id="song-title">Song Title</h2>
-                <p id="artist-name">Artist Name</p>
+    <div class="player-container" id="player-container">
+        <div class="song-info">
+            <img id="album-art" src="" alt="Album Art">
+            <div>
+                <h2 class="song-title" id="song-title">Duvidha</h2>
+                <p class="artist-name" id="artist-name">Lucke</p>
             </div>
         </div>
 
-        <div id="progress-container">
-            <div class="progress-bar" onclick="setProgress(event)">
-                <div class="progress"></div>
-            </div>
+        <div class="controls">
+            <button class="control-button" id="prevBtn"><i class="fas fa-step-backward"></i></button>
+            <button class="control-button" id="playBtn"><i class="fas fa-play"></i></button>
+            <button class="control-button" id="nextBtn"><i class="fas fa-step-forward"></i></button>
         </div>
 
-        <div id="controls">
-            <button id="prevBtn">Previous</button>
-            <button id="playBtn"><i class="fas fa-play"></i></button>
-            <button id="nextBtn">Next</button>
+        <div class="progress-bar">
+            <div class="progress"></div>
         </div>
     </div>
 
-    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <!-- Audio Player -->
+    <audio id="audioPlayer"></audio>
+
+    <!-- Custom JS -->
     <script src="script.js"></script>
 </body>
 </html>
