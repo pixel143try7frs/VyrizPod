@@ -1,62 +1,98 @@
 body {
     font-family: Arial, sans-serif;
-}
-
-#player-container {
+    margin: 0;
+    padding: 0;
     text-align: center;
-    padding: 20px;
 }
 
-#song-info {
-    margin-bottom: 20px;
-}
-
-#progress-container {
+#welcome-screen {
+    height: 100vh;
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
-}
-
-.progress-bar {
-    width: 80%;
-    height: 10px;
-    background-color: #ddd;
-    cursor: pointer;
-    position: relative;
-}
-
-#controls {
-    display: flex;
     justify-content: center;
-    gap: 10px;
+    background-color: #f4f4f4;
 }
 
-button {
-    padding: 10px;
-    font-size: 16px;
-    cursor: pointer;
-}
-
-#search-input {
-    padding: 10px;
-    font-size: 16px;
-    margin-right: 10px;
+#songs-list {
+    margin: 20px;
 }
 
 #song-items {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    gap: 10px;
 }
 
 .song-item {
-    margin: 10px 0;
+    padding: 10px;
+    border: 1px solid #ddd;
     cursor: pointer;
-    font-size: 18px;
+    transition: background-color 0.3s;
 }
 
-#search-btn {
+.song-item:hover {
+    background-color: #eee;
+}
+
+#player-container {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background: #333;
+    color: white;
+    padding: 10px 0;
+    display: none;
+}
+
+#player-top {
+    display: flex;
+    align-items: center;
+    gap: 10px;
     padding: 10px;
-    font-size: 16px;
+}
+
+#album-art {
+    width: 50px;
+    height: 50px;
+    background-color: #555;
+    flex-shrink: 0;
+}
+
+#song-details {
+    flex-grow: 1;
+    text-align: left;
+}
+
+#progress-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 10px;
+}
+
+.progress-bar {
+    width: 70%;
+    height: 5px;
+    background: #555;
+    position: relative;
+    cursor: pointer;
+}
+
+.progress {
+    width: 0%;
+    height: 100%;
+    background: #ff4500;
+}
+
+#controls button {
+    padding: 10px 20px;
+    background: #444;
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin: 5px;
+}
+
+#controls button:hover {
+    background: #555;
 }
