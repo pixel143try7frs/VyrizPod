@@ -3,14 +3,15 @@ const audioPlayer = document.getElementById('audioPlayer');
 const playBtn = document.getElementById('playBtn');
 const prevBtn = document.getElementById('prevBtn');
 const nextBtn = document.getElementById('nextBtn');
-const progress = document.querySelector('.progress');
-const progressBar = document.querySelector('.progress-bar');
+const progress = document.querySelector('.progress-bar');
 const songTitle = document.getElementById('song-title');
 const artistName = document.getElementById('artist-name');
 const songItems = document.getElementById('song-items');
 const playerContainer = document.getElementById('player-container');
 const searchInput = document.getElementById('search-input');
 const searchBtn = document.getElementById('search-btn');
+const currentTimeDisplay = document.getElementById('current-time'); // New element for current time
+const remainingTimeDisplay = document.getElementById('remaining-time'); // New element for remaining time
 
 // Songs Array
 const songs = [
@@ -61,17 +62,35 @@ function pauseAudio() {
     playBtn.innerHTML = '<i class="fas fa-play"></i>';
 }
 
-// Update progress bar
+// Update progress bar and time display
 function updateProgress() {
     const currentTime = audioPlayer.currentTime;
     const duration = audioPlayer.duration;
+
+    // Update progress bar width
     const progressWidth = (currentTime / duration) * 100 + '%';
     progress.style.width = progressWidth;
+
+    // Format and update current time
+    const formattedCurrentTime = formatTime(currentTime);
+    currentTimeDisplay.textContent = formattedCurrentTime;
+
+    // Calculate remaining time
+    const remainingTime = duration - currentTime;
+    const formattedRemainingTime = formatTime(remainingTime);
+    remainingTimeDisplay.textContent = formattedRemainingTime;
+}
+
+// Format time as mm:ss
+function formatTime(seconds) {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = Math.floor(seconds % 60);
+    return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
 }
 
 // Set progress when user clicks on the progress bar
 function setProgress(e) {
-    const width = progressBar.clientWidth;
+    const width = progress.clientWidth;
     const clickX = e.offsetX;
     const duration = audioPlayer.duration;
 
@@ -137,7 +156,7 @@ nextBtn.addEventListener('click', nextSong);
 audioPlayer.addEventListener('timeupdate', updateProgress);
 
 // Add event listener for progress bar interaction
-progressBar.addEventListener('click', setProgress);
+progress.addEventListener('click', setProgress);
 
 // Add event listener for search functionality
 searchBtn.addEventListener('click', () => {
