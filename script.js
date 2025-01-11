@@ -134,7 +134,8 @@ function filterSongs(searchTerm) {
 
 // Volume Control Functionality
 function setVolume() {
-    audioPlayer.volume = volumeControl.value / 100;
+    audioPlayer.volume = volumeControl.value / 100; // Make sure this is in the range 0-1
+    volumeControl.style.background = `linear-gradient(to right, #1db954 ${volumeControl.value}%, #404040 ${volumeControl.value}%)`; // Update the slider background color
 }
 
 // Event Listeners
@@ -188,3 +189,10 @@ setTimeout(() => {
 
 initializeSongs();
 loadSong(currentSongIndex);
+
+// Initialize volume control and set the default value
+volumeControl.value = 100; // Set default volume to 100
+setVolume(); // Apply volume control on page load
+
+// Volume control input event
+volumeControl.addEventListener('input', setVolume);
