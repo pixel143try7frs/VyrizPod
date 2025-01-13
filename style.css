@@ -1,100 +1,70 @@
+/* General Styles */
 body {
+  font-family: Arial, sans-serif;
   margin: 0;
-  font-family: 'Poppins', sans-serif;
+  padding: 0;
   background: linear-gradient(135deg, #1DB954, #191414);
   color: white;
+  text-align: center;
+}
+
+/* Welcome Screen */
+.welcome-screen {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
-  padding: 0 20px;
+  height: 100vh;
 }
 
-.container {
-  text-align: center;
-  max-width: 500px;
-  width: 100%;
+.hidden {
+  display: none;
 }
 
-.search-bar {
-  display: flex;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-.search-bar input {
-  width: 100%;
-  padding: 10px;
-  border: none;
-  border-radius: 50px;
-  font-size: 16px;
-  margin-right: 10px;
-}
-
-.search-bar button {
-  padding: 10px 15px;
-  border: none;
-  border-radius: 50%;
-  background-color: #1DB954;
-  color: white;
-  cursor: pointer;
-  font-size: 18px;
-  transition: background 0.3s ease;
-}
-
-.search-bar button:hover {
-  background-color: #1ed760;
-}
-
-h1 {
-  font-size: 32px;
+/* Search Bar */
+#search-bar {
   margin: 20px 0;
 }
 
+#search {
+  width: 80%;
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+}
+
+/* Songs List */
 #songs-list {
   display: flex;
   flex-direction: column;
-  gap: 15px;
-  margin: 20px 0;
+  align-items: center;
+  gap: 10px;
 }
 
 .song-item {
-  padding: 10px 15px;
-  border: 1px solid #1DB954;
-  border-radius: 25px;
   background-color: rgba(0, 0, 0, 0.5);
+  padding: 10px;
+  border-radius: 5px;
   cursor: pointer;
-  transition: background 0.3s ease;
 }
 
 .song-item:hover {
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: rgba(0, 0, 0, 0.7);
 }
 
-.player {
-  margin-top: 30px;
+/* Player */
+#player {
+  margin-top: 20px;
 }
 
-.player h2 {
-  font-size: 24px;
-  margin-bottom: 10px;
-}
-
-.dark-mode {
+#darkModeToggle {
   position: absolute;
-  top: 20px;
-  right: 20px;
-  padding: 10px 20px;
+  top: 10px;
+  right: 10px;
   background-color: #1DB954;
   border: none;
-  border-radius: 25px;
+  border-radius: 20px;
   color: white;
+  padding: 10px 20px;
   cursor: pointer;
-  font-size: 16px;
-  transition: background 0.3s ease;
-}
-
-.dark-mode:hover {
-  background-color: #1ed760;
 }
