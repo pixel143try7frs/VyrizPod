@@ -5,14 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VyrizPod - Music Player</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <!-- Welcome Screen -->
     <div id="welcome-screen" class="welcome-screen">
         <h1>VyrizPod</h1>
     </div>
+
+    <!-- Dark Mode Toggle -->
+    <button id="dark-mode-toggle" class="dark-mode-toggle">Dark Mode</button>
 
     <!-- Search Bar -->
     <div id="search-bar" class="search-bar">
@@ -29,18 +32,20 @@
     <!-- Music Player -->
     <div class="player-container" id="player-container">
         <div class="song-info">
-            <h2 class="song-title" id="song-title">Duvidha</h2>
-            <p class="artist-name" id="artist-name">Lucke</p>
+            <h2 class="song-title" id="song-title">Song Title</h2>
+            <p class="artist-name" id="artist-name">Artist</p>
         </div>
 
         <div class="controls">
+            <button class="control-button" id="shuffleBtn"><i class="fas fa-random"></i></button>
             <button class="control-button" id="prevBtn"><i class="fas fa-step-backward"></i></button>
             <button class="control-button" id="playBtn"><i class="fas fa-play"></i></button>
             <button class="control-button" id="nextBtn"><i class="fas fa-step-forward"></i></button>
+            <button class="control-button" id="repeatBtn"><i class="fas fa-redo"></i></button>
         </div>
 
-        <div class="progress-bar">
-            <div class="progress"></div>
+        <div class="progress-bar" id="progress-bar">
+            <div class="progress" id="progress"></div>
         </div>
 
         <!-- Volume Control -->
