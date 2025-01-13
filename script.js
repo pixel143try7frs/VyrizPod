@@ -1,59 +1,62 @@
-// Select Elements
-const audioPlayer = document.getElementById('audioPlayer');
-const playBtn = document.getElementById('playBtn');
-const prevBtn = document.getElementById('prevBtn');
-const nextBtn = document.getElementById('nextBtn');
-const shuffleBtn = document.getElementById('shuffleBtn');
-const repeatBtn = document.getElementById('repeatBtn');
-const progress = document.getElementById('progress');
-const progressBar = document.getElementById('progress-bar');
-const songTitle = document.getElementById('song-title');
-const artistName = document.getElementById('artist-name');
-const songItems = document.getElementById('song-items');
-const darkModeToggle = document.getElementById('dark-mode-toggle');
-
-// Songs Array
+// Song Data
 const songs = [
-    { title: "Duvidha", artist: "Lucke", src: "URL1", albumArt: "ART_URL1" },
-    { title: "Bumpy Ride", artist: "Mohombi", src: "URL2", albumArt: "ART_URL2" },
+  { title: "Song 1", src: "../audio/song1.mp3" },
+  { title: "Song 2", src: "../audio/song2.mp3" },
+  { title: "Song 3", src: "../audio/song3.mp3" },
 ];
 
-// Variables
-let currentSongIndex = 0;
-let isShuffle = false;
-let isRepeat = false;
+const welcomeScreen = document.getElementById("welcome-screen");
+const mainApp = document.getElementById("main-app");
+const searchBar = document.getElementById("search-bar");
+const songsList = document.getElementById("songs-list");
+const audioPlayer = document.getElementById("audio-player");
+const currentSongTitle = document.getElementById("current-song-title");
 
-// Functions
-function loadSong(index) {
-    const song = songs[index];
-    songTitle.textContent = song.title;
-    artistName.textContent = song.artist;
-    audioPlayer.src = song.src;
+// Enter App
+function enterApp() {
+  welcomeScreen.classList.add("hidden");
+  mainApp.classList.remove("hidden");
+  searchBar.classList.remove("hidden");
+  loadSongs();
 }
 
-function playSong() {
-    audioPlayer.play();
-    playBtn.innerHTML = '<i class="fas fa-pause"></i>';
+// Load Songs
+function loadSongs() {
+  songsList.innerHTML = "";
+  songs.forEach((song, index) => {
+    const songItem = document.createElement("div");
+    songItem.className = "song-item";
+    songItem.textContent = song.title;
+    songItem.onclick = () => playSong(index);
+    songsList.appendChild(songItem);
+  });
 }
 
-function pauseSong() {
-    audioPlayer.pause();
-    playBtn.innerHTML = '<i class="fas fa-play"></i>';
+// Play Song
+function playSong(index) {
+  const song = songs[index];
+  currentSongTitle.textContent = song.title;
+  audioPlayer.src = song.src;
+  audioPlayer.play();
 }
 
-function toggleShuffle() {
-    isShuffle = !isShuffle;
-    shuffleBtn.classList.toggle('active');
+// Search Songs
+function searchSongs() {
+  const query = document.getElementById("search").value.toLowerCase();
+  const filteredSongs = songs.filter((song) =>
+    song.title.toLowerCase().includes(query)
+  );
+  songsList.innerHTML = "";
+  filteredSongs.forEach((song, index) => {
+    const songItem = document.createElement("div");
+    songItem.className = "song-item";
+    songItem.textContent = song.title;
+    songItem.onclick = () => playSong(index);
+    songsList.appendChild(songItem);
+  });
 }
 
-function toggleRepeat() {
-    isRepeat = !isRepeat;
-    repeatBtn.classList.toggle('active');
+// Dark Mode Toggle
+function toggleDarkMode() {
+  document.body.classList.toggle("dark");
 }
-
-// Event Listeners
-playBtn.addEventListener('click', () => audioPlayer.paused ? playSong() : pauseSong());
-darkModeToggle.addEventListener('click', () => document.body.classList.toggle('dark-mode'));
-
-// Initialize
-loadSong(currentSongIndex);
