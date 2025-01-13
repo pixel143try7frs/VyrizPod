@@ -11,7 +11,7 @@
 <body>
     <!-- Welcome Screen -->
     <div id="welcome-screen" class="welcome-screen">
-        <h1>VyrizPod</h1>
+        <h1>Welcome to VyrizPod</h1>
     </div>
 
     <!-- Dark Mode Toggle -->
@@ -23,17 +23,22 @@
         <button id="search-btn" class="search-btn"><i class="fas fa-search"></i></button>
     </div>
 
-    <!-- Homepage with Songs List -->
+    <!-- Songs List Section -->
     <div id="songs-list" class="songs-list">
         <h2>All Songs</h2>
-        <div id="song-items" class="song-items"></div>
+        <div id="song-items" class="song-items">
+            <!-- Songs will dynamically load here -->
+        </div>
     </div>
 
     <!-- Music Player -->
     <div class="player-container" id="player-container">
-        <div class="song-info">
-            <h2 class="song-title" id="song-title">Song Title</h2>
-            <p class="artist-name" id="artist-name">Artist</p>
+        <div class="player-top">
+            <img src="" alt="Album Art" class="album-art" id="album-art">
+            <div class="song-info">
+                <h2 class="song-title" id="song-title">Song Title</h2>
+                <p class="artist-name" id="artist-name">Artist</p>
+            </div>
         </div>
 
         <div class="controls">
@@ -44,20 +49,21 @@
             <button class="control-button" id="repeatBtn"><i class="fas fa-redo"></i></button>
         </div>
 
+        <!-- Progress Bar -->
         <div class="progress-bar" id="progress-bar">
             <div class="progress" id="progress"></div>
         </div>
 
         <!-- Volume Control -->
         <div class="volume-control">
-            <input type="range" id="volume-control" min="0" max="100" value="100">
+            <label for="volume-control"><i class="fas fa-volume-up"></i></label>
+            <input type="range" id="volume-control" min="0" max="100" value="50">
         </div>
     </div>
 
     <!-- Audio Player -->
     <audio id="audioPlayer"></audio>
 
-    <!-- Custom JS -->
     <script src="script.js"></script>
 </body>
 </html>
