@@ -1,58 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VyrizPod - Music Player</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Catchy Music Player</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-    <!-- Welcome Screen -->
-    <div id="welcome-screen" class="welcome-screen">
-        <h1>VyrizPod</h1>
+  <div class="player-container">
+    <h1 class="fade-in">🎵 Music Player 🎵</h1>
+    <input type="file" id="fileInput" multiple accept="audio/*" />
+    <div class="playlist-container">
+      <h2>Playlist</h2>
+      <ul id="playlist"></ul>
     </div>
-
-    <!-- Search Bar -->
-    <div id="search-bar" class="search-bar">
-        <input type="text" id="search-input" placeholder="Search for songs..." class="search-input">
-        <button id="search-btn" class="search-btn"><i class="fas fa-search"></i></button>
+    <div class="controls">
+      <button id="prevBtn" title="Previous Track" class="btn-animated">⏮️</button>
+      <button id="playPauseBtn" title="Play/Pause" class="btn-animated">▶️</button>
+      <button id="nextBtn" title="Next Track" class="btn-animated">⏭️</button>
     </div>
-
-    <!-- Homepage with Songs List -->
-    <div id="songs-list" class="songs-list">
-        <h2>All Songs</h2>
-        <div id="song-items" class="song-items"></div>
-    </div>
-
-    <!-- Music Player -->
-    <div class="player-container" id="player-container">
-        <div class="song-info">
-            <h2 class="song-title" id="song-title">Duvidha</h2>
-            <p class="artist-name" id="artist-name">Lucke</p>
-        </div>
-
-        <div class="controls">
-            <button class="control-button" id="prevBtn"><i class="fas fa-step-backward"></i></button>
-            <button class="control-button" id="playBtn"><i class="fas fa-play"></i></button>
-            <button class="control-button" id="nextBtn"><i class="fas fa-step-forward"></i></button>
-        </div>
-
-        <div class="progress-bar">
-            <div class="progress"></div>
-        </div>
-
-        <!-- Volume Control -->
-        <div class="volume-control">
-            <input type="range" id="volume-control" min="0" max="100" value="100">
-        </div>
-    </div>
-
-    <!-- Audio Player -->
-    <audio id="audioPlayer"></audio>
-
-    <!-- Custom JS -->
-    <script src="script.js"></script>
+    <div class="now-playing" id="nowPlaying">No track playing</div>
+    <audio id="audio" crossorigin="anonymous"></audio>
+  </div>
+  <script src="script.js"></script>
 </body>
 </html>
