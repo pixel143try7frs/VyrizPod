@@ -1,145 +1,90 @@
-const fileInput = document.getElementById('fileInput');
-const playlist = document.getElementById('playlist');
-const audio = document.getElementById('audio');
-const playPauseBtn = document.getElementById('playPauseBtn');
-const prevBtn = document.getElementById('prevBtn');
-const nextBtn = document.getElementById('nextBtn');
-const nowPlaying = document.getElementById('nowPlaying');
+// Wait for DOM to load
+document.addEventListener('DOMContentLoaded', () => {
+  const welcomeScreen = document.getElementById('welcome-screen');
+  const enterBtn = document.getElementById('enter-btn');
+  const siteHeader = document.querySelector('.site-header');
+  const mainContent = document.querySelector('.main-content');
+  const siteFooter = document.querySelector('.site-footer');
 
-let tracks = [];
-let currentIndex = -1;
-let isPlaying = false;
-let playBtnAnimationTimeout = null;
+  enterBtn.addEventListener('click', () => {
+    // Animate welcome screen fade out
+    welcomeScreen.classList.add('fade-out');
+    setTimeout(() => {
+      welcomeScreen.style.display = 'none';
+      // Show main content
+      siteHeader.classList.remove('hidden');
+      mainContent.classList.remove('hidden');
+      siteFooter.classList.remove('hidden');
+      animateMainContent();
+    }, 1000);
+  });
 
-fileInput.addEventListener('change', (e) => {
-  const files = Array.from(e.target.files);
-  if (files.length === 0) return;
+  // Animate main content elements
+  function animateMainContent() {
+    siteHeader.style.opacity = 0;
+    mainContent.style.opacity = 0;
+    siteFooter.style.opacity = 0;
+    fadeIn(siteHeader, 300);
+    setTimeout(() => fadeIn(mainContent, 600), 300);
+    setTimeout(() => fadeIn(siteFooter, 900), 900);
+  }
 
-  // Clean up old URLs
-  tracks.forEach(track => URL.revokeObjectURL(track.url));
-  tracks = [];
-  playlist.innerHTML = '';
-  currentIndex = -1;
-  isPlaying = false;
-  audio.pause();
-  audio.src = '';
-  updatePlayPauseButton();
-  updateNowPlaying();
+  function fadeIn(element, duration) {
+    let op = 0;
+    element.style.display = 'block';
+    const increment = 50 / duration;
+    const timer = setInterval(() => {
+      if (op >= 1) clearInterval(timer);
+      element.style.opacity = op;
+      op += increment;
+    }, 50);
+  }
 
-  files.forEach((file, index) => {
-    if (!file.type.startsWith('audio/')) return;
-    const track = {
-      name: file.name,
-      url: URL.createObjectURL(file)
-    };
-    tracks.push(track);
+  // SONGS SECTION
+  // Add your GitHub raw URLs for songs here along with a display title
+  const songs = [
+    {
+      title: "Sample Song One",
+      url: "https://raw.githubusercontent.com/yourusername/yourrepo/main/songs/song1.mp3"
+    },
+    {
+      title: "Sample Song Two",
+      url: "https://raw.githubusercontent.com/yourusername/yourrepo/main/songs/song2.mp3"
+    }
+    // Add more songs here
+  ];
 
-    const li = document.createElement('li');
-    li.textContent = track.name;
-    li.dataset.index = index;
-    li.addEventListener('click', () => {
-      playTrack(index);
+  const songsList = document.getElementById('songs-list');
+
+  // Function to create song cards dynamically
+  function displaySongs() {
+    if(songs.length === 0) {
+      songsList.innerHTML = "<p>No songs available yet. Upload to GitHub and add URLs in script.js!</p>";
+      return;
+    }
+
+    songsList.innerHTML = ''; // Clear existing
+
+    songs.forEach(song => {
+      const card = document.createElement('div');
+      card.className = 'song-card';
+
+      const title = document.createElement('div');
+      title.className = 'song-title';
+      title.textContent = song.title;
+
+      const audio = document.createElement('audio');
+      audio.className = 'song-audio';
+      audio.controls = true;
+      audio.src = song.url;
+
+      card.appendChild(title);
+      card.appendChild(audio);
+
+      songsList.appendChild(card);
     });
-    playlist.appendChild(li);
-  });
-
-  if (tracks.length > 0) {
-    playTrack(0);
   }
+
+  displaySongs();
 });
 
-function updatePlayPauseButton() {
-  playPauseBtn.textContent = isPlaying ? '⏸️' : '▶️';
-  if (isPlaying) {
-    // Animate bounce on play button when playing
-    playPauseBtn.classList.add('playing-bounce');
-    if (playBtnAnimationTimeout) clearTimeout(playBtnAnimationTimeout);
-    playBtnAnimationTimeout = setTimeout(() => {
-      playPauseBtn.classList.remove('playing-bounce');
-    }, 600);
-  } else {
-    playPauseBtn.classList.remove('playing-bounce');
-  }
-}
-
-function updateNowPlaying() {
-  if (currentIndex >= 0 && tracks[currentIndex]) {
-    nowPlaying.textContent = `Now playing: ${tracks[currentIndex].name}`;
-
-    // If text is longer than container, add marquee animation
-    if (nowPlaying.scrollWidth > nowPlaying.clientWidth) {
-      nowPlaying.classList.add('scrolling');
-    } else {
-      nowPlaying.classList.remove('scrolling');
-    }
-  } else {
-    nowPlaying.textContent = 'No track playing';
-    nowPlaying.classList.remove('scrolling');
-  }
-  updatePlaylistHighlight();
-}
-
-function updatePlaylistHighlight() {
-  const lis = playlist.querySelectorAll('li');
-  lis.forEach(li => {
-    li.classList.remove('active');
-  });
-  if (currentIndex >= 0) {
-    const currentLi = playlist.querySelector(`li[data-index="${currentIndex}"]`);
-    if (currentLi) {
-      currentLi.classList.add('active');
-    }
-  }
-}
-
-function playTrack(index) {
-  if (index < 0 || index >= tracks.length) return;
-  currentIndex = index;
-  audio.src = tracks[index].url;
-  audio.play();
-  isPlaying = true;
-  updatePlayPauseButton();
-  updateNowPlaying();
-}
-
-playPauseBtn.addEventListener('click', () => {
-  if (!audio.src) {
-    if (tracks.length > 0) {
-      playTrack(0);
-    }
-    return;
-  }
-  if (isPlaying) {
-    audio.pause();
-  } else {
-    audio.play();
-  }
-});
-
-prevBtn.addEventListener('click', () => {
-  if (tracks.length === 0) return;
-  let newIndex = currentIndex - 1;
-  if (newIndex < 0) newIndex = tracks.length - 1;
-  playTrack(newIndex);
-});
-
-nextBtn.addEventListener('click', () => {
-  if (tracks.length === 0) return;
-  let newIndex = currentIndex + 1;
-  if (newIndex >= tracks.length) newIndex = 0;
-  playTrack(newIndex);
-});
-
-audio.addEventListener('play', () => {
-  isPlaying = true;
-  updatePlayPauseButton();
-});
-
-audio.addEventListener('pause', () => {
-  isPlaying = false;
-  updatePlayPauseButton();
-});
-
-audio.addEventListener('ended', () => {
-  nextBtn.click();
-});
