@@ -2,26 +2,47 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Catchy Music Player</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vyriz Pod - Professional Podcast & Music</title>
   <link rel="stylesheet" href="style.css" />
+  <script defer src="script.js"></script>
 </head>
 <body>
-  <div class="player-container">
-    <h1 class="fade-in">🎵 Music Player 🎵</h1>
-    <input type="file" id="fileInput" multiple accept="audio/*" />
-    <div class="playlist-container">
-      <h2>Playlist</h2>
-      <ul id="playlist"></ul>
-    </div>
-    <div class="controls">
-      <button id="prevBtn" title="Previous Track" class="btn-animated">⏮️</button>
-      <button id="playPauseBtn" title="Play/Pause" class="btn-animated">▶️</button>
-      <button id="nextBtn" title="Next Track" class="btn-animated">⏭️</button>
-    </div>
-    <div class="now-playing" id="nowPlaying">No track playing</div>
-    <audio id="audio" crossorigin="anonymous"></audio>
+  <div id="welcome-screen" class="welcome-screen">
+    <h1>Welcome to Vyriz Pod</h1>
+    <p>Your professional space for podcasts & music.</p>
+    <button id="enter-btn">Enter Site</button>
   </div>
-  <script src="script.js"></script>
+
+  <header class="site-header hidden">
+    <nav>
+      <h2>Vyriz Pod</h2>
+      <ul>
+        <li><a href="#songs">Songs</a></li>
+        <li><a href="#about">About</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="main-content hidden">
+    <section id="songs" class="songs-section">
+      <h2>Listen to Our Songs</h2>
+      <div id="songs-list" class="songs-list">
+        <!-- Songs will be dynamically inserted here -->
+      </div>
+      <p class="instruction">To add your songs, upload them to GitHub and copy the raw file URL here in the script.js file.</p>
+    </section>
+
+    <section id="about" class="about-section">
+      <h2>About Vyriz Pod</h2>
+      <p>
+        Vyriz Pod is your go-to professional podcast and music platform, designed to deliver a seamless experience on desktop and mobile devices. Enjoy smooth animations and an elegant interface.
+      </p>
+    </section>
+  </main>
+
+  <footer class="site-footer hidden">
+    <p>&copy; 2024 Vyriz Pod. All rights reserved.</p>
+  </footer>
 </body>
 </html>
