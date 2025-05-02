@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const songs = [
     {
       title: "Ride It",
-      url: "https://github.com/pixel143try7frs/VyrizPod/blob/main/Jay%20Sean%20-%20Ride%20It%20(Lyrics).mp3"
+      url: "https://raw.githubusercontent.com/pixel143try7frs/VyrizPod/main/Jay%20Sean%20-%20Ride%20It%20(Lyrics).mp3"
     },
     {
       title: "Sample Song Two",
