@@ -44,8 +44,8 @@ document.addEventListener('DOMContentLoaded', () => {
   // Add your GitHub raw URLs for songs here along with a display title
   const songs = [
     {
-      title: "Sample Song One",
-      url: "https://raw.githubusercontent.com/yourusername/yourrepo/main/songs/song1.mp3"
+      title: "Ride It",
+      url: "https://github.com/pixel143try7frs/VyrizPod/blob/main/Jay%20Sean%20-%20Ride%20It%20(Lyrics).mp3"
     },
     {
       title: "Sample Song Two",
