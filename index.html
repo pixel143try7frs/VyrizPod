@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Family Loan Tracker</title>
+    <title>Loan Tracking System</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         /* Custom styles */
@@ -31,45 +31,99 @@
                 display: none;
             }
         }
+    @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        .animate-pulse {
+            animation: pulse 0.5s ease-in-out;
+        }
+        .animate-pop-in {
+            animation: fadeInUp 0.4s ease-out forwards;
+        }
+        body {
+            transition: opacity 0.3s ease-in;
+        }
+        @keyframes fade-in {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .animate-fade-in {
+            animation: fade-in 1s ease-out forwards;
+        }
     </style>
 </head>
 <body class="gradient-bg min-h-screen p-4 md:p-8">
+    <!-- Enhanced Welcome Screen -->
+    <div id="welcome-screen" class="fixed inset-0 bg-gradient-to-br from-indigo-900 to-purple-800 z-50 flex flex-col items-center justify-center p-6 transition-all duration-500 backdrop-blur-lg">
+        <div class="max-w-md text-center p-10 bg-white/80 rounded-xl shadow-2xl animate-fade-in">
+            <h1 class="text-4xl font-bold mb-3 text-gray-800">Loan Manager</h1>
+            <p class="text-gray-600 mb-6">Track and manage loans efficiently</p>
+            <button onclick="document.getElementById('welcome-screen').style.display='none'" 
+                    class="px-6 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md transition">
+                Start Tracking
+            </button>
+        </div>
+    </div>
+    
     <div class="max-w-4xl mx-auto">
-        <!-- Header -->
-        <header class="mb-12 text-center">
-            <div class="inline-block bg-white/80 backdrop-blur-sm p-6 rounded-xl shadow-md mb-4">
-                <h1 class="logo text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2">Family Loan Tracker</h1>
-                <p class="text-gray-600 text-lg">Easily track money lent to family members</p>
+        <!-- Modern Header -->
+        <header class="mb-10">
+            <div class="bg-white rounded-xl p-6 shadow-md border border-gray-200">
+                <h1 class="text-3xl font-bold text-center text-gray-800 mb-2">Loan Dashboard</h1>
+                <div class="flex justify-center space-x-4 text-sm text-gray-500">
+                    <span>Track Loans</span>
+                    <span>•</span>
+                    <span>Manage Payments</span>
+                    <span>•</span>
+                    <span>Stay Organized</span>
+                </div>
             </div>
         </header>
 
-        <!-- Summary Cards -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-            <div class="bg-white rounded-xl p-6 card-shadow border border-gray-100 hover:shadow-lg transition-all">
-                <h3 class="text-gray-500 text-sm font-medium mb-1">Total Loans</h3>
-                <p id="total-loans" class="text-3xl font-bold text-gray-800">₹0</p>
+        <!-- Improved Summary Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+            <div class="bg-white p-5 rounded-lg shadow-sm hover:shadow-md transition-all border border-gray-100">
+                <h3 class="text-sm font-medium text-gray-600 mb-1">Total Loans</h3>
+                <p id="total-loans" class="text-3xl font-extrabold text-gray-900">₹0</p>
             </div>
-            <div class="bg-white rounded-lg p-6 card-shadow">
-                <h3 class="text-gray-500 text-sm font-medium mb-1">Amount Repaid</h3>
-                <p id="amount-repaid" class="text-3xl font-bold text-blue-600">₹0</p>
+            <div class="bg-white bg-opacity-70 backdrop-blur-sm p-6 rounded-xl shadow-md border border-white border-opacity-20 hover:shadow-lg transform hover:-translate-y-1 transition-all">
+                <h3 class="text-sm font-medium text-gray-600 mb-1">Amount Repaid</h3>
+                <p id="amount-repaid" class="text-3xl font-extrabold text-blue-600">₹0</p>
             </div>
-            <div class="bg-white rounded-lg p-6 card-shadow">
-                <h3 class="text-gray-500 text-sm font-medium mb-1">Balance Due</h3>
-                <p id="balance-due" class="text-3xl font-bold text-red-600">₹0</p>
+            <div class="bg-white bg-opacity-70 backdrop-blur-sm p-6 rounded-xl shadow-md border border-white border-opacity-20 hover:shadow-lg transform hover:-translate-y-1 transition-all">
+                <h3 class="text-sm font-medium text-gray-600 mb-1">Balance Due</h3>
+                <p id="balance-due" class="text-3xl font-extrabold text-orange-600">₹0</p>
             </div>
         </div>
 
-        <!-- Add Loan Form -->
-        <div class="bg-white rounded-xl p-8 mb-10 card-shadow border border-gray-100">
-            <h2 class="text-xl font-semibold text-gray-800 mb-4">Add New Loan</h2>
-            <form id="loan-form" class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <!-- Modern Loan Form -->
+        <div class="bg-white rounded-xl p-6 mb-8 shadow-sm border border-gray-100">
+            <div class="flex items-center justify-between mb-4 pb-2 border-b border-gray-200">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-xl font-semibold text-gray-800">Add New Loan</h2>
+                <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-md">VYRIZ</span>
+            </div>
+            <form id="loan-form" class="grid grid-cols-1 md:grid-cols-4 gap-3">
                 <div>
                     <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Name</label>
                     <input type="text" id="name" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                 </div>
                 <div>
+                    <label for="reason" class="block text-sm font-medium text-gray-700 mb-1">Reason (optional)</label>
+                    <input type="text" id="reason" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div>
                     <label for="amount" class="block text-sm font-medium text-gray-700 mb-1">Amount (₹)</label>
                     <input type="number" id="amount" step="0.01" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div>
+                    <label for="interest" class="block text-sm font-medium text-gray-700 mb-1">Interest (₹)</label>
+                    <input type="number" id="interest" step="0.01" value="10" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                 </div>
                 <div>
                     <label for="date" class="block text-sm font-medium text-gray-700 mb-1">Date</label>
@@ -107,7 +161,8 @@
             </div>
             
             <div class="overflow-x-auto">
-                <table class="min-w-full divide-y divide-gray-200 border-separate border-spacing-y-2">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50 rounded-t-lg overflow-hidden">
                     <thead class="bg-gray-50">
                         <tr>
                             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
@@ -129,7 +184,7 @@
 
         <!-- Add Repayment Modal -->
         <div id="repayment-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-            <div class="bg-white rounded-xl p-8 w-full max-w-lg border-4 border-blue-100 shadow-2xl animate-pop-in">
+            <div class="bg-white rounded-xl p-6 w-full max-w-md shadow-xl animate-pop-in border-2 border-blue-200">
                 <div class="flex justify-between items-center mb-4">
                     <h3 class="text-lg font-medium text-gray-900">Add Repayment</h3>
                     <button id="close-modal" class="text-gray-400 hover:text-gray-500">
@@ -156,7 +211,7 @@
 
     <script>
         // Initialize loans array from localStorage or create empty array
-        let loans = JSON.parse(localStorage.getItem('familyLoans')) || [];
+        let loans = JSON.parse(localStorage.getItem('loans')) || [];
 
         // DOM elements
         const loanForm = document.getElementById('loan-form');
@@ -197,6 +252,11 @@
 
         // Render loans
         const renderLoans = (filter = 'all') => {
+            // Add pulse animation to summary cards when data changes
+            [totalLoansElement, amountRepaidElement, balanceDueElement].forEach(el => {
+                el.classList.add('animate-pulse');
+                setTimeout(() => el.classList.remove('animate-pulse'), 1000);
+            });
             let filteredLoans = loans;
             
             if (filter === 'pending') {
@@ -232,9 +292,10 @@
                                 <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/55e9a483-f3e9-4ac2-87fc-df41fd0893b8.png" alt="Profile icon with initial ${loan.name.charAt(0).toUpperCase()} on a soft blue background" class="flex-shrink-0 h-10 w-10 rounded-full mr-3" onerror="this.src='https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/2757b7eb-7882-4915-8196-cc3462224723.png?'">
                                 <div class="text-sm font-medium text-gray-900">${loan.name}</div>
                             </div>
+                            ${loan.reason ? `<div class="text-xs text-gray-500">${loan.reason}</div>` : ''}
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            ${formatCurrency(loan.amount)}
+                            ${formatCurrency(loan.originalAmount)} + ${formatCurrency(loan.interest)}
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                             ${formatDate(loan.date)}
@@ -275,16 +336,24 @@
             const amount = parseFloat(document.getElementById('amount').value);
             const date = document.getElementById('date').value;
             
+            const interest = parseFloat(document.getElementById('interest').value) || 0;
+            const reason = document.getElementById('reason').value || '';
             const newLoan = {
                 id: Date.now(),
                 name,
-                amount,
+                amount: amount + interest,
+                originalAmount: amount,
+                interest,
+                reason,
                 date,
                 repayments: []
             };
             
             loans.push(newLoan);
-            localStorage.setItem('familyLoans', JSON.stringify(loans));
+            localStorage.setItem('loans', JSON.stringify(loans));
+            // Add confirmation animation
+            document.getElementById('loan-form').classList.add('animate-pulse');
+            setTimeout(() => document.getElementById('loan-form').classList.remove('animate-pulse'), 1000);
             
             loanForm.reset();
             renderLoans(filterSelect.value);
@@ -307,7 +376,7 @@
                 date
             });
             
-            localStorage.setItem('familyLoans', JSON.stringify(loans));
+            localStorage.setItem('loans', JSON.stringify(loans));
             
             repaymentForm.reset();
             repaymentModal.classList.add('hidden');
@@ -328,8 +397,18 @@
             renderLoans(e.target.value);
         });
 
-        // Initialize
+        // Audio function
+        function playWelcomeSound() {
+            const audio = document.getElementById('welcome-audio');
+            audio.volume = 0.3;
+            audio.play();
+            document.getElementById('welcome-screen').classList.add('opacity-0', 'pointer-events-none');
+        }
+
+        // Page transition animation
         document.addEventListener('DOMContentLoaded', () => {
+            document.body.classList.add('opacity-0');
+            setTimeout(() => document.body.classList.remove('opacity-0'), 100);
             renderLoans();
             // Set today's date as default
             const today = new Date().toISOString().split('T')[0];
@@ -339,5 +418,3 @@
     </script>
 </body>
 </html>
-
-
