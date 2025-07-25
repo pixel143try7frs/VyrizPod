@@ -1,420 +1,134 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Loan Tracking System</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        /* Custom styles */
-        .gradient-bg {
-            background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
-            background-attachment: fixed;
-        }
-        .card-shadow {
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-        }
-        .logo {
-            font-family: 'Arial', sans-serif;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
-        }
-        .status-paid {
-            background-color: #d1fae5;
-            color: #065f46;
-        }
-            AndThen {
-            .status-pending {
-                background-color: #fee2e2;
-                color: #991b1b;
-            }
-            .scroll-hidden::-webkit-scrollbar {
-                display: none;
-            }
-        }
-    @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-        .animate-pulse {
-            animation: pulse 0.5s ease-in-out;
-        }
-        .animate-pop-in {
-            animation: fadeInUp 0.4s ease-out forwards;
-        }
-        body {
-            transition: opacity 0.3s ease-in;
-        }
-        @keyframes fade-in {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        .animate-fade-in {
-            animation: fade-in 1s ease-out forwards;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Vyriz News</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      color: #333;
+    }
+    header {
+      background: #222;
+      color: #fff;
+      padding: 1rem;
+      text-align: center;
+      font-size: 1.5rem;
+    }
+    .categories {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      padding: 1rem;
+    }
+    .categories button {
+      padding: 8px 15px;
+      border: none;
+      background: #007bff;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .categories button:hover {
+      background: #0056b3;
+    }
+    .news-container {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      padding: 1rem;
+      max-width: 900px;
+      margin: auto;
+    }
+    .news-card {
+      background: #fff;
+      padding: 1rem;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .news-card h3 {
+      margin-top: 0;
+    }
+    .news-card img {
+      max-width: 100%;
+      border-radius: 10px;
+      margin: 10px 0;
+    }
+    .news-card a {
+      text-decoration: none;
+      color: #007bff;
+    }
+    .ads-placeholder {
+      margin: 1rem auto;
+      padding: 20px;
+      background: #ddd;
+      text-align: center;
+      border-radius: 10px;
+    }
+  </style>
 </head>
-<body class="gradient-bg min-h-screen p-4 md:p-8">
-    <!-- Enhanced Welcome Screen -->
-    <div id="welcome-screen" class="fixed inset-0 bg-gradient-to-br from-indigo-900 to-purple-800 z-50 flex flex-col items-center justify-center p-6 transition-all duration-500 backdrop-blur-lg">
-        <div class="max-w-md text-center p-10 bg-white/80 rounded-xl shadow-2xl animate-fade-in">
-            <h1 class="text-4xl font-bold mb-3 text-gray-800">Loan Manager</h1>
-            <p class="text-gray-600 mb-6">Track and manage loans efficiently</p>
-            <button onclick="document.getElementById('welcome-screen').style.display='none'" 
-                    class="px-6 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md transition">
-                Start Tracking
-            </button>
-        </div>
-    </div>
-    
-    <div class="max-w-4xl mx-auto">
-        <!-- Modern Header -->
-        <header class="mb-10">
-            <div class="bg-white rounded-xl p-6 shadow-md border border-gray-200">
-                <h1 class="text-3xl font-bold text-center text-gray-800 mb-2">Loan Dashboard</h1>
-                <div class="flex justify-center space-x-4 text-sm text-gray-500">
-                    <span>Track Loans</span>
-                    <span>•</span>
-                    <span>Manage Payments</span>
-                    <span>•</span>
-                    <span>Stay Organized</span>
-                </div>
-            </div>
-        </header>
+<body>
+  <header>📰 Vyriz Trending News</header>
 
-        <!-- Improved Summary Cards -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-            <div class="bg-white p-5 rounded-lg shadow-sm hover:shadow-md transition-all border border-gray-100">
-                <h3 class="text-sm font-medium text-gray-600 mb-1">Total Loans</h3>
-                <p id="total-loans" class="text-3xl font-extrabold text-gray-900">₹0</p>
-            </div>
-            <div class="bg-white bg-opacity-70 backdrop-blur-sm p-6 rounded-xl shadow-md border border-white border-opacity-20 hover:shadow-lg transform hover:-translate-y-1 transition-all">
-                <h3 class="text-sm font-medium text-gray-600 mb-1">Amount Repaid</h3>
-                <p id="amount-repaid" class="text-3xl font-extrabold text-blue-600">₹0</p>
-            </div>
-            <div class="bg-white bg-opacity-70 backdrop-blur-sm p-6 rounded-xl shadow-md border border-white border-opacity-20 hover:shadow-lg transform hover:-translate-y-1 transition-all">
-                <h3 class="text-sm font-medium text-gray-600 mb-1">Balance Due</h3>
-                <p id="balance-due" class="text-3xl font-extrabold text-orange-600">₹0</p>
-            </div>
-        </div>
+  <div class="categories">
+    <button onclick="loadNews('general')">General</button>
+    <button onclick="loadNews('business')">Business</button>
+    <button onclick="loadNews('entertainment')">Entertainment</button>
+    <button onclick="loadNews('health')">Health</button>
+    <button onclick="loadNews('science')">Science</button>
+    <button onclick="loadNews('sports')">Sports</button>
+    <button onclick="loadNews('technology')">Technology</button>
+  </div>
 
-        <!-- Modern Loan Form -->
-        <div class="bg-white rounded-xl p-6 mb-8 shadow-sm border border-gray-100">
-            <div class="flex items-center justify-between mb-4 pb-2 border-b border-gray-200">
-            <div class="flex items-center justify-between mb-4">
-                <h2 class="text-xl font-semibold text-gray-800">Add New Loan</h2>
-                <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-md">VYRIZ</span>
-            </div>
-            <form id="loan-form" class="grid grid-cols-1 md:grid-cols-4 gap-3">
-                <div>
-                    <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Name</label>
-                    <input type="text" id="name" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                </div>
-                <div>
-                    <label for="reason" class="block text-sm font-medium text-gray-700 mb-1">Reason (optional)</label>
-                    <input type="text" id="reason" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                </div>
-                <div>
-                    <label for="amount" class="block text-sm font-medium text-gray-700 mb-1">Amount (₹)</label>
-                    <input type="number" id="amount" step="0.01" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                </div>
-                <div>
-                    <label for="interest" class="block text-sm font-medium text-gray-700 mb-1">Interest (₹)</label>
-                    <input type="number" id="interest" step="0.01" value="10" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                </div>
-                <div>
-                    <label for="date" class="block text-sm font-medium text-gray-700 mb-1">Date</label>
-                    <input type="date" id="date" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                </div>
-                <div class="flex items-end">
-                    <button type="submit" class="w-full bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-[1.02] shadow-md hover:shadow-lg font-medium">
-                        <span class="flex items-center justify-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd" />
-                            </svg>
-                            Add Loan
-                        </span>
-                    </button>
-                </div>
-            </form>
-        </div>
+  <div class="ads-placeholder">
+    <!-- AdSense here -->
+    Ad space (AdSense)
+  </div>
 
-        <!-- Loans List -->
-        <div class="bg-white rounded-lg p-6 card-shadow">
-            <div class="flex justify-between items-center mb-4">
-                <h2 class="text-xl font-semibold text-gray-800">Loan History</h2>
-                <div class="relative">
-                    <select id="filter" class="appearance-none bg-white border border-gray-300 rounded-md px-3 py-1 pr-8 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
-                        <option value="all">All Loans</option>
-                        <option value="pending">Pending</option>
-                        <option value="paid">Paid</option>
-                    </select>
-                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="overflow-x-auto">
-                <table class="min-w-full divide-y divide-gray-200">
-                    <thead class="bg-gray-50 rounded-t-lg overflow-hidden">
-                    <thead class="bg-gray-50">
-                        <tr>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="loans-list" class="bg-white divide-y divide-gray-200">
-                        <!-- Loans will be added here dynamically -->
-                        <tr id="no-loans">
-                            <td colspan="5" class="px-6 py-4 text-center text-gray-500">No loans recorded yet</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+  <div class="news-container" id="newsContainer">
+    <p>Loading news...</p>
+  </div>
 
-        <!-- Add Repayment Modal -->
-        <div id="repayment-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-            <div class="bg-white rounded-xl p-6 w-full max-w-md shadow-xl animate-pop-in border-2 border-blue-200">
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-lg font-medium text-gray-900">Add Repayment</h3>
-                    <button id="close-modal" class="text-gray-400 hover:text-gray-500">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                        </svg>
-                    </button>
-                </div>
-                <form id="repayment-form">
-                    <input type="hidden" id="loan-id">
-                    <div class="mb-4">
-                        <label for="repayment-amount" class="block text-sm font-medium text-gray-700 mb-1">Amount (₹)</label>
-                        <input type="number" id="repayment-amount" step="0.01" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    </div>
-                    <div class="mb-4">
-                        <label for="repayment-date" class="block text-sm font-medium text-gray-700 mb-1">Date</label>
-                        <input type="date" id="repayment-date" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    </div>
-                    <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-md transition duration-200">Add Repayment</button>
-                </form>
-            </div>
-        </div>
-    </div>
+  <script>
+    const apiKey = "4d6937f83f68498c80a65027b6cf5d87";
 
-    <script>
-        // Initialize loans array from localStorage or create empty array
-        let loans = JSON.parse(localStorage.getItem('loans')) || [];
+    async function loadNews(category = 'general') {
+      document.getElementById("newsContainer").innerHTML = "<p>Loading news...</p>";
+      const url = `https://newsapi.org/v2/top-headlines?country=in&category=${category}&apiKey=${apiKey}`;
+      try {
+        const res = await fetch(url);
+        const data = await res.json();
+        const articles = data.articles;
 
-        // DOM elements
-        const loanForm = document.getElementById('loan-form');
-        const repaymentForm = document.getElementById('repayment-form');
-        const loansList = document.getElementById('loans-list');
-        const noLoansRow = document.getElementById('no-loans');
-        const repaymentModal = document.getElementById('repayment-modal');
-        const closeModal = document.getElementById('close-modal');
-        const filterSelect = document.getElementById('filter');
-        const totalLoansElement = document.getElementById('total-loans');
-        const amountRepaidElement = document.getElementById('amount-repaid');
-        const balanceDueElement = document.getElementById('balance-due');
-
-        // Format currency
-        const formatCurrency = (amount) => {
-            return '₹' + amount.toLocaleString('en-IN');
-        };
-
-        // Format date
-        const formatDate = (dateString) => {
-            const options = { year: 'numeric', month: 'short', day: 'numeric' };
-            return new Date(dateString).toLocaleDateString(undefined, options);
-        };
-
-        // Calculate totals
-        const calculateTotals = () => {
-            const totalLoans = loans.reduce((sum, loan) => sum + loan.amount, 0);
-            const totalRepaid = loans.reduce((sum, loan) => {
-                const repaid = loan.repayments?.reduce((repaySum, repayment) => repaySum + repayment.amount, 0) || 0;
-                return sum + repaid;
-            }, 0);
-            const totalDue = totalLoans - totalRepaid;
-
-            totalLoansElement.textContent = formatCurrency(totalLoans);
-            amountRepaidElement.textContent = formatCurrency(totalRepaid);
-            balanceDueElement.textContent = formatCurrency(totalDue);
-        };
-
-        // Render loans
-        const renderLoans = (filter = 'all') => {
-            // Add pulse animation to summary cards when data changes
-            [totalLoansElement, amountRepaidElement, balanceDueElement].forEach(el => {
-                el.classList.add('animate-pulse');
-                setTimeout(() => el.classList.remove('animate-pulse'), 1000);
-            });
-            let filteredLoans = loans;
-            
-            if (filter === 'pending') {
-                filteredLoans = loans.filter(loan => {
-                    const repaid = loan.repayments?.reduce((sum, repayment) => sum + repayment.amount, 0) || 0;
-                    return repaid < loan.amount;
-                });
-            } else if (filter === 'paid') {
-                filteredLoans = loans.filter(loan => {
-                    const repaid = loan.repayments?.reduce((sum, repayment) => sum + repayment.amount, 0) || 0;
-                    return repaid >= loan.amount;
-                });
-            }
-
-            if (filteredLoans.length === 0) {
-                noLoansRow.style.display = 'table-row';
-                loansList.innerHTML = '';
-                loansList.appendChild(noLoansRow);
-            } else {
-                noLoansRow.style.display = 'none';
-                loansList.innerHTML = '';
-
-                filteredLoans.forEach((loan, index) => {
-                    const repaid = loan.repayments?.reduce((sum, repayment) => sum + repayment.amount, 0) || 0;
-                    const isPaid = repaid >= loan.amount;
-                    const statusClass = isPaid ? 'status-paid' : 'status-pending';
-                    const statusText = isPaid ? 'Paid' : 'Pending';
-
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="flex items-center">
-                                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/55e9a483-f3e9-4ac2-87fc-df41fd0893b8.png" alt="Profile icon with initial ${loan.name.charAt(0).toUpperCase()} on a soft blue background" class="flex-shrink-0 h-10 w-10 rounded-full mr-3" onerror="this.src='https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/2757b7eb-7882-4915-8196-cc3462224723.png?'">
-                                <div class="text-sm font-medium text-gray-900">${loan.name}</div>
-                            </div>
-                            ${loan.reason ? `<div class="text-xs text-gray-500">${loan.reason}</div>` : ''}
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            ${formatCurrency(loan.originalAmount)} + ${formatCurrency(loan.interest)}
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            ${formatDate(loan.date)}
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${statusClass}">
-                                ${statusText}
-                            </span>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                            <button onclick="openRepaymentModal(${index})" class="text-blue-600 hover:text-blue-900 mr-2 ${isPaid ? 'opacity-50 cursor-not-allowed' : ''}" ${isPaid ? 'disabled' : ''}>Add Payment</button>
-                            <button onclick="deleteLoan(${index})" class="text-red-600 hover:text-red-900">Delete</button>
-                        </td>
-                    `;
-                    loansList.appendChild(row);
-                });
-            }
-
-            calculateTotals();
-        };
-
-        // Open repayment modal
-        window.openRepaymentModal = (index) => {
-            document.getElementById('loan-id').value = index;
-            repaymentModal.classList.remove('hidden');
-        };
-
-        // Close repayment modal
-        closeModal.addEventListener('click', () => {
-            repaymentModal.classList.add('hidden');
-        });
-
-        // Add new loan
-        loanForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            
-            const name = document.getElementById('name').value;
-            const amount = parseFloat(document.getElementById('amount').value);
-            const date = document.getElementById('date').value;
-            
-            const interest = parseFloat(document.getElementById('interest').value) || 0;
-            const reason = document.getElementById('reason').value || '';
-            const newLoan = {
-                id: Date.now(),
-                name,
-                amount: amount + interest,
-                originalAmount: amount,
-                interest,
-                reason,
-                date,
-                repayments: []
-            };
-            
-            loans.push(newLoan);
-            localStorage.setItem('loans', JSON.stringify(loans));
-            // Add confirmation animation
-            document.getElementById('loan-form').classList.add('animate-pulse');
-            setTimeout(() => document.getElementById('loan-form').classList.remove('animate-pulse'), 1000);
-            
-            loanForm.reset();
-            renderLoans(filterSelect.value);
-        });
-
-        // Add repayment
-        repaymentForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            
-            const index = document.getElementById('loan-id').value;
-            const amount = parseFloat(document.getElementById('repayment-amount').value);
-            const date = document.getElementById('repayment-date').value;
-            
-            if (!loans[index].repayments) {
-                loans[index].repayments = [];
-            }
-            
-            loans[index].repayments.push({
-                amount,
-                date
-            });
-            
-            localStorage.setItem('loans', JSON.stringify(loans));
-            
-            repaymentForm.reset();
-            repaymentModal.classList.add('hidden');
-            renderLoans(filterSelect.value);
-        });
-
-        // Delete loan
-        window.deleteLoan = (index) => {
-            if (confirm('Are you sure you want to delete this loan record?')) {
-                loans.splice(index, 1);
-                localStorage.setItem('familyLoans', JSON.stringify(loans));
-                renderLoans(filterSelect.value);
-            }
-        };
-
-        // Filter loans
-        filterSelect.addEventListener('change', (e) => {
-            renderLoans(e.target.value);
-        });
-
-        // Audio function
-        function playWelcomeSound() {
-            const audio = document.getElementById('welcome-audio');
-            audio.volume = 0.3;
-            audio.play();
-            document.getElementById('welcome-screen').classList.add('opacity-0', 'pointer-events-none');
+        if (!articles || articles.length === 0) {
+          document.getElementById("newsContainer").innerHTML = "<p>No news found.</p>";
+          return;
         }
 
-        // Page transition animation
-        document.addEventListener('DOMContentLoaded', () => {
-            document.body.classList.add('opacity-0');
-            setTimeout(() => document.body.classList.remove('opacity-0'), 100);
-            renderLoans();
-            // Set today's date as default
-            const today = new Date().toISOString().split('T')[0];
-            document.getElementById('date').value = today;
-            document.getElementById('repayment-date').value = today;
+        let output = "";
+        articles.forEach(article => {
+          output += `
+            <div class="news-card">
+              <h3>${article.title}</h3>
+              ${article.urlToImage ? `<img src="${article.urlToImage}" alt="News image" />` : ""}
+              <p>${article.description || "No description available."}</p>
+              <a href="${article.url}" target="_blank">Read more</a>
+            </div>
+          `;
         });
-    </script>
+
+        document.getElementById("newsContainer").innerHTML = output;
+      } catch (error) {
+        document.getElementById("newsContainer").innerHTML = "<p>Error loading news.</p>";
+      }
+    }
+
+    // Load default news on page load
+    loadNews();
+  </script>
 </body>
 </html>
