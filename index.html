@@ -1,134 +1,100 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Vyriz News</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Vyriz Trending News</title>
   <style>
     body {
-      margin: 0;
       font-family: Arial, sans-serif;
-      background: #f4f4f4;
-      color: #333;
+      background: #f0f0f0;
+      margin: 0;
+      padding: 0;
     }
     header {
-      background: #222;
-      color: #fff;
-      padding: 1rem;
+      background-color: #1a1a1a;
+      color: white;
+      padding: 15px;
       text-align: center;
       font-size: 1.5rem;
     }
-    .categories {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 10px;
-      padding: 1rem;
-    }
-    .categories button {
-      padding: 8px 15px;
-      border: none;
-      background: #007bff;
-      color: white;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    .categories button:hover {
-      background: #0056b3;
-    }
     .news-container {
-      display: flex;
-      flex-direction: column;
-      gap: 1.5rem;
-      padding: 1rem;
       max-width: 900px;
-      margin: auto;
+      margin: 20px auto;
+      padding: 0 15px;
     }
     .news-card {
-      background: #fff;
-      padding: 1rem;
-      border-radius: 10px;
+      background: white;
+      padding: 15px;
+      margin-bottom: 15px;
+      border-radius: 8px;
       box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     }
     .news-card h3 {
-      margin-top: 0;
-    }
-    .news-card img {
-      max-width: 100%;
-      border-radius: 10px;
-      margin: 10px 0;
+      margin: 0;
     }
     .news-card a {
-      text-decoration: none;
       color: #007bff;
+      text-decoration: none;
     }
-    .ads-placeholder {
-      margin: 1rem auto;
+    .news-card a:hover {
+      text-decoration: underline;
+    }
+    .ads {
+      background: #ccc;
       padding: 20px;
-      background: #ddd;
+      margin: 20px;
       text-align: center;
-      border-radius: 10px;
+      border-radius: 8px;
     }
   </style>
 </head>
 <body>
-  <header>📰 Vyriz Trending News</header>
 
-  <div class="categories">
-    <button onclick="loadNews('general')">General</button>
-    <button onclick="loadNews('business')">Business</button>
-    <button onclick="loadNews('entertainment')">Entertainment</button>
-    <button onclick="loadNews('health')">Health</button>
-    <button onclick="loadNews('science')">Science</button>
-    <button onclick="loadNews('sports')">Sports</button>
-    <button onclick="loadNews('technology')">Technology</button>
-  </div>
+<header>📰 Vyriz Trending News</header>
 
-  <div class="ads-placeholder">
-    <!-- AdSense here -->
-    Ad space (AdSense)
-  </div>
+<div class="ads">
+  <!-- AdSense code can go here -->
+  Ad Placeholder - Google AdSense
+</div>
 
-  <div class="news-container" id="newsContainer">
-    <p>Loading news...</p>
-  </div>
+<div class="news-container" id="newsContainer">
+  <p>Loading latest headlines...</p>
+</div>
 
-  <script>
-    const apiKey = "4d6937f83f68498c80a65027b6cf5d87";
+<script>
+  const rssFeed = "https://feeds.feedburner.com/ndtvnews-top-stories"; // NDTV Top Stories RSS feed
+  const proxyUrl = "https://api.allorigins.win/get?url=" + encodeURIComponent(rssFeed);
 
-    async function loadNews(category = 'general') {
-      document.getElementById("newsContainer").innerHTML = "<p>Loading news...</p>";
-      const url = `https://newsapi.org/v2/top-headlines?country=in&category=${category}&apiKey=${apiKey}`;
-      try {
-        const res = await fetch(url);
-        const data = await res.json();
-        const articles = data.articles;
+  fetch(proxyUrl)
+    .then(response => response.json())
+    .then(data => {
+      const parser = new DOMParser();
+      const xmlDoc = parser.parseFromString(data.contents, "text/xml");
+      const items = xmlDoc.querySelectorAll("item");
 
-        if (!articles || articles.length === 0) {
-          document.getElementById("newsContainer").innerHTML = "<p>No news found.</p>";
-          return;
-        }
+      let html = "";
+      items.forEach((item, index) => {
+        if (index >= 10) return; // Show only top 10 news
+        const title = item.querySelector("title").textContent;
+        const link = item.querySelector("link").textContent;
+        const pubDate = item.querySelector("pubDate").textContent;
 
-        let output = "";
-        articles.forEach(article => {
-          output += `
-            <div class="news-card">
-              <h3>${article.title}</h3>
-              ${article.urlToImage ? `<img src="${article.urlToImage}" alt="News image" />` : ""}
-              <p>${article.description || "No description available."}</p>
-              <a href="${article.url}" target="_blank">Read more</a>
-            </div>
-          `;
-        });
+        html += `
+          <div class="news-card">
+            <h3><a href="${link}" target="_blank">${title}</a></h3>
+            <small>${pubDate}</small>
+          </div>
+        `;
+      });
 
-        document.getElementById("newsContainer").innerHTML = output;
-      } catch (error) {
-        document.getElementById("newsContainer").innerHTML = "<p>Error loading news.</p>";
-      }
-    }
+      document.getElementById("newsContainer").innerHTML = html;
+    })
+    .catch(err => {
+      document.getElementById("newsContainer").innerHTML = "<p>Failed to load news.</p>";
+      console.error(err);
+    });
+</script>
 
-    // Load default news on page load
-    loadNews();
-  </script>
 </body>
 </html>
