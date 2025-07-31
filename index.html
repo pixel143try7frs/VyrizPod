@@ -1,100 +1,174 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Vyriz Trending News</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Happy Birthday Pratyusha 🎂</title>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <style>
+    * {
+      box-sizing: border-box;
+    }
     body {
-      font-family: Arial, sans-serif;
-      background: #f0f0f0;
       margin: 0;
       padding: 0;
-    }
-    header {
-      background-color: #1a1a1a;
-      color: white;
-      padding: 15px;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #ffe4ec, #ffd9c0);
+      color: #444;
       text-align: center;
-      font-size: 1.5rem;
+      overflow-x: hidden;
     }
-    .news-container {
-      max-width: 900px;
+
+    h1 {
+      font-family: 'Pacifico', cursive;
+      font-size: 3em;
+      margin-top: 80px;
+      color: #ff4d6d;
+    }
+
+    .typed-text {
+      font-size: 1.3em;
       margin: 20px auto;
-      padding: 0 15px;
+      color: #333;
     }
-    .news-card {
-      background: white;
-      padding: 15px;
-      margin-bottom: 15px;
-      border-radius: 8px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    }
-    .news-card h3 {
-      margin: 0;
-    }
-    .news-card a {
-      color: #007bff;
-      text-decoration: none;
-    }
-    .news-card a:hover {
-      text-decoration: underline;
-    }
-    .ads {
-      background: #ccc;
+
+    .message, .gallery, .secret {
+      max-width: 800px;
+      margin: 30px auto;
       padding: 20px;
-      margin: 20px;
-      text-align: center;
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 0 0 20px rgba(255, 105, 135, 0.2);
+    }
+
+    .message p {
+      font-size: 1.2em;
+    }
+
+    .gallery img {
+      width: 100%;
+      max-width: 250px;
+      margin: 10px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    }
+
+    .secret input, .secret button {
+      padding: 10px;
+      margin-top: 10px;
+      font-size: 1em;
       border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+
+    .hidden-msg {
+      display: none;
+      font-size: 1.2em;
+      margin-top: 20px;
+      color: #ff0077;
+    }
+
+    .footer {
+      margin-top: 50px;
+      font-size: 0.9em;
+      color: #777;
+    }
+
+    @keyframes sparkle {
+      0%, 100% { opacity: 0.8; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.1); }
+    }
+
+    .sparkle {
+      animation: sparkle 2s infinite;
+    }
+
+    @media(max-width: 600px){
+      .gallery img {
+        max-width: 100%;
+      }
     }
   </style>
 </head>
 <body>
 
-<header>📰 Vyriz Trending News</header>
+  <h1 class="sparkle">Happy Birthday, Pratyusha 🎉</h1>
 
-<div class="ads">
-  <!-- AdSense code can go here -->
-  Ad Placeholder - Google AdSense
-</div>
+  <div class="typed-text" id="typed"></div>
 
-<div class="news-container" id="newsContainer">
-  <p>Loading latest headlines...</p>
-</div>
+  <div class="message">
+    <p>Dear Pratyusha,</p>
+    <p>
+      On this special day, I just want to say how grateful I am to know you. 
+      Your smile lights up even the dullest days, and your friendship means a lot to me.
+    </p>
+    <p>
+      May your birthday be filled with laughter, love, and everything you wish for. 
+      Keep shining like the star you are ✨
+    </p>
+    <p>— Yuvraj ❤️</p>
+  </div>
 
-<script>
-  const rssFeed = "https://feeds.feedburner.com/ndtvnews-top-stories"; // NDTV Top Stories RSS feed
-  const proxyUrl = "https://api.allorigins.win/get?url=" + encodeURIComponent(rssFeed);
+  <div class="gallery">
+    <h2>🌸 Memories Gallery</h2>
+    <img src="https://source.unsplash.com/250x250/?birthday,cake" alt="Cake">
+    <img src="https://source.unsplash.com/251x251/?friends,smile" alt="Friends">
+    <img src="https://source.unsplash.com/252x252/?balloons,party" alt="Party">
+  </div>
 
-  fetch(proxyUrl)
-    .then(response => response.json())
-    .then(data => {
-      const parser = new DOMParser();
-      const xmlDoc = parser.parseFromString(data.contents, "text/xml");
-      const items = xmlDoc.querySelectorAll("item");
+  <div class="secret">
+    <h2>🔐 Unlock Secret Message</h2>
+    <input type="text" id="code" placeholder="Enter the secret word">
+    <button onclick="checkCode()">Unlock</button>
+    <div class="hidden-msg" id="hiddenMsg">
+      You are the kind of person who makes life more beautiful 💖 Keep smiling always!
+    </div>
+  </div>
 
-      let html = "";
-      items.forEach((item, index) => {
-        if (index >= 10) return; // Show only top 10 news
-        const title = item.querySelector("title").textContent;
-        const link = item.querySelector("link").textContent;
-        const pubDate = item.querySelector("pubDate").textContent;
+  <div class="footer">
+    Website created with love 💖 by Yuvraj
+  </div>
 
-        html += `
-          <div class="news-card">
-            <h3><a href="${link}" target="_blank">${title}</a></h3>
-            <small>${pubDate}</small>
-          </div>
-        `;
-      });
+  <!-- Background Music -->
+  <audio autoplay loop>
+    <source src="https://www.bensound.com/bensound-music/bensound-sunny.mp3" type="audio/mp3">
+    Your browser does not support audio.
+  </audio>
 
-      document.getElementById("newsContainer").innerHTML = html;
-    })
-    .catch(err => {
-      document.getElementById("newsContainer").innerHTML = "<p>Failed to load news.</p>";
-      console.error(err);
+  <!-- Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+  <script>
+    confetti({
+      particleCount: 200,
+      spread: 120,
+      origin: { y: 0.6 }
     });
-</script>
+
+    // Secret code checker
+    function checkCode() {
+      const input = document.getElementById("code").value.toLowerCase();
+      if (input === "princess") {
+        document.getElementById("hiddenMsg").style.display = "block";
+      } else {
+        alert("Oops! Try again.");
+      }
+    }
+  </script>
+
+  <!-- Typed Text -->
+  <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+  <script>
+    var typed = new Typed("#typed", {
+      strings: [
+        "Wishing you a day full of joy 🎈",
+        "Smiles, cake, and happy memories 🎂",
+        "Happy Birthday once again, Pratyusha 💫"
+      ],
+      typeSpeed: 60,
+      backSpeed: 30,
+      loop: true
+    });
+  </script>
 
 </body>
 </html>
