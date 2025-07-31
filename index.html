@@ -6,9 +6,7 @@
   <title>Happy Birthday Pratyusha 🎂</title>
   <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
     body {
       margin: 0;
       padding: 0;
@@ -32,7 +30,7 @@
       color: #333;
     }
 
-    .message, .gallery, .secret {
+    .message, .secret {
       max-width: 800px;
       margin: 30px auto;
       padding: 20px;
@@ -43,14 +41,6 @@
 
     .message p {
       font-size: 1.2em;
-    }
-
-    .gallery img {
-      width: 100%;
-      max-width: 250px;
-      margin: 10px;
-      border-radius: 12px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.1);
     }
 
     .secret input, .secret button {
@@ -82,12 +72,6 @@
     .sparkle {
       animation: sparkle 2s infinite;
     }
-
-    @media(max-width: 600px){
-      .gallery img {
-        max-width: 100%;
-      }
-    }
   </style>
 </head>
 <body>
@@ -107,13 +91,6 @@
       Keep shining like the star you are ✨
     </p>
     <p>— Yuvraj ❤️</p>
-  </div>
-
-  <div class="gallery">
-    <h2>🌸 Memories Gallery</h2>
-    <img src="https://source.unsplash.com/250x250/?birthday,cake" alt="Cake">
-    <img src="https://source.unsplash.com/251x251/?friends,smile" alt="Friends">
-    <img src="https://source.unsplash.com/252x252/?balloons,party" alt="Party">
   </div>
 
   <div class="secret">
@@ -144,7 +121,6 @@
       origin: { y: 0.6 }
     });
 
-    // Secret code checker
     function checkCode() {
       const input = document.getElementById("code").value.toLowerCase();
       if (input === "princess") {
@@ -160,9 +136,9 @@
   <script>
     var typed = new Typed("#typed", {
       strings: [
-        "Wishing you a day full of joy 🎈",
-        "Smiles, cake, and happy memories 🎂",
-        "Happy Birthday once again, Pratyusha 💫"
+        "Wishing you joy, laughter, and cake 🎂",
+        "Happy Birthday to someone truly amazing ✨",
+        "May your day be as beautiful as you are 💐"
       ],
       typeSpeed: 60,
       backSpeed: 30,
