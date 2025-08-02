@@ -47,3 +47,22 @@ function drawConfetti() {
 createConfetti();
 drawConfetti();
 
+// Image Gallery Injection
+const galleryHTML = `
+  <div class="gallery">
+    <h2>Some Beautiful Moments</h2>
+    <img src="https://raw.githubusercontent.com/pixel143try7frs/VyrizPod/main/IMG_20250801_173933_682.jpg" class="gallery-img" />
+    <img src="https://raw.githubusercontent.com/pixel143try7frs/VyrizPod/main/IMG_20250801_173949_750.jpg" class="gallery-img" />
+    <img src="https://raw.githubusercontent.com/pixel143try7frs/VyrizPod/main/IMG_20250801_173948_628.jpg" class="gallery-img" />
+    <img src="https://raw.githubusercontent.com/pixel143try7frs/VyrizPod/main/IMG_20250801_173947_534.jpg" class="gallery-img" />
+    <img src="https://raw.githubusercontent.com/pixel143try7frs/VyrizPod/main/IMG_20250801_173945_087.jpg" class="gallery-img" />
+    <img src="https://raw.githubusercontent.com/pixel143try7frs/VyrizPod/main/IMG_20250801_173941_765.jpg" class="gallery-img" />
+    <img src="https://raw.githubusercontent.com/pixel143try7frs/VyrizPod/main/IMG_20250801_173940_081.jpg" class="gallery-img" />
+    <img src="https://raw.githubusercontent.com/pixel143try7frs/VyrizPod/main/IMG_20250801_173938_621.jpg" class="gallery-img" />
+  </div>
+`;
+
+window.addEventListener("DOMContentLoaded", () => {
+  const container = document.querySelector(".container");
+  container.insertAdjacentHTML("beforeend", galleryHTML);
+});
