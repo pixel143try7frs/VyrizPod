@@ -1,259 +1,353 @@
-import turtle
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday, Pratyusha! ❤️</title>
+    <!-- Use Tailwind CSS for beautiful, responsive styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts for an elegant and modern look -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        /* Custom CSS for animations and gradients */
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: linear-gradient(135deg, #fce4ec, #e0f7fa);
+            animation: backgroundFade 15s infinite alternate;
+        }
+        @keyframes backgroundFade {
+            0% { background: linear-gradient(135deg, #fce4ec, #e0f7fa); }
+            50% { background: linear-gradient(135deg, #fff3e0, #fce4ec); }
+            100% { background: linear-gradient(135deg, #e0f7fa, #fff3e0); }
+        }
+        .playfair {
+            font-family: 'Playfair Display', serif;
+        }
+        /* Game grid and card styles */
+        .game-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            max-width: 600px;
+            width: 90%;
+        }
+        .card {
+            width: 100%;
+            padding-bottom: 100%; /* Make cards square */
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.5s;
+            cursor: pointer;
+        }
+        .card-inner {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform-style: preserve-3d;
+            border-radius: 1.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        .card.is-flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+        }
+        .card-front {
+            background-color: #ffb6c1; /* Pink back of the card */
+            transform: rotateY(180deg);
+            color: #fff;
+        }
+        .card-back {
+            background-color: #fce4ec; /* Light pink front of the card */
+        }
+        /* Fade and pop effect for matched cards */
+        .card.matched .card-inner {
+            transform: scale(1.05) rotateY(180deg);
+            opacity: 1;
+            box-shadow: 0 15px 40px rgba(255, 105, 180, 0.5);
+        }
+        .final-question-section {
+            background-color: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(5px);
+            opacity: 0;
+            transform: scale(0.9);
+            transition: all 1s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        }
+        .final-question-section.show {
+            opacity: 1;
+            transform: scale(1);
+        }
+        .yes-button, .no-button {
+            transition: all 0.2s;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            transform: scale(1);
+        }
+        .yes-button.show-btn, .no-button.show-btn {
+            opacity: 1;
+        }
+        .no-button.running {
+            position: absolute;
+            /* Add a fast transition for the "running" effect */
+            transition: transform 0.1s linear;
+        }
+        /* Custom message box styling */
+        .message-box {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1000;
+            padding: 2rem;
+            background: linear-gradient(45deg, #ffdde1, #ffcc70);
+            border-radius: 1.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+            display: none;
+            text-align: center;
+            border: 4px solid white;
+        }
+        .message-box button {
+            margin-top: 1rem;
+            padding: 0.75rem 2rem;
+            border-radius: 9999px;
+            font-weight: bold;
+            color: white;
+            background-color: #ff69b4;
+            transition: all 0.2s;
+        }
+        .message-box button:hover {
+            transform: scale(1.05);
+            background-color: #e05c9a;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-4 text-gray-800">
 
-name = input("Enter Name")
-age = input("Enter Age")
+    <!-- Header Section -->
+    <header class="text-center my-8">
+        <h1 class="playfair text-5xl md:text-6xl text-pink-500 animate-pulse">Happy Birthday, Pratyusha!</h1>
+        <p id="game-intro" class="mt-4 text-lg md:text-xl font-semibold">Match all the pairs to get your birthday surprise! ❤️</p>
+        <p id="counter" class="mt-2 text-xl font-bold text-gray-700 hidden">Pairs Matched: 0/8</p>
+    </header>
 
+    <!-- The Memory Game Grid -->
+    <main id="game-grid" class="game-grid"></main>
 
-bg = turtle.Screen()
-turtle.title("Happy Birthday "+name)
-bg.bgcolor("black")
+    <!-- The Final Question Section - Hidden until the game is won -->
+    <div id="finalQuestionSection" class="final-question-section mt-12 p-8 md:p-12 text-center rounded-3xl w-full max-w-2xl hidden">
+        <h2 class="playfair text-4xl md:text-5xl text-purple-600">You did it! ❤️</h2>
+        <p class="mt-4 text-xl md:text-2xl font-semibold text-gray-700">
+            Now for the most important question...
+        </p>
+        <p class="mt-6 text-3xl md:text-4xl font-bold text-pink-600 animate-pulse">
+            Do you love me?
+        </p>
+        <div id="buttonContainer" class="relative flex justify-center items-center mt-8 gap-4 h-24">
+            <button id="noBtn" class="no-button bg-gray-300 text-gray-800 font-bold py-3 px-8 rounded-full text-lg hover:bg-gray-400">
+                NO! 
+            </button>
+            <button id="yesBtn" class="yes-button bg-pink-500 text-white font-bold py-3 px-8 rounded-full text-lg">
+                YES! ❤️
+            </button>
+        </div>
+    </div>
 
-turtle.penup()
-turtle.goto(-150,-120)
-turtle.color("white")
-turtle.pendown()
-turtle.forward(260)
+    <!-- The message box for custom alerts/messages -->
+    <div id="messageBox" class="message-box">
+        <p id="messageText" class="text-2xl font-bold playfair"></p>
+        <button id="closeMessageBtn">Close</button>
+    </div>
 
-########################################cake
-turtle.penup()
-turtle.goto(-120,-120)
-turtle.color("yellow")
-turtle.begin_fill()
-turtle.pendown()
-turtle.forward(200)
-turtle.left(90)
-turtle.forward(95)
-turtle.left(90)
-turtle.forward(200)
-turtle.left(90)
-turtle.forward(95)
-turtle.end_fill()
+    <!-- JavaScript for game logic and proposal reveal -->
+    <script>
+        // Use a CDN for a simple confetti effect
+        const confettiScript = document.createElement('script');
+        confettiScript.src = "https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.js";
+        document.body.appendChild(confettiScript);
 
-turtle.penup()
-turtle.left(90)
-turtle.goto(-95,-30)
-turtle.color("yellow")
-turtle.begin_fill()
-turtle.pendown()
-turtle.forward(150)
-turtle.left(90)
-turtle.forward(95)
-turtle.left(90)
-turtle.forward(150)
-turtle.left(90)
-turtle.forward(95)
-turtle.end_fill()
+        window.onload = function() {
+            const gameGrid = document.getElementById('game-grid');
+            const counterElement = document.getElementById('counter');
+            const finalQuestionSection = document.getElementById('finalQuestionSection');
+            const buttonContainer = document.getElementById('buttonContainer');
+            const yesBtn = document.getElementById('yesBtn');
+            const noBtn = document.getElementById('noBtn');
+            const messageBox = document.getElementById('messageBox');
+            const messageText = document.getElementById('messageText');
+            const closeMessageBtn = document.getElementById('closeMessageBtn');
+            
+            let emojis = ['❤️', '✨', '🌟', '🧠', '😂', '🎉', '🎁', '💖'];
+            let cardsArray = [...emojis, ...emojis]; // Double the array for matching pairs
+            let flippedCards = [];
+            let matchedPairs = 0;
+            const totalPairs = emojis.length;
+            let canFlip = true;
+            let yesScale = 1; // Tracks the size of the "Yes" button
+            let noAttempts = 0; // Tracks the number of clicks on "No"
 
-#######################################################candles
-turtle.penup()
-turtle.goto(-80,65)
-turtle.color("orange")
-turtle.width(5)
-turtle.left(180)
-turtle.pendown()
-turtle.forward(25)
+            // Function to show a custom message box
+            function showMessage(text) {
+                messageText.textContent = text;
+                messageBox.style.display = 'block';
+            }
 
-turtle.penup()
-turtle.goto(50,65)
-turtle.color("purple")
-turtle.width(5)
-turtle.pendown()
-turtle.forward(25)
+            // Function to shuffle the cards
+            function shuffle(array) {
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]];
+                }
+                return array;
+            }
 
-turtle.penup()
-turtle.goto(-50,65)
-turtle.color("blue")
-turtle.width(5)
-turtle.pendown()
-turtle.forward(30)
+            // Function to create and append the cards to the grid
+            function createCards() {
+                shuffle(cardsArray).forEach(emoji => {
+                    const card = document.createElement('div');
+                    card.classList.add('card');
+                    card.innerHTML = `
+                        <div class="card-inner">
+                            <div class="card-back"></div>
+                            <div class="card-front text-4xl">${emoji}</div>
+                        </div>
+                    `;
+                    card.addEventListener('click', flipCard);
+                    gameGrid.appendChild(card);
+                });
+            }
 
-turtle.penup()
-turtle.goto(10,65)
-turtle.color("green")
-turtle.width(5)
-turtle.pendown()
-turtle.forward(30)
+            // Function to handle flipping a card
+            function flipCard(event) {
+                const card = event.currentTarget;
+                // Only allow flips if we can flip and the card isn't already matched or flipped
+                if (!canFlip || card.classList.contains('is-flipped') || card.classList.contains('matched')) {
+                    return;
+                }
+                
+                card.classList.add('is-flipped');
+                flippedCards.push(card);
 
-turtle.penup()
-turtle.goto(-20,65)
-turtle.color("white")
-turtle.width(5)
-turtle.pendown()
-turtle.forward(35)
+                // Check for a match if two cards are flipped
+                if (flippedCards.length === 2) {
+                    canFlip = false;
+                    setTimeout(checkForMatch, 1000);
+                }
+            }
 
+            // Function to check if two flipped cards match
+            function checkForMatch() {
+                const [card1, card2] = flippedCards;
+                const emoji1 = card1.querySelector('.card-front').textContent;
+                const emoji2 = card2.querySelector('.card-front').textContent;
 
-#cherry
-turtle.penup()
-turtle.goto(-80,15)
-turtle.fillcolor("red")
-turtle.begin_fill()
-turtle.circle(5) 
-turtle.end_fill() 
+                if (emoji1 === emoji2) {
+                    // It's a match!
+                    card1.classList.add('matched');
+                    card2.classList.add('matched');
+                    matchedPairs++;
+                    counterElement.textContent = `Pairs Matched: ${matchedPairs}/${totalPairs}`;
 
-turtle.penup()
-turtle.goto(-70,-55)
-turtle.fillcolor("red")
-turtle.begin_fill()
-turtle.circle(5) 
-turtle.end_fill()
+                    // Small confetti for each match
+                    if (typeof confetti === 'function') {
+                        confetti({
+                            particleCount: 50,
+                            startVelocity: 30,
+                            spread: 60,
+                            origin: { y: 0.5 }
+                        });
+                    }
 
-turtle.penup()
-turtle.goto(-90,-95)
-turtle.fillcolor("red")
-turtle.begin_fill()
-turtle.circle(5) 
-turtle.end_fill()
+                    if (matchedPairs === totalPairs) {
+                        // All pairs matched, reveal the final question after a small delay
+                        setTimeout(() => {
+                            finalQuestionSection.classList.remove('hidden');
+                            finalQuestionSection.classList.add('show');
+                            // Now fade in the buttons with a delay
+                            setTimeout(() => noBtn.classList.add('show-btn'), 500);
+                            setTimeout(() => yesBtn.classList.add('show-btn'), 1000);
+                        }, 1000);
+                    }
+                } else {
+                    // Not a match, flip them back over
+                    card1.classList.remove('is-flipped');
+                    card2.classList.remove('is-flipped');
+                }
 
-turtle.penup()
-turtle.goto(-60,45)
-turtle.fillcolor("red")
-turtle.begin_fill()
-turtle.circle(5) 
-turtle.end_fill() 
+                // Reset for the next turn
+                flippedCards = [];
+                canFlip = true;
+            }
 
-turtle.penup()
-turtle.goto(0,0)
-turtle.fillcolor("red")
-turtle.begin_fill()
-turtle.circle(5) 
-turtle.end_fill()
+            // Function to move the "No" button to a new random position
+            function runNoButton() {
+                const buttonContainerRect = buttonContainer.getBoundingClientRect();
+                const noBtnRect = noBtn.getBoundingClientRect();
+                
+                // Calculate max distance for movement within the container
+                const maxX = buttonContainerRect.width - noBtnRect.width;
+                const maxY = buttonContainerRect.height - noBtnRect.height;
+                
+                // Generate random coordinates
+                const newX = Math.random() * maxX;
+                const newY = Math.random() * maxY;
 
-turtle.penup()
-turtle.goto(30,45)
-turtle.fillcolor("red")
-turtle.begin_fill()
-turtle.circle(5) 
-turtle.end_fill()
+                noBtn.style.transform = `translate(${newX}px, ${newY}px)`;
+            }
 
-turtle.penup()
-turtle.goto(60,-75)
-turtle.fillcolor("red")
-turtle.begin_fill()
-turtle.circle(5) 
-turtle.end_fill()
+            // Event listener for the "NO!" button
+            noBtn.addEventListener('click', () => {
+                noAttempts++;
+                
+                // Increase the size of the "Yes" button
+                if (yesScale < 3) {
+                    yesScale += 0.5;
+                    yesBtn.style.transform = `scale(${yesScale})`;
+                }
 
-turtle.penup()
-turtle.goto(-20,-25)
-turtle.fillcolor("red")
-turtle.begin_fill()
-turtle.circle(5) 
-turtle.end_fill()
+                // Start the "running" effect
+                noBtn.classList.add('running');
+                runNoButton();
 
-turtle.penup()
-turtle.goto(60,-35)
-turtle.fillcolor("red")
-turtle.begin_fill()
-turtle.circle(5) 
-turtle.end_fill()
+                // Hide the "No" button after a few attempts
+                if (noAttempts >= 5) {
+                    noBtn.style.display = 'none';
+                }
+            });
 
-turtle.penup()
-turtle.goto(0,-75)
-turtle.fillcolor("red")
-turtle.begin_fill()
-turtle.circle(5) 
-turtle.end_fill()
+            // Event listener for the "YES!" button
+            yesBtn.addEventListener('click', () => {
+                // Run a big confetti burst for a celebratory moment
+                if (typeof confetti === 'function') {
+                    confetti({
+                        particleCount: 200,
+                        spread: 100,
+                        origin: { y: 0.6 }
+                    });
+                }
+                showMessage("I knew it! Happy birthday and thank you for being you! ❤️");
+            });
 
-
-
-###############################design
-
-turtle.penup()
-turtle.home()
-turtle.forward(200)
-turtle.pendown()
-turtle.color("hotpink")
-turtle.width(2)
-turtle.speed(0)
-
-
-def square(length, angle):
-    
-    turtle.forward(length)
-    turtle.right(angle)
-    turtle.forward(length)
-    turtle.right(angle)
-   
-    turtle.forward(length)
-    turtle.right(angle)
-    turtle.forward(length)
-    turtle.right(angle)
-
-square(40, 90)
-
-for i in range(36):
-      turtle.right(10)
-      square(40, 90)
-
-turtle.penup()
-turtle.home()
-turtle.backward(250)
-turtle.pendown()
-turtle.color("hotpink")
-turtle.width(2)
-turtle.speed(0)
-
-square(40, 90)
-
-for i in range(36):
-      turtle.right(10)
-      square(40, 90)
-
-
-
-# Happy Birthday message
-
-turtle.penup()
-turtle.goto(-280,170 )
-turtle.color("pink")
-turtle.pendown()
-wish = "Happy Birthday "+name+" !"
-turtle.write(wish,font=('Courier', 30, 'italic'))
-
-
-turtle.penup()
-turtle.goto(-80,-250 )
-turtle.color("pink")
-turtle.pendown()
-turtle.write("21",font=('Courier', 100, 'italic'))
-
-turtle.penup()
-turtle.goto(-80,95)
-turtle.fillcolor("yellow")
-turtle.begin_fill()
-turtle.circle(3) 
-turtle.end_fill()
-
-turtle.penup()
-turtle.goto(50,95)
-turtle.fillcolor("yellow")
-turtle.begin_fill()
-turtle.circle(3) 
-turtle.end_fill()
-
-turtle.penup()
-turtle.goto(-50,105)
-turtle.fillcolor("yellow")
-turtle.begin_fill()
-turtle.circle(3) 
-turtle.end_fill()
-
-turtle.penup()
-turtle.goto(10,105)
-turtle.fillcolor("yellow")
-turtle.begin_fill()
-turtle.circle(3) 
-turtle.end_fill()
-
-turtle.penup()
-turtle.goto(-20,115)
-turtle.fillcolor("yellow")
-turtle.begin_fill()
-turtle.circle(3) 
-turtle.end_fill()
-
-turtle.pendown()
-turtle.penup()
-turtle.goto(-280,-270 )
-turtle.color("black")
-turtle.pendown()
-turtle.write("",font=('Courier', 30, 'italic'))
+            // Event listener to close the message box
+            closeMessageBtn.addEventListener('click', () => {
+                messageBox.style.display = 'none';
+            });
+            
+            // Start the game when the window loads
+            createCards();
+        };
+    </script>
+</body>
+</html>
