@@ -11,21 +11,109 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
     <style>
-        /* Custom CSS for animations and gradients */
+        /* General Styles & Body Background */
         body {
             font-family: 'Nunito', sans-serif;
+            background: #000;
+            color: #fff;
+            animation: none;
+            box-shadow: none;
+        }
+        .playfair {
+            font-family: 'Playfair Display', serif;
+        }
+
+        /* Welcome Screen Styling */
+        #welcomeScreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: #000;
+            z-index: 20;
+            transition: opacity 1s ease-in-out;
+        }
+        #welcomeScreen p, #welcomeScreen #bulb {
+            opacity: 0;
+            transition: opacity 1.5s ease-in-out;
+        }
+        #bulb {
+            cursor: pointer;
+            transition: filter 0.5s ease-in-out, transform 0.2s ease-in-out, opacity 1s ease-in-out;
+            fill: #4b5563;
+            stroke: #4b5563;
+            z-index: 15; /* Ensure the bulb is on top of the glow effect */
+        }
+        #bulb:hover {
+            transform: scale(1.05);
+        }
+        #bulb.lit {
+            fill: #fde047; /* Light yellow fill */
+            stroke: #fde047; /* Light yellow stroke */
+            filter: drop-shadow(0 0 15px #fde047) drop-shadow(0 0 30px #fde047);
+        }
+        #welcomeText {
+            opacity: 0;
+            transition: opacity 1.5s ease-in-out;
+            z-index: 15;
+        }
+        #happyBirthdayMessage {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0;
+            transition: opacity 1.5s ease-in-out;
+            pointer-events: none;
+            text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff;
+            z-index: 15;
+        }
+        #happyBirthdayMessage.show {
+            opacity: 1;
+        }
+
+        /* The new screen-filling glow effect */
+        #screenGlow {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: 50px;
+            height: 50px;
+            background: #fde047;
+            border-radius: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            opacity: 0;
+            filter: blur(10px);
+            z-index: 10;
+            transition: transform 1s ease-in-out, opacity 1s ease-in-out;
+        }
+        #screenGlow.active {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(2);
+            transition: transform 5s ease-in-out, opacity 5s ease-in-out;
+        }
+        #screenGlow.full-screen {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(200); /* A large scale to fill the screen */
+        }
+
+        /* Game Content Styling */
+        .game-content {
             background: linear-gradient(135deg, #fce4ec, #e0f7fa);
-            animation: backgroundFade 15s infinite alternate;
+            color: #4a5568;
         }
         @keyframes backgroundFade {
             0% { background: linear-gradient(135deg, #fce4ec, #e0f7fa); }
             50% { background: linear-gradient(135deg, #fff3e0, #fce4ec); }
             100% { background: linear-gradient(135deg, #e0f7fa, #fff3e0); }
         }
-        .playfair {
-            font-family: 'Playfair Display', serif;
-        }
-        /* Game grid and card styles */
+
+        /* Memory Game Grid */
         .game-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -38,7 +126,7 @@
             padding-bottom: 100%; /* Make cards square */
             position: relative;
             transform-style: preserve-3d;
-            transition: transform 0.5s;
+            transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
             cursor: pointer;
         }
         .card-inner {
@@ -50,6 +138,9 @@
             transform-style: preserve-3d;
             border-radius: 1.5rem;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        .card:hover .card-inner:not(.is-flipped) {
+            transform: scale(1.05);
         }
         .card.is-flipped .card-inner {
             transform: rotateY(180deg);
@@ -73,12 +164,13 @@
         .card-back {
             background-color: #fce4ec; /* Light pink front of the card */
         }
-        /* Fade and pop effect for matched cards */
         .card.matched .card-inner {
             transform: scale(1.05) rotateY(180deg);
             opacity: 1;
             box-shadow: 0 15px 40px rgba(255, 105, 180, 0.5);
         }
+
+        /* Final Question Section & Buttons */
         .final-question-section {
             background-color: rgba(255, 255, 255, 0.9);
             backdrop-filter: blur(5px);
@@ -91,7 +183,7 @@
             transform: scale(1);
         }
         .yes-button, .no-button {
-            transition: all 0.2s;
+            transition: all 0.2s cubic-bezier(0.68, -0.55, 0.27, 1.55);
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
             opacity: 0;
             transform: scale(1);
@@ -101,9 +193,16 @@
         }
         .no-button.running {
             position: absolute;
-            /* Add a fast transition for the "running" effect */
-            transition: transform 0.1s linear;
+            animation: button-run 1s infinite alternate ease-in-out;
         }
+        @keyframes button-run {
+            0% { transform: translate(0px, 0px) scale(1); }
+            25% { transform: translate(50px, -20px) scale(0.9); }
+            50% { transform: translate(-30px, 40px) scale(1.1); }
+            75% { transform: translate(10px, -50px) scale(0.95); }
+            100% { transform: translate(0px, 0px) scale(1); }
+        }
+        
         /* Custom message box styling */
         .message-box {
             position: fixed;
@@ -132,36 +231,67 @@
             transform: scale(1.05);
             background-color: #e05c9a;
         }
+
+        /* Initial state for game content */
+        .game-content.hidden {
+            display: none;
+            opacity: 0;
+        }
+        .game-content.show {
+            display: flex;
+            opacity: 1;
+            transition: opacity 1s ease-in-out;
+        }
     </style>
 </head>
-<body class="min-h-screen flex flex-col items-center justify-center p-4 text-gray-800">
+<body class="min-h-screen flex flex-col items-center justify-center p-4">
 
-    <!-- Header Section -->
-    <header class="text-center my-8">
-        <h1 class="playfair text-5xl md:text-6xl text-pink-500 animate-pulse">Happy Birthday, Pratyusha!</h1>
-        <p id="game-intro" class="mt-4 text-lg md:text-xl font-semibold">Match all the pairs to get your birthday surprise! ❤️</p>
-        <p id="counter" class="mt-2 text-xl font-bold text-gray-700 hidden">Pairs Matched: 0/8</p>
-    </header>
+    <!-- Welcome Screen -->
+    <div id="welcomeScreen">
+        <!-- The screen-filling glow effect (starts as a small dot) -->
+        <div id="screenGlow"></div>
 
-    <!-- The Memory Game Grid -->
-    <main id="game-grid" class="game-grid"></main>
+        <!-- A more classic light bulb SVG -->
+        <svg id="bulb" class="w-24 h-24 mb-4" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <path d="M50 8c-13.8 0-25 11.2-25 25 0 8.7 4.5 16.5 11.9 21.1L37 60h26l0.1-5.9c7.4-4.6 11.9-12.4 11.9-21.1 0-13.8-11.2-25-25-25z" />
+            <rect x="40" y="60" width="20" height="20" rx="5" ry="5"/>
+            <rect x="45" y="80" width="10" height="10" rx="3" ry="3"/>
+        </svg>
+        <p id="welcomeText" class="text-xl md:text-2xl font-semibold text-gray-400">Click on the bulb to make your life bright. ✨</p>
+        <h1 id="happyBirthdayMessage" class="playfair text-5xl md:text-6xl text-white font-bold tracking-wider">
+            Happy Birthday Madam ji
+        </h1>
+    </div>
 
-    <!-- The Final Question Section - Hidden until the game is won -->
-    <div id="finalQuestionSection" class="final-question-section mt-12 p-8 md:p-12 text-center rounded-3xl w-full max-w-2xl hidden">
-        <h2 class="playfair text-4xl md:text-5xl text-purple-600">You did it! ❤️</h2>
-        <p class="mt-4 text-xl md:text-2xl font-semibold text-gray-700">
-            Now for the most important question...
-        </p>
-        <p class="mt-6 text-3xl md:text-4xl font-bold text-pink-600 animate-pulse">
-            Do you love me?
-        </p>
-        <div id="buttonContainer" class="relative flex justify-center items-center mt-8 gap-4 h-24">
-            <button id="noBtn" class="no-button bg-gray-300 text-gray-800 font-bold py-3 px-8 rounded-full text-lg hover:bg-gray-400">
-                NO! 
-            </button>
-            <button id="yesBtn" class="yes-button bg-pink-500 text-white font-bold py-3 px-8 rounded-full text-lg">
-                YES! ❤️
-            </button>
+    <!-- The main game content - hidden initially -->
+    <div id="gameContent" class="game-content hidden min-h-screen flex flex-col items-center justify-center p-4 text-gray-800">
+        <!-- Header Section -->
+        <header class="text-center my-8">
+            <h1 class="playfair text-5xl md:text-6xl text-pink-500 animate-pulse">Happy Birthday, Pratyusha!</h1>
+            <p id="game-intro" class="mt-4 text-lg md:text-xl font-semibold">Match all the pairs to get your birthday surprise! ❤️</p>
+            <p id="counter" class="mt-2 text-xl font-bold text-gray-700">Pairs Matched: 0/8</p>
+        </header>
+
+        <!-- The Memory Game Grid -->
+        <main id="game-grid" class="game-grid"></main>
+
+        <!-- The Final Question Section - Hidden until the game is won -->
+        <div id="finalQuestionSection" class="final-question-section mt-12 p-8 md:p-12 text-center rounded-3xl w-full max-w-2xl hidden">
+            <h2 class="playfair text-4xl md:text-5xl text-purple-600">You did it! ❤️</h2>
+            <p class="mt-4 text-xl md:text-2xl font-semibold text-gray-700">
+                Now for the most important question...
+            </p>
+            <p class="mt-6 text-3xl md:text-4xl font-bold text-pink-600 animate-pulse">
+                Do you love me?
+            </p>
+            <div id="buttonContainer" class="relative flex justify-center items-center mt-8 gap-4 h-24">
+                <button id="noBtn" class="no-button bg-gray-300 text-gray-800 font-bold py-3 px-8 rounded-full text-lg hover:bg-gray-400">
+                    NO! 
+                </button>
+                <button id="yesBtn" class="yes-button bg-pink-500 text-white font-bold py-3 px-8 rounded-full text-lg">
+                    YES! ❤️
+                </button>
+            </div>
         </div>
     </div>
 
@@ -179,10 +309,16 @@
         document.body.appendChild(confettiScript);
 
         window.onload = function() {
+            // Get all necessary elements
+            const welcomeScreen = document.getElementById('welcomeScreen');
+            const bulb = document.getElementById('bulb');
+            const welcomeText = document.getElementById('welcomeText');
+            const happyBirthdayMessage = document.getElementById('happyBirthdayMessage');
+            const screenGlow = document.getElementById('screenGlow');
+            const gameContent = document.getElementById('gameContent');
             const gameGrid = document.getElementById('game-grid');
             const counterElement = document.getElementById('counter');
             const finalQuestionSection = document.getElementById('finalQuestionSection');
-            const buttonContainer = document.getElementById('buttonContainer');
             const yesBtn = document.getElementById('yesBtn');
             const noBtn = document.getElementById('noBtn');
             const messageBox = document.getElementById('messageBox');
@@ -291,22 +427,6 @@
                 canFlip = true;
             }
 
-            // Function to move the "No" button to a new random position
-            function runNoButton() {
-                const buttonContainerRect = buttonContainer.getBoundingClientRect();
-                const noBtnRect = noBtn.getBoundingClientRect();
-                
-                // Calculate max distance for movement within the container
-                const maxX = buttonContainerRect.width - noBtnRect.width;
-                const maxY = buttonContainerRect.height - noBtnRect.height;
-                
-                // Generate random coordinates
-                const newX = Math.random() * maxX;
-                const newY = Math.random() * maxY;
-
-                noBtn.style.transform = `translate(${newX}px, ${newY}px)`;
-            }
-
             // Event listener for the "NO!" button
             noBtn.addEventListener('click', () => {
                 noAttempts++;
@@ -319,8 +439,7 @@
 
                 // Start the "running" effect
                 noBtn.classList.add('running');
-                runNoButton();
-
+                
                 // Hide the "No" button after a few attempts
                 if (noAttempts >= 5) {
                     noBtn.style.display = 'none';
@@ -337,16 +456,62 @@
                         origin: { y: 0.6 }
                     });
                 }
-                showMessage("I knew it! Happy birthday and thank you for being you! mwahhhhhh my kuchuuu puchuuu chota don :3 ❤️");
+                showMessage("I knew it! Happy birthday and thank you for being you! ❤️");
             });
 
             // Event listener to close the message box
             closeMessageBtn.addEventListener('click', () => {
                 messageBox.style.display = 'none';
             });
-            
-            // Start the game when the window loads
-            createCards();
+
+            // Function to handle the welcome screen
+            function showWelcomeScreen() {
+                // First, fade in the elements on page load
+                setTimeout(() => {
+                    bulb.style.opacity = '1';
+                    welcomeText.style.opacity = '1';
+                }, 500); // Wait half a second before fading in
+
+                // Add click listener for the bulb
+                bulb.addEventListener('click', () => {
+                    // Instantly hide the welcome text
+                    welcomeText.style.opacity = '0';
+                    
+                    // Light up the bulb
+                    bulb.classList.add('lit');
+                    screenGlow.classList.add('active');
+                    
+                    // After a 5 second pause, fade out the bulb and glow
+                    setTimeout(() => {
+                        // Fade out the bulb and glow
+                        bulb.style.opacity = '0';
+                        screenGlow.style.opacity = '0';
+
+                        // After the bulb and glow have faded out, display the message
+                        setTimeout(() => {
+                            happyBirthdayMessage.classList.add('show');
+                            // Wait for the message to be on screen, then fade it out
+                            setTimeout(() => {
+                                happyBirthdayMessage.style.opacity = '0';
+
+                                // After the message has faded out, expand the glow to reveal the game
+                                setTimeout(() => {
+                                    screenGlow.style.transition = 'transform 1s ease-in-out, opacity 1s ease-in-out';
+                                    screenGlow.classList.add('full-screen');
+                                    welcomeScreen.style.display = 'none';
+                                    gameContent.classList.remove('hidden');
+                                    gameContent.classList.add('show');
+                                    // Start the game logic
+                                    createCards();
+                                }, 1500); // This should match the message fade out time
+                            }, 3000); // Display the message for 3 seconds
+                        }, 1000); // Wait for the bulb to fade out before showing the message
+                    }, 5000); // Display the glowing bulb for 5 seconds
+                });
+            }
+
+            // Start the welcome screen logic on window load
+            showWelcomeScreen();
         };
     </script>
 </body>
