@@ -325,7 +325,7 @@
             const messageText = document.getElementById('messageText');
             const closeMessageBtn = document.getElementById('closeMessageBtn');
             
-            let emojis = ['❤️', '✨', '🌟', '🧠', '😂', '🎉', '🎁', '💖'];
+            let emojis = ['❤️', '✨', '�', '🧠', '😂', '🎉', '🎁', '💖'];
             let cardsArray = [...emojis, ...emojis]; // Double the array for matching pairs
             let flippedCards = [];
             let matchedPairs = 0;
@@ -378,8 +378,13 @@
 
                 // Check for a match if two cards are flipped
                 if (flippedCards.length === 2) {
-                    canFlip = false;
-                    setTimeout(checkForMatch, 1000);
+                    canFlip = false; // Disable clicks immediately to prevent double-clicks
+                    // A single, consistent timer handles the next steps for a more reliable flow
+                    setTimeout(() => {
+                        checkForMatch();
+                        flippedCards = [];
+                        canFlip = true;
+                    }, 1000); // Wait 1 second before resetting the game and re-enabling clicks
                 }
             }
 
@@ -389,6 +394,7 @@
                 const emoji1 = card1.querySelector('.card-front').textContent;
                 const emoji2 = card2.querySelector('.card-front').textContent;
 
+                // Check for a match
                 if (emoji1 === emoji2) {
                     // It's a match!
                     card1.classList.add('matched');
@@ -421,10 +427,9 @@
                     card1.classList.remove('is-flipped');
                     card2.classList.remove('is-flipped');
                 }
-
-                // Reset for the next turn
-                flippedCards = [];
-                canFlip = true;
+                
+                // The state is now reset in the `flipCard` function's setTimeout,
+                // making this function purely for checking the match and updating the UI.
             }
 
             // Event listener for the "NO!" button
@@ -516,3 +521,4 @@
     </script>
 </body>
 </html>
+�
