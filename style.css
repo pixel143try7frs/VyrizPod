@@ -59,3 +59,26 @@ body {
   display: none;
 }
 
+/* Image gallery */
+.gallery {
+  margin-top: 50px;
+  text-align: center;
+}
+
+.gallery h2 {
+  color: white;
+  font-size: 2em;
+  margin-bottom: 20px;
+}
+
+.gallery-img {
+  width: 250px;
+  margin: 10px;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+  transition: transform 0.3s;
+}
+
+.gallery-img:hover {
+  transform: scale(1.05);
+}
