@@ -155,6 +155,11 @@
             align-items: center;
             justify-content: center;
             font-size: 3rem;
+            transition: font-size 0.2s ease-in-out; /* Added transition for the font size */
+        }
+        /* New styling to make the emoji pop when revealed */
+        .card.is-flipped .card-front {
+            font-size: 3.5rem; /* Slightly larger font size */
         }
         .card-front {
             background-color: #ffb6c1; /* Pink back of the card */
@@ -325,7 +330,7 @@
             const messageText = document.getElementById('messageText');
             const closeMessageBtn = document.getElementById('closeMessageBtn');
             
-            let emojis = ['❤️', '✨', '�', '🧠', '😂', '🎉', '🎁', '💖'];
+            let emojis = ['❤️', '✨', '🌟', '🧠', '😂', '🎉', '🎁', '💖'];
             let cardsArray = [...emojis, ...emojis]; // Double the array for matching pairs
             let flippedCards = [];
             let matchedPairs = 0;
@@ -360,13 +365,18 @@
                             <div class="card-front text-4xl">${emoji}</div>
                         </div>
                     `;
+                    // Add both 'click' and 'touchstart' listeners for cross-device compatibility
+                    // The 'click' event is for desktop, and 'touchstart' is for mobile.
                     card.addEventListener('click', flipCard);
+                    card.addEventListener('touchstart', flipCard);
                     gameGrid.appendChild(card);
                 });
             }
 
             // Function to handle flipping a card
             function flipCard(event) {
+                // Prevent the default touch behavior (e.g., scrolling, double-tap zoom)
+                event.preventDefault(); 
                 const card = event.currentTarget;
                 // Only allow flips if we can flip and the card isn't already matched or flipped
                 if (!canFlip || card.classList.contains('is-flipped') || card.classList.contains('matched')) {
@@ -521,4 +531,3 @@
     </script>
 </body>
 </html>
-�
